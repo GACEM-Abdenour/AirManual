@@ -1,0 +1,12 @@
+llama-index
+llama-index-llms-openai
+llama-index-embeddings-openai
+llama-index-vector-stores-qdrant
+unstructured
+unstructured-client
+streamlit
+python-dotenv
+qdrant-client
+requests
+beautifulsoup4
+tldextract

@@ -1,0 +1,1026 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0,user-scalable=0"/>
+    <title>Home Page - Robinson Helicopter Company Store</title>
+
+    <script type="text/javascript">
+	
+    var appInsights=window.appInsights||function(a){
+        function b(a){c[a]=function(){var b=arguments;c.queue.push(function(){c[a].apply(c,b)})}}var c={config:a},d=document,e=window;setTimeout(function(){var b=d.createElement("script");b.src=a.url||"https://az416426.vo.msecnd.net/scripts/a/ai.0.js",d.getElementsByTagName("script")[0].parentNode.appendChild(b)});try{c.cookie=d.cookie}catch(a){}c.queue=[];for(var f=["Event","Exception","Metric","PageView","Trace","Dependency"];f.length;)b("track"+f.pop());if(b("setAuthenticatedUserContext"),b("clearAuthenticatedUserContext"),b("startTrackEvent"),b("stopTrackEvent"),b("startTrackPage"),b("stopTrackPage"),b("flush"),!a.disableExceptionTracking){f="onerror",b("_"+f);var g=e[f];e[f]=function(a,b,d,e,h){var i=g&&g(a,b,d,e,h);return!0!==i&&c["_"+f](a,b,d,e,h),i}}return c
+    }({
+        instrumentationKey: '93bab1a4-43d2-461b-ad58-fee2bd8724b5'
+    });
+
+    window.appInsights=appInsights,appInsights.queue&&0===appInsights.queue.length&&appInsights.trackPageView();
+	
+    </script>
+
+    
+
+
+    <link rel="stylesheet" title="Coggins" href="/css/theme-coggins.css" />
+    <link href="https://kendo.cdn.telerik.com/2020.3.915/styles/kendo.common-material.min.css" rel="stylesheet" type="text/css" />
+    <link href="https://kendo.cdn.telerik.com/2020.3.915/styles/kendo.mobile.all.min.css" rel="stylesheet" type="text/css" />
+    <link href="https://kendo.cdn.telerik.com/2020.3.915/styles/kendo.material.min.css" rel="stylesheet" type="text/css" />
+    <!-- Scrollbar Custom CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.min.css">
+
+    <script src="https://kendo.cdn.telerik.com/2020.3.915/js/jquery.min.js"></script>
+    <script src="https://kendo.cdn.telerik.com/2020.3.915/js/jszip.min.js"></script>
+    <script src="/lib/bootstrap/dist/js/bootstrap.js"></script>
+    <script src="https://kendo.cdn.telerik.com/2020.3.915/js/kendo.all.min.js"></script>
+    <script src="https://kendo.cdn.telerik.com/2020.3.915/js/kendo.aspnetmvc.min.js"></script>
+
+    <script src="/js/achilles.js?v=JgGkPnwCAfgRHOxJO3vHWfKcRv_iHY2oqSZoqLFr_CM"></script>
+    <script src="/js/site.js?v=WCW_3M3La-pY9S4q7fLVDrQiLWMzcashBdBXfuQJuFo"></script>
+    <!-- Popper.JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js" integrity="sha384-cs/chFZiN24E4KMATLdqdvsezGxaGsi4hLGOzlXwp5UZB1LY//20VyM2taTB4QvJ" crossorigin="anonymous"></script>
+    <!-- jQuery Custom Scroller CDN -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.concat.min.js"></script>
+    <script src="/lib/jquery-validation/dist/jquery.creditCardValidator.js"></script>
+    <!-- jQuery matchHeight-->
+    <script src="/lib/matchHeight/dist/jquery.matchHeight-min.js"></script>
+
+
+
+
+</head>
+<body>
+    
+<style type="text/css">
+    .bd-example-modal-lg .modal-dialog {
+        display: table;
+        position: relative;
+        margin: 0 auto;
+        top: calc(50% - 24px);
+    }
+
+    .bd-example-modal-lg .modal-dialog .modal-content {
+        background-color: transparent;
+        border: none;
+    }
+</style>
+
+<div id="modalLoader" class="modal fade bd-example-modal-lg" data-backdrop="static" data-keyboard="false" tabindex="-1">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content" style="width: 48px">
+            <span class="fa fa-spinner fa-spin fa-3x"></span>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    function isLoading(value) {
+        var $modal = $("#modalLoader");
+        if (value == true)
+            $modal.modal("show");
+        else
+            $modal.modal("hide");
+    }
+</script>
+    <div class="shipping-banner">
+        <p class="shipping-text">
+            <a target="_blank" href="https://www.robinsonheli.com/">Visit RobinsonHeli.com</a>
+            </p>
+
+
+    </div>
+
+    <div id="layoutHeaderWrap" class="hidden-xs">
+        <div class="container">
+
+    <div class="row">
+
+        <div class="col-md-6">
+
+            <a class="logo-site" style="background: url(/images/logo-main.svg ) no-repeat;" href="/">Robinson Helicopter Company Store</a>
+
+        </div>
+
+
+            <div class="col-md-6">                
+                <ul class="nav navbar-nav navbar-right navbar-user">
+    <li>
+        <div id="fancySearch">
+            <div class="box">
+                <form action="/Products/Search" method="post">
+                    <div class="container-2">
+                        <input type="text" id="search" name="searchText" placeholder="Search..." onchange="submit();" autocomplete="off" />
+                        <span class="icon"><i class="fa fa-search"></i></span>
+
+                    </div>
+                <input name="__RequestVerificationToken" type="hidden" value="CfDJ8F6p6RENyOlOouyPoSPZxlIiWNeeOmJP2VvmnZqPGM_ug_N_LnipuajEMA1ppK5s2STDLKrOTkvGKXBonm6yv4aGcEflbEuKh62LYsGuc1DREhxnRnyHbZAb3bcRDwav_IU_uue7mUVnS7kADKdkn2M" /></form>
+            </div>
+
+        </div>
+    </li>
+
+
+        <li>
+    <a href="/Account/Login">
+        <div class="hidden-xs">
+            <span class="glyphicon glyphicon-user"></span> Login
+        </div>
+        <div class="visible-xs">
+            <div class="col-xs-12"><span class="glyphicon glyphicon-user"></span> Login</div>
+        </div>
+    </a>
+</li>
+    <li>
+        <a href="/Account/Login">
+            <div class="hidden-xs">
+                <span class="glyphicon glyphicon-heart"></span> My Wishlist
+            </div>
+            <div class="visible-xs">
+                <div class="col-xs-12"><span class="glyphicon glyphicon-heart"></span> My Wishlist</div>
+            </div>
+        </a>
+    </li>
+
+    <li class="dropdown cart-preview">
+        
+<a class="dropdown-toggle hidden-xs" href="/ShoppingCart/Cart">
+    <span class="glyphicon glyphicon-shopping-cart"></span> My Cart: <span class="badge label-success item-count">0</span>
+</a>
+<a class="button-mobile hidden-lg hidden-md hidden-sm" role="button" href="/ShoppingCart/Cart">
+        <span class="glyphicon glyphicon-shopping-cart"></span><span class="badge label-success item-count">0</span>
+</a>
+
+<ul id="cartToggle" class="dropdown-menu">
+    <li class="shopping-cart-popup">
+        <div class="shopping-cart-header">
+            <span class="shopping-cart-total">
+                Subtotal: <strong>$0.00</strong>
+            </span>
+        </div>
+        <div class="items-container">
+            <ul class="list-unstyled shopping-cart-items">
+
+            </ul>
+        </div>
+        <div>
+        </div>
+    </li>
+</ul>
+    </li>
+</ul>
+
+
+
+            </div>
+
+    </div>
+
+</div>
+    </div>
+
+    <nav id="sidebar" class="hidden-sm hidden-md hidden-lg">
+        
+<div class="sidebar-header">
+    <div class="row">
+        <div class="col-xs-12 dismiss-bar">
+            <div id="dismiss" >
+                <i class="fa light fa-times fa-2x" tabindex="0"></i>
+            </div>
+        </div>
+        <div class="col-xs-12 sign-in">
+            <ul class="nav navbar-nav navbar-right navbar-user">
+                    <li>
+    <a href="/Account/Login">
+        <div class="hidden-xs">
+            <span class="glyphicon glyphicon-user"></span> Login
+        </div>
+        <div class="visible-xs">
+            <div class="col-xs-12"><span class="glyphicon glyphicon-user"></span> Login</div>
+        </div>
+    </a>
+</li>
+    <li>
+        <a href="/Account/Login">
+            <div class="hidden-xs">
+                <span class="glyphicon glyphicon-heart"></span> My Wishlist
+            </div>
+            <div class="visible-xs">
+                <div class="col-xs-12"><span class="glyphicon glyphicon-heart"></span> My Wishlist</div>
+            </div>
+        </a>
+    </li>
+
+            </ul>
+        </div>
+
+    </div>
+</div>
+<ul class="nav navbar-nav  mr-auto">
+
+    <li class="dropdown">
+        <!-- <a asp-area="" asp-controller="Products" asp-action="ProductGrid" asp-route-id="Apparel" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">-->
+        <a  class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+            <div class="col-xs-10">
+                Apparel
+            </div>
+            <div class="col-xs-2 arrow-dropdown">
+                <i class="fa fa-angle-down"></i>
+            </div>
+        </a>
+        <ul class="dropdown-menu">
+                    <li class="sub-category">
+                        <a href="/Products/ProductGrid/mnsapparel">Men&#x27;s</a>
+                    </li>
+                    <li class="sub-category">
+                        <a href="/Products/ProductGrid/wmnsappare">Women&#x27;s</a>
+                    </li>
+        </ul>
+    </li>
+            <li>
+                <a href="/Products/ProductGrid/headwear">
+                    <div class="col-xs-12">
+                        Headwear
+                    </div>
+                </a>    
+            </li>
+            <li>
+                <a href="/Products/ProductGrid/bags">
+                    <div class="col-xs-12">
+                        Bags
+                    </div>
+                </a>    
+            </li>
+            <li>
+                <a href="/Products/ProductGrid/accessory">
+                    <div class="col-xs-12">
+                        Accessories
+                    </div>
+                </a>    
+            </li>
+            <li>
+                <a href="/Products/ProductGrid/drinkware">
+                    <div class="col-xs-12">
+                        Drinkware
+                    </div>
+                </a>    
+            </li>
+            <li>
+                <a href="/Products/ProductGrid/youth">
+                    <div class="col-xs-12">
+                        Youth
+                    </div>
+                </a>    
+            </li>
+
+</ul>
+<script>
+    $('.dropdown-toggle').click(function () {
+        $(this).find('i').toggleClass('fa fa-angle-down').toggleClass('fa fa-angle-up');
+    });
+
+</script>
+    </nav>
+
+    <div class="overlay"></div>
+
+    <div id="layoutNavMainWrap" data-spy="affix" data-offset-top="110">
+
+        
+
+
+<nav class="navbar navbar-default navbar-expand-lg">
+    <div class="container">
+        <div class="navbar-header sticky">
+            <div class="row" style="margin-left: -15px !important; margin-right: -15px !important;">
+                <div class="col-xs-2">
+                    <button type="button" class="navbar-toggle" id="sidebarCollapse">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="fa fa-align-justify fa-2x"></span>
+                    </button>
+                </div>
+                <div class="col-xs-2  hidden-sm hidden-md hidden-lg navbar-toggle text-center">
+                    <a href="#" data-toggle="modal" data-target="#myModal" class="clickable"><span class="fa fa-search fa-2x"></span></a>
+                </div>
+                <div class="col-xs-2  hidden-sm hidden-md hidden-lg  navbar-toggle text-center">
+                    <a href="/Account/Settings"><span class="fa fa-user-circle-o fa-2x"></span></a>
+                </div>
+                    <div class="col-xs-2  hidden-sm hidden-md hidden-lg  navbar-toggle text-center">
+                        
+<a class="hidden-lg hidden-md hidden-sm" role="button" href="/Account/WishList">
+    <span class="fa fa-heart fa-2x"></span></a>
+<a class="hidden-xs" role="button" aria-haspopup="true" aria-expanded="false" href="/Account/WishList">
+    <span class="glyphicon glyphicon-heart"></span> My Wishlist </a>
+                    </div>
+                <div class="col-xs-2 hidden-sm hidden-md hidden-lg navbar-toggle text-center header-cart">
+                    
+<a class="dropdown-toggle hidden-xs" href="/ShoppingCart/Cart">
+    <span class="glyphicon glyphicon-shopping-cart"></span> My Cart: <span class="badge label-success item-count">0</span>
+</a>
+<a class="button-mobile hidden-lg hidden-md hidden-sm" role="button" href="/ShoppingCart/Cart">
+        <span class="glyphicon glyphicon-shopping-cart"></span><span class="badge label-success item-count">0</span>
+</a>
+
+<ul id="cartToggle" class="dropdown-menu">
+    <li class="shopping-cart-popup">
+        <div class="shopping-cart-header">
+            <span class="shopping-cart-total">
+                Subtotal: <strong>$0.00</strong>
+            </span>
+        </div>
+        <div class="items-container">
+            <ul class="list-unstyled shopping-cart-items">
+
+            </ul>
+        </div>
+        <div>
+        </div>
+    </li>
+</ul>
+                </div>
+            </div>
+        </div>
+
+        <div id="navbar" class="navbar-collapse collapse">
+
+            <ul class="nav navbar-nav  mr-auto">
+
+                        <li class="dropdown">
+
+                            <a href="/Products/ProductGrid/Apparel">Apparel <span class="caret"></span></a>
+                            
+<ul class="dropdown-menu">
+            <li class="sub-category">
+                <!--<a asp-area="" asp-controller="Products" asp-action="ProductGrid" asp-route-parentcategory="Apparel" asp-route-category="mnsapparel">-->
+                <a href="/Products/ProductGrid/Apparel/Men&#x27;s" class="selected" title="Apparel">
+                    Men&#x27;s
+                    <div class="icon">
+                    </div>
+                </a>
+
+            </li>
+            <li class="sub-category">
+                <!--<a asp-area="" asp-controller="Products" asp-action="ProductGrid" asp-route-parentcategory="Apparel" asp-route-category="wmnsappare">-->
+                <a href="/Products/ProductGrid/Apparel/Women&#x27;s" class="selected" title="Apparel">
+                    Women&#x27;s
+                    <div class="icon">
+                    </div>
+                </a>
+
+            </li>
+</ul>
+                        </li>
+                            <li><a class="selected" href="/Products/ProductGrid/headwear">Headwear </a></li>
+                            <li><a class="selected" href="/Products/ProductGrid/bags">Bags </a></li>
+                            <li><a class="selected" href="/Products/ProductGrid/accessory">Accessories </a></li>
+                            <li><a class="selected" href="/Products/ProductGrid/drinkware">Drinkware </a></li>
+                            <li><a class="selected" href="/Products/ProductGrid/youth">Youth </a></li>
+
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<script>
+
+    $(function () {
+        var wishlist = true ;
+
+        if (wishlist == false) {
+            console.log("false")
+            //$(".sticky .col-xs-2").css("width", "20%");
+        };
+
+    });
+
+</script>
+
+<!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel"><span class="icon"><i class="fa fa-search"></i></span> Submit</h4>
+            </div>
+            <form action="/Products/Search" method="post">
+                <div class="modal-body">
+
+                    <input type="text" class="form-control" id="searchModal" name="searchText" placeholder="Search..." onchange="submit();" autocomplete="off" />
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-success" data-dismiss="modal">Submit</button>
+                </div>
+            <input name="__RequestVerificationToken" type="hidden" value="CfDJ8F6p6RENyOlOouyPoSPZxlIiWNeeOmJP2VvmnZqPGM_ug_N_LnipuajEMA1ppK5s2STDLKrOTkvGKXBonm6yv4aGcEflbEuKh62LYsGuc1DREhxnRnyHbZAb3bcRDwav_IU_uue7mUVnS7kADKdkn2M" /></form>
+        </div>
+    </div>
+</div>
+
+    </div>
+
+    <div id="layoutBodyWrap">
+        <div class="shipping-banner-two">
+            <p class="shipping-text">
+                <a target="_blank" href="https://www.robinsonheli.com/">Visit RobinsonHeli.com</a>
+            </p>
+
+        </div>
+        
+
+<div id="homeCarouselWrap">
+
+    
+<div id="fullBackgroundHeroCarousel">
+    <div class="carousel fade-carousel slide" data-ride="carousel" data-interval="4000" id="bs-carousel">
+        <!-- Overlay -->
+        <div class="overlay"></div>
+        <!-- Indicators -->
+        <ol class="carousel-indicators">
+                <li data-target="#bs-carousel" data-slide-to="0" class=Active></li>
+                <li data-target="#bs-carousel" data-slide-to="1" ></li>
+                <li data-target="#bs-carousel" data-slide-to="2" ></li>
+        </ol>
+
+        <!-- Wrapper for slides -->
+        <div class="carousel-inner">
+
+                <div class="item slides active">
+                    <a>
+                        <img class="slide-1 center-block" src="../images/banners/RHCbanner3.jpg">
+                        <div class="hero">
+                                                    </div>
+                    </a>
+                </div>
+                <div class="item slides">
+                    <a>
+                        <img class="slide-2 center-block" src="../images/banners/RHCbanner4.jpg">
+                        <div class="hero">
+                                                    </div>
+                    </a>
+                </div>
+                <div class="item slides">
+                    <a>
+                        <img class="slide-3 center-block" src="../images/banners/RHCbanner5.jpg">
+                        <div class="hero">
+                                                    </div>
+                    </a>
+                </div>
+
+        </div>
+
+        <a class="left carousel-control" href="#bs-carousel" role="button" data-slide="prev">
+            <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+            <span class="sr-only">Previous</span>
+        </a>
+        <a class="right carousel-control" href="#bs-carousel" role="button" data-slide="next">
+            <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+            <span class="sr-only">Next</span>
+        </a>
+
+    </div>
+</div>
+
+</div>
+
+<div class="featured-header">Featured Products</div>
+
+
+<div id="homeFeaturedProductsWrap" class="container">
+    
+<div id="featuredProducts" class="products-carousel-wrapper">
+    <div class="products-carousel">
+
+                <div class="row">
+                        <div class="col-md-4 col-sm-4 col-xs-12 products-carousel-photo Climb Higher Coffee Table Book">
+                            <div class="product">
+                                <div class="product-info">
+                                    <a href="/Products/ProductDetails/C-RHC-001">
+                                        <img src="/Products/GetImage/847100" alt="Climb Higher Coffee Table Book" class="img-responsive">
+                                    </a>
+                                    <h2>Climb Higher Coffee Table Book</h2>
+                                        <span class="price">$59.99</span>
+                                </div>
+
+                                <div class="product-button">
+                                    <a class="btn btn-primary btn-res" href="/Products/ProductDetails/C-RHC-001">Shop Now</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4 col-sm-4 col-xs-12 products-carousel-photo Men&#x27;s OGIO Modern Performance Full-Zip">
+                            <div class="product">
+                                <div class="product-info">
+                                    <a href="/Products/ProductDetails/S-RHC-020">
+                                        <img src="/Products/GetImage/676486" alt="Men&#x27;s OGIO Modern Performance Full-Zip" class="img-responsive">
+                                    </a>
+                                    <h2>Men&#x27;s OGIO Modern Performance Full-Zip</h2>
+                                        <span class="price">$73.00</span>
+                                </div>
+
+                                <div class="product-button">
+                                    <a class="btn btn-primary btn-res" href="/Products/ProductDetails/S-RHC-020">Shop Now</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4 col-sm-4 col-xs-12 products-carousel-photo Cotton Crew Socks">
+                            <div class="product">
+                                <div class="product-info">
+                                    <a href="/Products/ProductDetails/S-RHC-035">
+                                        <img src="/Products/GetImage/698587" alt="Cotton Crew Socks" class="img-responsive">
+                                    </a>
+                                    <h2>Cotton Crew Socks</h2>
+                                        <span class="price">$24.00</span>
+                                </div>
+
+                                <div class="product-button">
+                                    <a class="btn btn-primary btn-res" href="/Products/ProductDetails/S-RHC-035">Shop Now</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4 col-sm-4 col-xs-12 products-carousel-photo Women&#x27;s Levelwear Ainsley Polo">
+                            <div class="product">
+                                <div class="product-info">
+                                    <a href="/Products/ProductDetails/S-RHC-030">
+                                        <img src="/Products/GetImage/677206" alt="Women&#x27;s Levelwear Ainsley Polo" class="img-responsive">
+                                    </a>
+                                    <h2>Women&#x27;s Levelwear Ainsley Polo</h2>
+                                        <span class="price">$98.00</span>
+                                </div>
+
+                                <div class="product-button">
+                                    <a class="btn btn-primary btn-res" href="/Products/ProductDetails/S-RHC-030">Shop Now</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4 col-sm-4 col-xs-12 products-carousel-photo Girls District Perfect Tri Tee">
+                            <div class="product">
+                                <div class="product-info">
+                                    <a href="/Products/ProductDetails/S-RHC-039">
+                                        <img src="/Products/GetImage/698585" alt="Girls District Perfect Tri Tee" class="img-responsive">
+                                    </a>
+                                    <h2>Girls District Perfect Tri Tee</h2>
+                                        <span class="price">$13.00</span>
+                                </div>
+
+                                <div class="product-button">
+                                    <a class="btn btn-primary btn-res" href="/Products/ProductDetails/S-RHC-039">Shop Now</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4 col-sm-4 col-xs-12 products-carousel-photo Men&#x27;s Carhartt Gilliam Jacket">
+                            <div class="product">
+                                <div class="product-info">
+                                    <a href="/Products/ProductDetails/S-RHC-023">
+                                        <img src="/Products/GetImage/676525" alt="Men&#x27;s Carhartt Gilliam Jacket" class="img-responsive">
+                                    </a>
+                                    <h2>Men&#x27;s Carhartt Gilliam Jacket</h2>
+                                        <span class="price">$104.50</span>
+                                </div>
+
+                                <div class="product-button">
+                                    <a class="btn btn-primary btn-res" href="/Products/ProductDetails/S-RHC-023">Shop Now</a>
+                                </div>
+                            </div>
+                        </div>
+                </div>
+                <div class="row">
+                        <div class="col-md-4 col-sm-4 col-xs-12 products-carousel-photo Rabbit Skins Infant Fine Jersey Bodysuit">
+                            <div class="product">
+                                <div class="product-info">
+                                    <a href="/Products/ProductDetails/S-RHC-036">
+                                        <img src="/Products/GetImage/698603" alt="Rabbit Skins Infant Fine Jersey Bodysuit" class="img-responsive">
+                                    </a>
+                                    <h2>Rabbit Skins Infant Fine Jersey Bodysuit</h2>
+                                        <span class="price">$13.00</span>
+                                </div>
+
+                                <div class="product-button">
+                                    <a class="btn btn-primary btn-res" href="/Products/ProductDetails/S-RHC-036">Shop Now</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4 col-sm-4 col-xs-12 products-carousel-photo Flexfit 110 Performance Snapback Cap">
+                            <div class="product">
+                                <div class="product-info">
+                                    <a href="/Products/ProductDetails/S-RHC-006">
+                                        <img src="/Products/GetImage/684477" alt="Flexfit 110 Performance Snapback Cap" class="img-responsive">
+                                    </a>
+                                    <h2>Flexfit 110 Performance Snapback Cap</h2>
+                                        <span class="price">$22.00</span>
+                                </div>
+
+                                <div class="product-button">
+                                    <a class="btn btn-primary btn-res" href="/Products/ProductDetails/S-RHC-006">Shop Now</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4 col-sm-4 col-xs-12 products-carousel-photo Carhartt Canvas Packable Duffel with Pouch">
+                            <div class="product">
+                                <div class="product-info">
+                                    <a href="/Products/ProductDetails/S-RHC-015">
+                                        <img src="/Products/GetImage/676476" alt="Carhartt Canvas Packable Duffel with Pouch" class="img-responsive">
+                                    </a>
+                                    <h2>Carhartt Canvas Packable Duffel with Pouch</h2>
+                                        <span class="price">$74.00</span>
+                                </div>
+
+                                <div class="product-button">
+                                    <a class="btn btn-primary btn-res" href="/Products/ProductDetails/S-RHC-015">Shop Now</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4 col-sm-4 col-xs-12 products-carousel-photo Brooks Brothers Grant Dual-Handle Backpack">
+                            <div class="product">
+                                <div class="product-info">
+                                    <a href="/Products/ProductDetails/S-RHC-013">
+                                        <img src="/Products/GetImage/690060" alt="Brooks Brothers Grant Dual-Handle Backpack" class="img-responsive">
+                                    </a>
+                                    <h2>Brooks Brothers Grant Dual-Handle Backpack</h2>
+                                        <span class="price">$184.00</span>
+                                </div>
+
+                                <div class="product-button">
+                                    <a class="btn btn-primary btn-res" href="/Products/ProductDetails/S-RHC-013">Shop Now</a>
+                                </div>
+                            </div>
+                        </div>
+                </div>
+                <div class="row">
+                </div>
+                <div class="row">
+                </div>
+
+    </div>
+
+    <span class="glyphicon glyphicon-chevron-left products-prev" aria-hidden="true"></span>
+    <span class="glyphicon glyphicon-chevron-right products-next" aria-hidden="true"></span>
+</div>
+</div>
+
+
+
+
+
+<script>
+    $(document).ready(() => {
+
+        let itemClassName = "products-carousel-photo";
+        let items = document.getElementsByClassName(itemClassName);
+        let totalItems = items.length;
+        let slide = 0;
+        let moving = true;
+
+
+      
+            // Set classes
+            function setInitialClasses(itemTtl) {
+                if (itemTtl > 1) {
+                    // Targets the previous, current, and next items
+                    // This assumes there are at least three items.
+                    items[totalItems - 1].classList.add("prev");
+                    items[0].classList.add("active");
+                    items[1].classList.add("next");
+                }
+                else {
+                    // Targets the single item
+                    // This assumes there is only ONE featured item.               
+                    items[0].classList.add("active");
+                    document.getElementsByClassName('products-next')[0].style.display = "none";
+                    document.getElementsByClassName('products-prev')[0].style.display = "none";
+                
+                }
+            }
+
+
+            // Set event listeners
+            function setEventListeners() {
+                let next = document.getElementsByClassName('products-next')[0],
+                    prev = document.getElementsByClassName('products-prev')[0];
+                next.addEventListener('click', moveNext);
+                prev.addEventListener('click', movePrev);
+
+
+                document.querySelector(".products-carousel").addEventListener('touchstart', handleTouchStart, false);
+                document.querySelector(".products-carousel").addEventListener('touchmove', handleTouchMove, false);
+
+                var xDown = null;
+                var yDown = null;
+
+                function getTouches(evt) {
+                    return evt.touches ||             // browser API
+                        evt.originalEvent.touches; // jQuery
+                }
+
+                function handleTouchStart(evt) {
+                    const firstTouch = getTouches(evt)[0];
+                    xDown = firstTouch.clientX;
+                    yDown = firstTouch.clientY;
+                };
+
+                function handleTouchMove(evt) {
+                    if (!xDown || !yDown) {
+                        return;
+                    }
+
+                    var xUp = evt.touches[0].clientX;
+                    var yUp = evt.touches[0].clientY;
+
+                    var xDiff = xDown - xUp;
+                    var yDiff = yDown - yUp;
+
+                    if (Math.abs(xDiff) > Math.abs(yDiff)) {/*most significant*/
+                        if (xDiff > 0) {
+                            /* left swipe */
+                            moveNext()
+                        } else {
+                            /* right swipe */
+                            movePrev()
+                        }
+                    } else {
+                        if (yDiff > 0) {
+                            /* up swipe */
+                        } else {
+                            /* down swipe */
+                        }
+                    }
+                    /* reset values */
+                    xDown = null;
+                    yDown = null;
+                };
+            }
+
+
+
+            // Next navigation handler
+            function moveNext() {
+
+                // Check if moving
+                if (!moving) {
+                    // If it's the last slide, reset to 0, else +1
+                    if (slide === (totalItems - 1)) {
+                        slide = 0;
+                    } else {
+                        slide++;
+                    }
+                    // Move carousel to updated slide
+                    if (totalItems === 3) {
+                        moveCarouselToV1(slide);
+                    } else {
+                        moveCarouselToV2(slide);
+                    }
+
+                }
+            }
+            // Previous navigation handler
+            function movePrev() {
+                // Check if moving
+                if (!moving) {
+                    // If it's the first slide, set as the last slide, else -1
+                    if (slide === 0) {
+                        slide = (totalItems - 1);
+                    } else {
+                        slide--;
+                    }
+
+                    // Move carousel to updated slide
+                    if (totalItems === 3) {
+                        moveCarouselToV1(slide);
+                    } else {
+                        moveCarouselToV2(slide);
+                    }
+                }
+            }
+
+
+            function disableInteraction() {
+                // Set 'moving' to true for the same duration as our transition.
+                // (0.5s = 500ms)
+
+                moving = true;
+                // setTimeout runs its function once after the given time
+                setTimeout(function() {
+                    moving = false
+                }, 500);
+            }
+
+            //FUNCTION TO MOVE CAROUSEL IF LIST IS LESS THAN 3
+            function moveCarouselToV1(slide) {
+                // Check if carousel is moving, if not, allow interaction
+                if (!moving) {
+                    // temporarily disable interactivity
+                    disableInteraction();
+                    // Update the "old" adjacent slides with "new" ones
+                    if (slide === 0) {
+                        var newPrevious = slide + 2,
+                            newNext = slide + 1,
+                            oldPrevious = slide + 1,
+                            oldNext = slide + 2;
+                    } else if (slide === 1) {
+                        var newPrevious = slide - 1,
+                            newNext = slide + 1,
+                            oldPrevious = slide + 1,
+                            oldNext = slide - 1;
+                    } else if (slide === 2) {
+                        var newPrevious = slide - 1,
+                            newNext = slide - 2,
+                            oldPrevious = slide - 2,
+                            oldNext = slide - 1;
+                    }
+
+
+                    // Test if carousel has more than three items
+                    if ((totalItems) > 2) {
+                        // Checks and updates if the new slides are out of bounds
+                        if (newPrevious <= 0) {
+                            oldPrevious = (totalItems - 1);
+                        } else if (newNext >= (totalItems - 1)) {
+                            oldNext = 0;
+                        }
+                        // Checks and updates if slide is at the beginning/end
+                        if (slide === 0) {
+                            newPrevious = (totalItems - 1);
+                            oldPrevious = (totalItems - 2);
+                            oldNext = (slide + 2);
+                        } else if (slide === (totalItems - 1)) {
+                            newPrevious = (slide - 1);
+                            newNext = 0;
+                            oldNext = 1;
+                        }
+                        // Now we've worked out where we are and where we're going,
+                        // by adding/removing classes we'll trigger the transitions.
+                        // Reset old next/prev elements to default classes
+                        items[oldPrevious].className = itemClassName;
+                        items[oldNext].className = itemClassName;
+                        // Add new classes
+                        items[newPrevious].className = itemClassName + " prev";
+                        items[slide].className = itemClassName + " active";
+                        items[newNext].className = itemClassName + " next";
+                    }
+                }
+            }
+
+
+            //FUNCTION TO MOVE CAROUSEL IF LIST IS LARGER THAN 3
+            function moveCarouselToV2(slide) {
+                // Check if carousel is moving, if not, allow interaction
+                if (!moving) {
+                    // temporarily disable interactivity
+                    disableInteraction();
+                    // Update the "old" adjacent slides with "new" ones
+                    var newPrevious = slide - 1,
+                        newNext = slide + 1,
+                        oldPrevious = slide - 2,
+                        oldNext = slide + 2;
+                    // Test if carousel has more than three items
+                    if ((totalItems - 1) >= 3) {
+                        // Checks and updates if the new slides are out of bounds
+                        if (newPrevious <= 0) {
+                            oldPrevious = (totalItems - 1);
+                        } else if (newNext >= (totalItems - 1)) {
+                            oldNext = 0;
+                        }
+                        // Checks and updates if slide is at the beginning/end
+                        if (slide === 0) {
+                            newPrevious = (totalItems - 1);
+                            oldPrevious = (totalItems - 2);
+                            oldNext = (slide + 1);
+                        } else if (slide === (totalItems - 1)) {
+                            newPrevious = (slide - 1);
+                            newNext = 0;
+                            oldNext = 1;
+                        }
+                        // Now we've worked out where we are and where we're going, 
+                        // by adding/removing classes we'll trigger the transitions.
+                        // Reset old next/prev elements to default classes
+                        items[oldPrevious].className = itemClassName;
+                        items[oldNext].className = itemClassName;
+                        // Add new classes
+                        items[newPrevious].className = itemClassName + " prev";
+                        items[slide].className = itemClassName + " active";
+                        items[newNext].className = itemClassName + " next";
+                    }
+                }
+            }
+
+
+            function initCarousel() {
+                setInitialClasses(totalItems);
+                setEventListeners(totalItems);
+                // Set moving to false so that the carousel becomes interactive
+                moving = false;
+            }
+
+            // Calling all featured products carousel functions
+            initCarousel();
+
+
+
+
+
+        
+
+
+
+    })
+</script>
+
+    </div>
+
+    <div id="layoutFooterWrap">
+        <div class="container">
+    <div class="row">
+        <div class="col-md-2">
+
+
+        </div>
+        <div class="col-md-8 text-center">
+            <ul class="list-unstyled list-inline footer-nav">
+                <li><a href="/Content/CustomerService">Customer Service</a></li>
+                <li><a href="/Content/CustomOrders">Custom Orders</a></li>
+                <li><a href="/Content/Returns">Returns</a></li>
+                <li><a href="/Content/Shipping">Shipping</a></li>
+                <li><a href="/Content/PrivacyPolicy">Privacy Policy</a></li>
+                <li><a href="/Content/SiteTerms">Site Terms</a></li>
+
+            </ul>
+
+        </div>
+        <div class="col-md-2 col-xs-12 text-center">
+            <strong>
+                Connect With Us
+            </strong>
+            <ul class="list-unstyled list-inline">
+            </ul>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12 text-center underline-top">
+            <p>
+                &copy;2026 Robinson Helicopter Company Store - Powered by <a href="https://www.cogginspromo.com" target="_blank">Coggins Promo</a>
+            </p>
+        </div>
+    </div>
+</div>
+    </div>
+
+
+
+    
+</body>
+</html>
+
+<script>
+  function handleDropdownDisplay() {
+    var dropdowns = document.querySelectorAll('.dropdown, .dropdown-toggle');
+
+    function displayDropdownMenu() {
+      var dropdownMenu = this.querySelector('.dropdown-menu');
+      if (dropdownMenu && !isMobile()) {
+        dropdownMenu.style.display = 'block';
+        this.setAttribute('aria-expanded', 'true');
+      }
+    }
+
+    function hideDropdownMenu() {
+      var dropdownMenu = this.querySelector('.dropdown-menu');
+      if (dropdownMenu) {
+        dropdownMenu.style.display = 'none';
+        this.setAttribute('aria-expanded', 'false');
+      }
+    }
+
+    function isMobile() {
+      return window.innerWidth <= 768; // Adjust the breakpoint to your desired mobile width
+    }
+
+    function updateEventListeners() {
+      if (isMobile()) {
+        dropdowns.forEach(function (dropdown) {
+          dropdown.removeEventListener('mouseover', displayDropdownMenu);
+          dropdown.removeEventListener('mouseout', hideDropdownMenu);
+          dropdown.removeEventListener('focus', displayDropdownMenu);
+          dropdown.removeEventListener('blur', hideDropdownMenu);
+          dropdown.removeAttribute('aria-expanded'); // Remove aria-expanded attribute for mobile view
+        });
+      } else {
+        dropdowns.forEach(function (dropdown) {
+          dropdown.addEventListener('mouseover', displayDropdownMenu);
+          dropdown.addEventListener('mouseout', hideDropdownMenu);
+          dropdown.addEventListener('focus', displayDropdownMenu);
+          dropdown.addEventListener('blur', hideDropdownMenu);
+          dropdown.setAttribute('aria-expanded', 'false'); // Add aria-expanded attribute for desktop view
+        });
+      }
+    }
+
+    // Initial setup
+    updateEventListeners();
+
+    // Event listener for screen size changes
+    window.addEventListener('resize', function () {
+      updateEventListeners();
+    });
+  }
+
+  handleDropdownDisplay();
+</script>

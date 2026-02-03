@@ -1,0 +1,112 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Rapid Action for Citizens with Earth Observation</title><link rel="stylesheet" href="./css/roboto.css"><link rel="stylesheet" href="./css/materialdesignicons.min.css"><link rel="stylesheet" href="./spinkit.min.css"><link href="/js/chunk-1d89eb5c.a871e177.js" rel="prefetch"><link href="/js/chunk-2d0c935c.87b2c16f.js" rel="prefetch"><link href="/js/chunk-2d0e625b.5fbe686b.js" rel="prefetch"><link href="/js/chunk-2d221a5f.a896cf11.js" rel="prefetch"><link href="/js/chunk-2d2371ac.4e83a959.js" rel="prefetch"><link href="/js/chunk-71a08df2.e0d4e31d.js" rel="prefetch"><link href="/js/chunk-edb17c18.78e33487.js" rel="prefetch"><link href="/js/chunk-edb5222e.fc8ad57e.js" rel="prefetch"><link href="/js/chunk-edd99a4c.6e66627c.js" rel="prefetch"><link href="/js/chunk-eddbce90.bc668347.js" rel="prefetch"><link href="/js/chunk-eddf65e8.9f041791.js" rel="prefetch"><link href="/js/chunk-ede13be6.71774df8.js" rel="prefetch"><link href="/js/chunk-ffc586cc.5ab612f2.js" rel="prefetch"><link href="/js/chunk-ffeaba1c.0fba288e.js" rel="prefetch"><link href="/js/chunk-ffeba4c6.7691473d.js" rel="prefetch"><link href="/js/chunk-fff054ec.a9bbcafe.js" rel="prefetch"><link href="/js/chunk-fff1084c.f4ee52ac.js" rel="prefetch"><link href="/js/chunk-fff10908.4bb00da2.js" rel="prefetch"><link href="/css/chunk-common.af7eb328.css" rel="preload" as="style"><link href="/css/chunk-vendors.e474187f.css" rel="preload" as="style"><link href="/js/chunk-common.04254068.js" rel="preload" as="script"><link href="/js/chunk-vendors.2c3fc849.js" rel="preload" as="script"><link href="/js/esa.944dd55a.js" rel="preload" as="script"><meta name="google-site-verification" content="RfWilP51Q2wsZnVlKbxUTovIx90QqqLRFLebGpAeq14"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:description" content="This dashboard aims to showcase the power of Earth Observations to inform on societal global challenges. It is a cooperation between The European Space Agency and the European Commission."><meta name="twitter:title" content="Rapid Action for Citizens with Earth Observation"><meta name="twitter:image" content="https://race.esa.int/img/ESA/twitter_card.jpg"><meta property="og:title" content="Rapid Action for Citizens with Earth Observation"><meta property="og:site_name" content="Rapid Action for Citizens with Earth Observation"><meta property="og:type" content="website"><meta property="og:image" content="https://race.esa.int/img/ESA/twitter_card.jpg"><meta property="og:description" content="This dashboard aims to showcase the power of Earth Observations to inform on societal global challenges. It is a cooperation between The European Space Agency and the European Commission."><meta name="theme-color" content="#003247"><meta name="msapplication-navbutton-color" content="#003247"><meta name="apple-mobile-web-app-status-bar-style" content="#003247"><meta name="application-name" content="Rapid Action for Citizens with Earth Observation"><meta name="msapplication-TileColor" content="#003247"><meta name="msapplication-TileImage" content="/img/ESA/mstile-144x144.png"><link rel="shortcut icon" href="/favicon.ico"><link href="/css/chunk-vendors.e474187f.css" rel="stylesheet"><link href="/css/chunk-common.af7eb328.css" rel="stylesheet"></head><body><noscript><strong>We're sorry but eodash doesn't work properly without JavaScript enabled. Please enable it to continue.</strong></noscript><style>html, body {
+        height: 100%;
+        overflow: hidden;
+      }
+      :root {
+        --sk-color: #004170;
+        --sk-size: 60px;
+      }</style><div style="height: 100%; width: 100%; position: absolute; display: flex; align-items: center; justify-content: center; z-index: -1"><div class="sk-fold"><div class="sk-fold-cube"></div><div class="sk-fold-cube"></div><div class="sk-fold-cube"></div><div class="sk-fold-cube"></div></div></div><script src="./shConfig.js"></script><div id="app"></div><style>.modal-open {
+        height: 100vh;
+        overflow: hidden;
+      }
+
+      #ie-modal-container {
+        width: 100%;
+        height: 100%;
+        top: 0;
+        position: absolute;
+        display: none;
+        align-items: center;
+        justify-content: center;
+        z-index: 999;
+        background: rgba(0,0,0,.8);
+      }
+
+      #ie-info {
+        background: white;
+        max-width: 90vw;
+        z-index: 9999;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border-radius: 5px;
+      }
+      @media (min-width: 960px) {
+        #ie-info {
+          max-width: 60vw;
+        }
+      }
+      #ie-info .modal-content {
+        padding: 40px 20px;
+        font-family: "Roboto", sans-serif;
+        text-align: center;
+      }
+      #ie-info .modal-header h2 {
+        font-size: 34px;
+        font-weight: 300;
+        /* margin-bottom: 10px; */
+      }
+      #ie-info .modal-body {
+        margin: 30px 0;
+        font-size: 16px;
+      }
+      #ie-info .btn-primary {
+        background: #004170;
+        color: #fff;
+        font-weight: bold;
+        padding: 16px 40px;
+        border-radius: 2px;
+        text-transform: uppercase;
+      }</style><div id="ie-modal-container"><div id="ie-info" class="modal fade" tabindex="-1" role="dialog"><div class="modal-dialog"><div class="modal-content"><div class="modal-header"><h2 class="modal-title">Unsupported Browser :(</h2></div><div class="modal-body"><p>eodash probably won't work great with your current browser.<br>We generally only support the recent versions of major browsers like Chrome, Firefox, Safari, and Edge.</p></div><div class="modal-footer"><button type="button" class="btn btn-primary" data-dismiss="modal">Dismiss & Try Anyway</button></div></div></div></div></div><script>// Get IE or Edge browser version
+      var version = detectIE();
+      if (version != false) {
+        // If IE load the modal script
+        var js = document.createElement("script");
+        js.src = "/modal.min.js";
+        document.head.appendChild(js);
+        var jsLoad = setInterval(function() {
+          if(typeof Modal !== 'undefined') {
+            clearInterval(jsLoad);
+            launchModal();
+          };
+        }, 500);
+      }
+
+      /**
+       * detect IE
+       * returns version of IE or false, if browser is not Internet Explorer
+       */
+      function detectIE() {
+        var ua = window.navigator.userAgent;
+
+        var msie = ua.indexOf('MSIE ');
+        if (msie > 0) {
+          // IE 10 or older => return version number
+          return parseInt(ua.substring(msie + 5, ua.indexOf('.', msie)), 10);
+        }
+
+        var trident = ua.indexOf('Trident/');
+        if (trident > 0) {
+          // IE 11 => return version number
+          var rv = ua.indexOf('rv:');
+          return parseInt(ua.substring(rv + 3, ua.indexOf('.', rv)), 10);
+        }
+
+        // other browser
+        return false;
+      }
+
+      function launchModal() {
+        var ieModal = new Modal({
+          el: document.getElementById('ie-info')
+        });
+
+        ieModal.on('dismiss', function(myModal, event) {
+          document.getElementById('ie-modal-container').style.display = 'none'
+          document.documentElement.classList.remove('modal-open');
+        })
+
+        document.getElementById('ie-modal-container').style.display = 'flex'
+        document.documentElement.classList.add('modal-open');
+        ieModal.show();
+      }</script><script src="/js/chunk-vendors.2c3fc849.js"></script><script src="/js/chunk-common.04254068.js"></script><script src="/js/esa.944dd55a.js"></script></body></html>

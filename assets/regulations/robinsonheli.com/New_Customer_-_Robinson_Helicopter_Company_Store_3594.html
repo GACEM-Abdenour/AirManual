@@ -1,0 +1,1301 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0,user-scalable=0"/>
+    <title>New Customer - Robinson Helicopter Company Store</title>
+
+    <script type="text/javascript">
+	
+    var appInsights=window.appInsights||function(a){
+        function b(a){c[a]=function(){var b=arguments;c.queue.push(function(){c[a].apply(c,b)})}}var c={config:a},d=document,e=window;setTimeout(function(){var b=d.createElement("script");b.src=a.url||"https://az416426.vo.msecnd.net/scripts/a/ai.0.js",d.getElementsByTagName("script")[0].parentNode.appendChild(b)});try{c.cookie=d.cookie}catch(a){}c.queue=[];for(var f=["Event","Exception","Metric","PageView","Trace","Dependency"];f.length;)b("track"+f.pop());if(b("setAuthenticatedUserContext"),b("clearAuthenticatedUserContext"),b("startTrackEvent"),b("stopTrackEvent"),b("startTrackPage"),b("stopTrackPage"),b("flush"),!a.disableExceptionTracking){f="onerror",b("_"+f);var g=e[f];e[f]=function(a,b,d,e,h){var i=g&&g(a,b,d,e,h);return!0!==i&&c["_"+f](a,b,d,e,h),i}}return c
+    }({
+        instrumentationKey: '93bab1a4-43d2-461b-ad58-fee2bd8724b5'
+    });
+
+    window.appInsights=appInsights,appInsights.queue&&0===appInsights.queue.length&&appInsights.trackPageView();
+	
+    </script>
+
+    
+
+
+    <link rel="stylesheet" title="Coggins" href="/css/theme-coggins.css" />
+    <link href="https://kendo.cdn.telerik.com/2020.3.915/styles/kendo.common-material.min.css" rel="stylesheet" type="text/css" />
+    <link href="https://kendo.cdn.telerik.com/2020.3.915/styles/kendo.mobile.all.min.css" rel="stylesheet" type="text/css" />
+    <link href="https://kendo.cdn.telerik.com/2020.3.915/styles/kendo.material.min.css" rel="stylesheet" type="text/css" />
+    <!-- Scrollbar Custom CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.min.css">
+
+    <script src="https://kendo.cdn.telerik.com/2020.3.915/js/jquery.min.js"></script>
+    <script src="https://kendo.cdn.telerik.com/2020.3.915/js/jszip.min.js"></script>
+    <script src="/lib/bootstrap/dist/js/bootstrap.js"></script>
+    <script src="https://kendo.cdn.telerik.com/2020.3.915/js/kendo.all.min.js"></script>
+    <script src="https://kendo.cdn.telerik.com/2020.3.915/js/kendo.aspnetmvc.min.js"></script>
+
+    <script src="/js/achilles.js?v=JgGkPnwCAfgRHOxJO3vHWfKcRv_iHY2oqSZoqLFr_CM"></script>
+    <script src="/js/site.js?v=WCW_3M3La-pY9S4q7fLVDrQiLWMzcashBdBXfuQJuFo"></script>
+    <!-- Popper.JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js" integrity="sha384-cs/chFZiN24E4KMATLdqdvsezGxaGsi4hLGOzlXwp5UZB1LY//20VyM2taTB4QvJ" crossorigin="anonymous"></script>
+    <!-- jQuery Custom Scroller CDN -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.concat.min.js"></script>
+    <script src="/lib/jquery-validation/dist/jquery.creditCardValidator.js"></script>
+    <!-- jQuery matchHeight-->
+    <script src="/lib/matchHeight/dist/jquery.matchHeight-min.js"></script>
+
+
+
+
+</head>
+<body>
+    
+<style type="text/css">
+    .bd-example-modal-lg .modal-dialog {
+        display: table;
+        position: relative;
+        margin: 0 auto;
+        top: calc(50% - 24px);
+    }
+
+    .bd-example-modal-lg .modal-dialog .modal-content {
+        background-color: transparent;
+        border: none;
+    }
+</style>
+
+<div id="modalLoader" class="modal fade bd-example-modal-lg" data-backdrop="static" data-keyboard="false" tabindex="-1">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content" style="width: 48px">
+            <span class="fa fa-spinner fa-spin fa-3x"></span>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    function isLoading(value) {
+        var $modal = $("#modalLoader");
+        if (value == true)
+            $modal.modal("show");
+        else
+            $modal.modal("hide");
+    }
+</script>
+    <div class="shipping-banner">
+        <p class="shipping-text">
+            <a target="_blank" href="https://www.robinsonheli.com/">Visit RobinsonHeli.com</a>
+            </p>
+
+
+    </div>
+
+    <div id="layoutHeaderWrap" class="hidden-xs">
+        <div class="container">
+
+    <div class="row">
+
+        <div class="col-md-6">
+
+            <a class="logo-site" style="background: url(/images/logo-main.svg ) no-repeat;" href="/">Robinson Helicopter Company Store</a>
+
+        </div>
+
+
+            <div class="col-md-6">                
+                <ul class="nav navbar-nav navbar-right navbar-user">
+    <li>
+        <div id="fancySearch">
+            <div class="box">
+                <form action="/Products/Search" method="post">
+                    <div class="container-2">
+                        <input type="text" id="search" name="searchText" placeholder="Search..." onchange="submit();" autocomplete="off" />
+                        <span class="icon"><i class="fa fa-search"></i></span>
+
+                    </div>
+                <input name="__RequestVerificationToken" type="hidden" value="CfDJ8F6p6RENyOlOouyPoSPZxlJVJTrtAyaprO0GmwAwzUeqhEnyabNV66u4aq6dI2Oi2j4hT_teTSnYWc5UX0UDzW8277Ku3GRMVc9OQ52EwaJ66jpFaslfsrsHQ-vTdBGbd3DJ3EVbm_O9GU7lHlSTyUs" /></form>
+            </div>
+
+        </div>
+    </li>
+
+
+        <li>
+    <a href="/Account/Login">
+        <div class="hidden-xs">
+            <span class="glyphicon glyphicon-user"></span> Login
+        </div>
+        <div class="visible-xs">
+            <div class="col-xs-12"><span class="glyphicon glyphicon-user"></span> Login</div>
+        </div>
+    </a>
+</li>
+    <li>
+        <a href="/Account/Login">
+            <div class="hidden-xs">
+                <span class="glyphicon glyphicon-heart"></span> My Wishlist
+            </div>
+            <div class="visible-xs">
+                <div class="col-xs-12"><span class="glyphicon glyphicon-heart"></span> My Wishlist</div>
+            </div>
+        </a>
+    </li>
+
+    <li class="dropdown cart-preview">
+        
+<a class="dropdown-toggle hidden-xs" href="/ShoppingCart/Cart">
+    <span class="glyphicon glyphicon-shopping-cart"></span> My Cart: <span class="badge label-success item-count">0</span>
+</a>
+<a class="button-mobile hidden-lg hidden-md hidden-sm" role="button" href="/ShoppingCart/Cart">
+        <span class="glyphicon glyphicon-shopping-cart"></span><span class="badge label-success item-count">0</span>
+</a>
+
+<ul id="cartToggle" class="dropdown-menu">
+    <li class="shopping-cart-popup">
+        <div class="shopping-cart-header">
+            <span class="shopping-cart-total">
+                Subtotal: <strong>$0.00</strong>
+            </span>
+        </div>
+        <div class="items-container">
+            <ul class="list-unstyled shopping-cart-items">
+
+            </ul>
+        </div>
+        <div>
+        </div>
+    </li>
+</ul>
+    </li>
+</ul>
+
+
+
+            </div>
+
+    </div>
+
+</div>
+    </div>
+
+    <nav id="sidebar" class="hidden-sm hidden-md hidden-lg">
+        
+<div class="sidebar-header">
+    <div class="row">
+        <div class="col-xs-12 dismiss-bar">
+            <div id="dismiss" >
+                <i class="fa light fa-times fa-2x" tabindex="0"></i>
+            </div>
+        </div>
+        <div class="col-xs-12 sign-in">
+            <ul class="nav navbar-nav navbar-right navbar-user">
+                    <li>
+    <a href="/Account/Login">
+        <div class="hidden-xs">
+            <span class="glyphicon glyphicon-user"></span> Login
+        </div>
+        <div class="visible-xs">
+            <div class="col-xs-12"><span class="glyphicon glyphicon-user"></span> Login</div>
+        </div>
+    </a>
+</li>
+    <li>
+        <a href="/Account/Login">
+            <div class="hidden-xs">
+                <span class="glyphicon glyphicon-heart"></span> My Wishlist
+            </div>
+            <div class="visible-xs">
+                <div class="col-xs-12"><span class="glyphicon glyphicon-heart"></span> My Wishlist</div>
+            </div>
+        </a>
+    </li>
+
+            </ul>
+        </div>
+
+    </div>
+</div>
+<ul class="nav navbar-nav  mr-auto">
+
+    <li class="dropdown">
+        <!-- <a asp-area="" asp-controller="Products" asp-action="ProductGrid" asp-route-id="Apparel" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">-->
+        <a  class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+            <div class="col-xs-10">
+                Apparel
+            </div>
+            <div class="col-xs-2 arrow-dropdown">
+                <i class="fa fa-angle-down"></i>
+            </div>
+        </a>
+        <ul class="dropdown-menu">
+                    <li class="sub-category">
+                        <a href="/Products/ProductGrid/mnsapparel">Men&#x27;s</a>
+                    </li>
+                    <li class="sub-category">
+                        <a href="/Products/ProductGrid/wmnsappare">Women&#x27;s</a>
+                    </li>
+        </ul>
+    </li>
+            <li>
+                <a href="/Products/ProductGrid/headwear">
+                    <div class="col-xs-12">
+                        Headwear
+                    </div>
+                </a>    
+            </li>
+            <li>
+                <a href="/Products/ProductGrid/bags">
+                    <div class="col-xs-12">
+                        Bags
+                    </div>
+                </a>    
+            </li>
+            <li>
+                <a href="/Products/ProductGrid/accessory">
+                    <div class="col-xs-12">
+                        Accessories
+                    </div>
+                </a>    
+            </li>
+            <li>
+                <a href="/Products/ProductGrid/drinkware">
+                    <div class="col-xs-12">
+                        Drinkware
+                    </div>
+                </a>    
+            </li>
+            <li>
+                <a href="/Products/ProductGrid/youth">
+                    <div class="col-xs-12">
+                        Youth
+                    </div>
+                </a>    
+            </li>
+
+</ul>
+<script>
+    $('.dropdown-toggle').click(function () {
+        $(this).find('i').toggleClass('fa fa-angle-down').toggleClass('fa fa-angle-up');
+    });
+
+</script>
+    </nav>
+
+    <div class="overlay"></div>
+
+    <div id="layoutNavMainWrap" data-spy="affix" data-offset-top="110">
+
+        
+
+
+
+<nav class="navbar navbar-default navbar-expand-lg hidden-sm hidden-md hidden-lg">
+    <div class="container">
+        <div class="navbar-header sticky">
+            <div class="fixed-logo-mobile">
+                <a class="logo-site" href="/"><img class="fixed-logo-image" src="/images/logo-main.svg" alt="Coggins Logo" /></a>
+            </div>
+            <div class="new-navbar-mobile">
+                <div class="burger-menu">
+                    <button type="button" class="navbar-toggle hamburger-toggle" id="sidebarCollapse">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="fa fa-align-justify fa-2x"></span>
+                    </button>
+                </div>
+                <div class="hidden-sm hidden-md hidden-lg navbar-toggle text-center">
+                    <a href="#" data-toggle="modal" data-target="#myModal" class="clickable"><span class="fa fa-search fa-2x"></span></a>
+                </div>
+                <div class="hidden-sm hidden-md hidden-lg  navbar-toggle text-center">
+                    <a href="/Account/Settings"><span class="fa fa-user-circle-o fa-2x"></span></a>
+                </div>
+                    <div class="hidden-sm hidden-md hidden-lg  navbar-toggle text-center">
+                        
+<a class="hidden-lg hidden-md hidden-sm" role="button" href="/Account/WishList">
+    <span class="fa fa-heart fa-2x"></span></a>
+<a class="hidden-xs" role="button" aria-haspopup="true" aria-expanded="false" href="/Account/WishList">
+    <span class="glyphicon glyphicon-heart"></span> My Wishlist </a>
+                    </div>
+                <div class="hidden-sm hidden-md hidden-lg navbar-toggle text-center header-cart">
+                    
+<a class="dropdown-toggle hidden-xs" href="/ShoppingCart/Cart">
+    <span class="glyphicon glyphicon-shopping-cart"></span> My Cart: <span class="badge label-success item-count">0</span>
+</a>
+<a class="button-mobile hidden-lg hidden-md hidden-sm" role="button" href="/ShoppingCart/Cart">
+        <span class="glyphicon glyphicon-shopping-cart"></span><span class="badge label-success item-count">0</span>
+</a>
+
+<ul id="cartToggle" class="dropdown-menu">
+    <li class="shopping-cart-popup">
+        <div class="shopping-cart-header">
+            <span class="shopping-cart-total">
+                Subtotal: <strong>$0.00</strong>
+            </span>
+        </div>
+        <div class="items-container">
+            <ul class="list-unstyled shopping-cart-items">
+
+            </ul>
+        </div>
+        <div>
+        </div>
+    </li>
+</ul>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+</nav>
+
+<script>
+
+    $(function () {
+        var wishlist = true ;
+
+        if (wishlist == false) {
+            console.log("false")
+            //$(".sticky .col-xs-2").css("width", "20%");
+        };
+
+    });
+
+</script>
+
+<!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel"><span class="icon"><i class="fa fa-search"></i></span> Submit</h4>
+            </div>
+            <form action="/Products/Search" method="post">
+                <div class="modal-body">
+
+                    <input type="text" class="form-control" id="prdsearch" name="searchText" placeholder="Search..." onchange="submit();" autocomplete="off" />
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-success" data-dismiss="modal">Submit</button>
+                </div>
+            <input name="__RequestVerificationToken" type="hidden" value="CfDJ8F6p6RENyOlOouyPoSPZxlJVJTrtAyaprO0GmwAwzUeqhEnyabNV66u4aq6dI2Oi2j4hT_teTSnYWc5UX0UDzW8277Ku3GRMVc9OQ52EwaJ66jpFaslfsrsHQ-vTdBGbd3DJ3EVbm_O9GU7lHlSTyUs" /></form>
+        </div>
+    </div>
+</div>
+
+    </div>
+
+    <div id="layoutBodyWrap">
+        <div class="shipping-banner-two">
+            <p class="shipping-text">
+                <a target="_blank" href="https://www.robinsonheli.com/">Visit RobinsonHeli.com</a>
+            </p>
+
+        </div>
+        
+
+
+<input data-val="true" data-val-required="The IsUsingSSO field is required." id="NewLogin_IsUsingSSO" name="NewLogin.IsUsingSSO" type="hidden" value="False" />
+
+
+<div id="newRegister">
+    <div class="container">
+        <div class="col-md-12">
+            <form method="post" autocomplete="off" action="/Account/NewCustomer">
+                <input type="hidden" value="False" data-val="true" data-val-required="The ForwardToShipping field is required." id="ForwardToShipping" name="ForwardToShipping" />
+                <input type="hidden" value="" id="ReturnUrl" name="ReturnUrl" />
+                <div class="col-md-8">
+                    <h2 class="h2 page-header">New Customer</h2>
+
+                    <div class="form-horizontal">
+                        
+
+<div class="form-horizontal">
+    <div class="text-danger validation-summary-valid" data-valmsg-summary="true"><ul><li style="display:none"></li>
+</ul></div>
+
+    <div class="form-group">
+        <div class="col-md-1 no-padder">
+            <span class="text-danger">*</span>
+        </div>
+        <div class="col-sm-9">
+                <input id="inputEmail4" type="email" class="form-control" autocomplete="off" data-val="true" data-val-email="The Email field is not a valid e-mail address." data-val-required="The Email field is required." name="NewLogin.Email" value="">
+            <label for="inputEmail4" class="col-sm-12 control-label">Email</label>
+
+        </div>
+    </div>
+ <div class="form-group">
+<div class="col-md-1 no-padder">
+<span class="text-danger">*</span>
+</div>
+<div class="col-sm-9">
+<input id="inputPassword4" type="password" class="form-control" autocomplete="off" data-val="true" data-val-required="The Password field is required." name="NewLogin.Password">
+<label for="inputPassword4" class="col-sm-12 control-label">Password</label>
+
+
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-1 no-padder">
+                <span class="text-danger">*</span>
+            </div>
+            <div class="col-sm-9">
+                <input id="inputConfirmPassword4" type="password" class="form-control" autocomplete="off" data-val="true" data-val-required="The ConfirmPassword field is required." name="NewLogin.ConfirmPassword">
+                <label for="inputConfirmPassword4" class="col-sm-12 control-label">Confirm Password</label>
+
+
+            </div>
+        </div>
+
+</div>
+
+<script>
+
+    (function ($) {
+        'use strict';
+
+        $.fn.floatingLabel = function (option) {
+            var parent = $(this).closest('.form-group');
+
+            if (parent.length) {
+                switch (option) {
+                    case 'focusin':
+                        $(this).closest('.form-group').addClass('control-focus');
+                        break;
+                    case 'focusout':
+                        $(this).closest('.form-group').removeClass('control-focus');
+                        break;
+                    case 'ChangeFortText':
+                        if (this.val()) {
+                            parent.addClass('control-highlight');
+                        }
+                        else {
+                            parent.removeClass('control-highlight');
+                        }
+                        break;
+                    default:
+                        $(this).closest('.form-group').addClass('control-highlight');
+                        break;
+                }
+            }
+
+            return this;
+        };
+    }($));
+
+    $(document).ready(function () {
+        'use strict';
+        $(document).on('change', function () {
+            $('.form-group .form-control').each(function () {
+                $(this).floatingLabel('ChangeFortText');
+            });
+        });
+
+        $('.form-group .form-control').each(function () {
+            $(this).floatingLabel('ChangeFortText');
+        });
+
+        $(document).on('change', '.form-group .form-control', function () {
+            $(this).floatingLabel('ChangeFortText');
+        });
+
+        $(document).on('focusin', '.form-group .form-control', function () {
+            $(this).floatingLabel('focusin');
+        });
+
+        $(document).on('focusout', '.form-group .form-control', function () {
+            $(this).floatingLabel('focusout');
+        });
+
+    });
+
+</script>
+                        <hr />
+                        
+
+<div>
+    <div class="form-group">
+        <div class="col-md-1 no-padder">
+            <span class="text-danger">*</span>
+        </div>
+        <div class="col-md-9">
+            <select class="form-control country-check" data-val="true" data-val-required="The CountryName field is required." id="ShippingAddress_CountryName" name="ShippingAddress.CountryName">
+                <option value="" selected>SELECT COUNTRY</option>
+            <option value="ALBANIA">ALBANIA</option>
+<option value="ALGERIA">ALGERIA</option>
+<option value="ANDORRA">ANDORRA</option>
+<option value="ANGOLA">ANGOLA</option>
+<option value="ANGUILLA">ANGUILLA</option>
+<option value="ANTIGUA">ANTIGUA</option>
+<option value="ARGENTINA">ARGENTINA</option>
+<option value="ARMENIA">ARMENIA</option>
+<option value="ARUBA">ARUBA</option>
+<option value="ASCENSION">ASCENSION</option>
+<option value="AUSTRALIA">AUSTRALIA</option>
+<option value="AUSTRIA">AUSTRIA</option>
+<option value="AZERBAIJAN">AZERBAIJAN</option>
+<option value="AZORES">AZORES</option>
+<option value="BAHAMAS">BAHAMAS</option>
+<option value="BAHRAIN">BAHRAIN</option>
+<option value="BAHRAINS">BAHRAINS</option>
+<option value="BANGLADESH">BANGLADESH</option>
+<option value="BARBADOS">BARBADOS</option>
+<option value="BARBUDA">BARBUDA</option>
+<option value="BELGIUM">BELGIUM</option>
+<option value="BELIZE">BELIZE</option>
+<option value="BENIN">BENIN</option>
+<option value="BERMUDA">BERMUDA</option>
+<option value="BHUTAN">BHUTAN</option>
+<option value="BOLIVIA">BOLIVIA</option>
+<option value="BOSNIA &amp; HERZEGOVINA">BOSNIA &amp; HERZEGOVINA</option>
+<option value="BOTSWANA">BOTSWANA</option>
+<option value="BRAZIL">BRAZIL</option>
+<option value="BRITISH VIRGIN IS">BRITISH VIRGIN IS</option>
+<option value="BRUNEI">BRUNEI</option>
+<option value="BULGARIA">BULGARIA</option>
+<option value="BURKINA FASO">BURKINA FASO</option>
+<option value="BURUNDI">BURUNDI</option>
+<option value="CAMEROON">CAMEROON</option>
+<option value="CAMEROUN">CAMEROUN</option>
+<option value="CANADA">CANADA</option>
+<option value="CANARY ISLANDS">CANARY ISLANDS</option>
+<option value="CAPE VERDE">CAPE VERDE</option>
+<option value="CAYMAN ISLANDS">CAYMAN ISLANDS</option>
+<option value="CHAD">CHAD</option>
+<option value="CHANNEL ISLANDS, UK">CHANNEL ISLANDS, UK</option>
+<option value="CHILE">CHILE</option>
+<option value="CHINA">CHINA</option>
+<option value="COLOMBIA">COLOMBIA</option>
+<option value="CONGO">CONGO</option>
+<option value="COOK ISLANDS">COOK ISLANDS</option>
+<option value="CORSICA">CORSICA</option>
+<option value="COSTA RICA">COSTA RICA</option>
+<option value="COTE DIVOIRE ">COTE DIVOIRE </option>
+<option value="CROATIA">CROATIA</option>
+<option value="CURACAO">CURACAO</option>
+<option value="CYPRUS">CYPRUS</option>
+<option value="CZECH REPUBLIC">CZECH REPUBLIC</option>
+<option value="CZECHIA">CZECHIA</option>
+<option value="DEM REP OF CONGO">DEM REP OF CONGO</option>
+<option value="DENMARK">DENMARK</option>
+<option value="DJIBOUTI">DJIBOUTI</option>
+<option value="DOMINICA">DOMINICA</option>
+<option value="DOMINICAN REP">DOMINICAN REP</option>
+<option value="EAST TIMOR">EAST TIMOR</option>
+<option value="ECUADOR">ECUADOR</option>
+<option value="EGYPT">EGYPT</option>
+<option value="EL SALVADOR">EL SALVADOR</option>
+<option value="ENGLAND">ENGLAND</option>
+<option value="EQUATORIAL GUINEA">EQUATORIAL GUINEA</option>
+<option value="ESTONIA">ESTONIA</option>
+<option value="ETHIOPIA">ETHIOPIA</option>
+<option value="FAROE IS">FAROE IS</option>
+<option value="FED REP OF GERMANY">FED REP OF GERMANY</option>
+<option value="FIJI">FIJI</option>
+<option value="FINLAND">FINLAND</option>
+<option value="FRANCE">FRANCE</option>
+<option value="FRENCH GUIANA">FRENCH GUIANA</option>
+<option value="FRENCH POLYNESIA">FRENCH POLYNESIA</option>
+<option value="GABON">GABON</option>
+<option value="GAMBIA">GAMBIA</option>
+<option value="GEORGIA">GEORGIA</option>
+<option value="GERMANY">GERMANY</option>
+<option value="GHANA">GHANA</option>
+<option value="GIBRALTAR">GIBRALTAR</option>
+<option value="GREECE">GREECE</option>
+<option value="GREENLAND">GREENLAND</option>
+<option value="GRENADA">GRENADA</option>
+<option value="GUADELOUPE">GUADELOUPE</option>
+<option value="GUAM">GUAM</option>
+<option value="GUATEMALA">GUATEMALA</option>
+<option value="GUINEA">GUINEA</option>
+<option value="GUYANA">GUYANA</option>
+<option value="HAITI">HAITI</option>
+<option value="HOLLAND">HOLLAND</option>
+<option value="HONDURAS">HONDURAS</option>
+<option value="HONG KONG">HONG KONG</option>
+<option value="HUNGARY">HUNGARY</option>
+<option value="ICELAND">ICELAND</option>
+<option value="INDIA">INDIA</option>
+<option value="INDONESIA">INDONESIA</option>
+<option value="IRAQ">IRAQ</option>
+<option value="IRELAND">IRELAND</option>
+<option value="ISRAEL">ISRAEL</option>
+<option value="ITALY">ITALY</option>
+<option value="JAMAICA">JAMAICA</option>
+<option value="JAPAN">JAPAN</option>
+<option value="JORDAN">JORDAN</option>
+<option value="KAMPUCHEA">KAMPUCHEA</option>
+<option value="KAZAKHSTAN">KAZAKHSTAN</option>
+<option value="KENYA">KENYA</option>
+<option value="KOREA, SOUTH">KOREA, SOUTH</option>
+<option value="KUWAIT">KUWAIT</option>
+<option value="LAOS">LAOS</option>
+<option value="LATVIA">LATVIA</option>
+<option value="LESOTHO">LESOTHO</option>
+<option value="LIBERIA">LIBERIA</option>
+<option value="LIECHTENSTEIN">LIECHTENSTEIN</option>
+<option value="LITHUANIA">LITHUANIA</option>
+<option value="LUXEMBOURG">LUXEMBOURG</option>
+<option value="MACAO">MACAO</option>
+<option value="MACEDONIA">MACEDONIA</option>
+<option value="MADAGASCAR">MADAGASCAR</option>
+<option value="MADERIA ISLANDS">MADERIA ISLANDS</option>
+<option value="MALAWI">MALAWI</option>
+<option value="MALAYSIA">MALAYSIA</option>
+<option value="MALDIVES">MALDIVES</option>
+<option value="MALI">MALI</option>
+<option value="MALTA">MALTA</option>
+<option value="MARSHALL ISLANDS">MARSHALL ISLANDS</option>
+<option value="MARTINIQUE">MARTINIQUE</option>
+<option value="MAURITANIA">MAURITANIA</option>
+<option value="MAURITIUS">MAURITIUS</option>
+<option value="MEXICO">MEXICO</option>
+<option value="MOLDAVIA">MOLDAVIA</option>
+<option value="MOLDOVA">MOLDOVA</option>
+<option value="MONACO">MONACO</option>
+<option value="MONGOLIA">MONGOLIA</option>
+<option value="MONTSERRAT">MONTSERRAT</option>
+<option value="MOROCCO">MOROCCO</option>
+<option value="MOZAMBIQUE">MOZAMBIQUE</option>
+<option value="NAMIBIA">NAMIBIA</option>
+<option value="NEPAL">NEPAL</option>
+<option value="NETHERLANDS">NETHERLANDS</option>
+<option value="NEW CALEDONIA">NEW CALEDONIA</option>
+<option value="NEW ZEALAND">NEW ZEALAND</option>
+<option value="NICARAGUA">NICARAGUA</option>
+<option value="NIGER">NIGER</option>
+<option value="NIGERIA">NIGERIA</option>
+<option value="NORTHERN IRELAND">NORTHERN IRELAND</option>
+<option value="NORWAY">NORWAY</option>
+<option value="OKINAWA">OKINAWA</option>
+<option value="OMAN">OMAN</option>
+<option value="OTHER">OTHER</option>
+<option value="PAKISTAN">PAKISTAN</option>
+<option value="PANAMA">PANAMA</option>
+<option value="PAPUA NEW GUINEA">PAPUA NEW GUINEA</option>
+<option value="PARAGUAY">PARAGUAY</option>
+<option value="PERU">PERU</option>
+<option value="PHILIPPINES">PHILIPPINES</option>
+<option value="PITCAIRN ISLANDS">PITCAIRN ISLANDS</option>
+<option value="POLAND">POLAND</option>
+<option value="PORTUGAL">PORTUGAL</option>
+<option value="PUERTO RICO">PUERTO RICO</option>
+<option value="QATAR">QATAR</option>
+<option value="REUNION">REUNION</option>
+<option value="ROMANIA">ROMANIA</option>
+<option value="RUSSIA">RUSSIA</option>
+<option value="RWANDA">RWANDA</option>
+<option value="SAUDI ARABIA">SAUDI ARABIA</option>
+<option value="SCOTLAND">SCOTLAND</option>
+<option value="SENEGAL">SENEGAL</option>
+<option value="SERBIA">SERBIA</option>
+<option value="SEYCHELLES">SEYCHELLES</option>
+<option value="SINGAPORE">SINGAPORE</option>
+<option value="SLOVAKIA">SLOVAKIA</option>
+<option value="SLOVENIA">SLOVENIA</option>
+<option value="SOUTH AFRICA">SOUTH AFRICA</option>
+<option value="SPAIN">SPAIN</option>
+<option value="SRI LANKA">SRI LANKA</option>
+<option value="ST CHRISTOPHER/NEVIS">ST CHRISTOPHER/NEVIS</option>
+<option value="ST VINCENT/GRENADINE">ST VINCENT/GRENADINE</option>
+<option value="ST. KITTS AND NEVIS">ST. KITTS AND NEVIS</option>
+<option value="ST. LUCIA">ST. LUCIA</option>
+<option value="SURINAM">SURINAM</option>
+<option value="SWAZILAND">SWAZILAND</option>
+<option value="SWEDEN">SWEDEN</option>
+<option value="SWITZERLAND">SWITZERLAND</option>
+<option value="TAHITI">TAHITI</option>
+<option value="TAIWAN">TAIWAN</option>
+<option value="TANZANIA">TANZANIA</option>
+<option value="THAILAND">THAILAND</option>
+<option value="TOGO">TOGO</option>
+<option value="TONGA">TONGA</option>
+<option value="TRINIDAD &amp; TOBAGO">TRINIDAD &amp; TOBAGO</option>
+<option value="TRISTAN DA CUNHA">TRISTAN DA CUNHA</option>
+<option value="TUNISIA">TUNISIA</option>
+<option value="TURKEY">TURKEY</option>
+<option value="TURKS &amp; CAICOS IS">TURKS &amp; CAICOS IS</option>
+<option value="UGANDA">UGANDA</option>
+<option value="UKRAINE">UKRAINE</option>
+<option value="UNITED ARAB EMIRATES">UNITED ARAB EMIRATES</option>
+<option value="UNITED KINGDOM">UNITED KINGDOM</option>
+<option value="URUGUAY">URUGUAY</option>
+<option selected="selected" value="UNITED STATES OF AMERICA">UNITED STATES OF AMERICA</option>
+<option value="UZBEKISTAN">UZBEKISTAN</option>
+<option value="VANUATU">VANUATU</option>
+<option value="VATICAN CITY">VATICAN CITY</option>
+<option value="VENEZUELA">VENEZUELA</option>
+<option value="VIETNAM">VIETNAM</option>
+<option value="WALES">WALES</option>
+<option value="WALLIS &amp; FUTUNA IS.">WALLIS &amp; FUTUNA IS.</option>
+<option value="WESTERN SAMOA">WESTERN SAMOA</option>
+<option value="YUGOSLAVIA">YUGOSLAVIA</option>
+<option value="ZAMBIA">ZAMBIA</option>
+<option value="ZIMBABWE">ZIMBABWE</option>
+</select>
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-md-1 no-padder">
+            <span class="text-danger">*</span>
+        </div>
+        <div class="col-md-9">
+            <input id="name" class="form-control" autocomplete="chrome-off" type="text" data-val="true" data-val-length="The name must be less than 35 characters." data-val-length-max="35" data-val-required="The Name field is required." maxlength="35" name="ShippingAddress.Name" value="" />
+            <label for="name" class="col-sm-12 control-label">Name</label>
+        </div>
+        <div class="col-md-2"></div>
+    </div>
+    <div class="form-group">
+        <div class="col-md-1 no-padder">
+            <span class="text-danger"></span>
+        </div>
+        <div class="col-md-9">
+            <input id="attention" class="form-control" autocomplete="chrome-off" type="text" data-val="true" data-val-length="The attention must be less than 35 characters." data-val-length-max="35" maxlength="35" name="ShippingAddress.Attention" value="" />
+            <label for="attetion" class="col-sm-12 control-label">Attention</label>
+
+        </div>
+        <div class="col-md-2"></div>
+    </div>
+    <div class="form-group give-focus">
+        <div class="col-md-1 no-padder">
+            <span class="text-danger">*</span>
+        </div>
+        <div class="col-md-9">
+            <input autocomplete="chrome-off" autocorrect="off" spellcheck="false" id="street" class="form-control" tabindex="0" type="text" data-val="true" data-val-length="The street must be less than 35 characters." data-val-length-max="35" data-val-required="The Street field is required." maxlength="35" name="ShippingAddress.Street" value="" />
+            <label for="street" class="col-sm-12 control-label">Street</label>
+            <div class="streets-field-container noshow-street-results">
+                <ul class="streets-list">
+                </ul>
+            </div>
+        </div>
+        <div class="col-md-2"></div>
+    </div>
+    <div class="form-group">
+        <div class="col-md-1 no-padder">
+            <span class="text-danger"></span>
+        </div>
+        <div class="col-md-9">
+            <input id="deliverto" class="form-control" autocomplete="chrome-off" type="text" data-val="true" data-val-length="The Suite/Dept/Other must be less than 35 characters." data-val-length-max="35" maxlength="35" name="ShippingAddress.DeliverTo" value="" />
+            <label for="deliverto" class="col-sm-12 control-label">Suite / Apt / Other</label>
+        </div>
+        <div class="col-md-2"></div>
+    </div>
+    <div class="form-group give-focus">
+        <div class="col-md-1 no-padder">
+            <span class="text-danger">*</span>
+        </div>
+        <div class="col-md-5 city-margin">
+            <input id="city" class="form-control" autocomplete="chrome-off" type="text" data-val="true" data-val-length="The city must be less than 35 characters." data-val-length-max="35" data-val-required="The City field is required." maxlength="35" name="ShippingAddress.City" value="" />
+            <label for="city" class="col-sm-6 control-label">City</label>
+
+        </div>
+        <div class="col-md-1 no-padder left-zero">
+            <span id="statesLabel" class="text-danger state-danger">*</span>
+        </div>
+        <div class="col-md-4 state-inp-mobile">
+            <select id="state" class="form-select" name="ShippingAddress.StateName">
+                <option>Select State</option>
+            <option value="  ">  </option>
+<option value="AA APO/FPO">AA APO/FPO</option>
+<option value="AE APO/FPO">AE APO/FPO</option>
+<option value="Alabama">Alabama</option>
+<option value="Alaska">Alaska</option>
+<option value="AP APO/FPO">AP APO/FPO</option>
+<option value="Arizona">Arizona</option>
+<option value="Arkansas">Arkansas</option>
+<option value="AS Pago Pago">AS Pago Pago</option>
+<option value="California">California</option>
+<option value="Colorado">Colorado</option>
+<option value="Connecticut">Connecticut</option>
+<option value="DC">DC</option>
+<option value="Delaware">Delaware</option>
+<option value="Fed. St. of Micro">Fed. St. of Micro</option>
+<option value="Florida">Florida</option>
+<option value="Georgia">Georgia</option>
+<option value="Guam">Guam</option>
+<option value="Hawaii">Hawaii</option>
+<option value="Idaho">Idaho</option>
+<option value="Illinois">Illinois</option>
+<option value="Indiana">Indiana</option>
+<option value="Iowa">Iowa</option>
+<option value="Kansas">Kansas</option>
+<option value="Kentucky">Kentucky</option>
+<option value="Louisiana">Louisiana</option>
+<option value="Maine">Maine</option>
+<option value="Marshall Island">Marshall Island</option>
+<option value="Maryland">Maryland</option>
+<option value="Massachusetts">Massachusetts</option>
+<option value="Michigan">Michigan</option>
+<option value="Minnesota">Minnesota</option>
+<option value="Mississippi">Mississippi</option>
+<option value="Missouri">Missouri</option>
+<option value="Montana">Montana</option>
+<option value="N. Mariana Islands">N. Mariana Islands</option>
+<option value="Nebraska">Nebraska</option>
+<option value="Nevada">Nevada</option>
+<option value="New Hampshire">New Hampshire</option>
+<option value="New Jersey">New Jersey</option>
+<option value="New Mexico">New Mexico</option>
+<option value="New York">New York</option>
+<option value="North Carolina">North Carolina</option>
+<option value="North Dakota">North Dakota</option>
+<option value="Ohio">Ohio</option>
+<option value="Oklahoma">Oklahoma</option>
+<option value="Oregon">Oregon</option>
+<option value="Palau">Palau</option>
+<option value="Pennsylvania">Pennsylvania</option>
+<option value="Rhode Island">Rhode Island</option>
+<option value="South Carolina">South Carolina</option>
+<option value="South Dakota">South Dakota</option>
+<option value="Tennessee">Tennessee</option>
+<option value="Texas">Texas</option>
+<option value="Utah">Utah</option>
+<option value="Vermont">Vermont</option>
+<option value="Virgin Islands">Virgin Islands</option>
+<option value="Virginia">Virginia</option>
+<option value="Washington">Washington</option>
+<option value="West Virginia">West Virginia</option>
+<option value="Wisconsin">Wisconsin</option>
+<option value="Wyoming">Wyoming</option>
+</select>
+        </div>
+        <div class="col-md-1"></div>
+    </div>
+    <div class="form-group give-focus">
+        <div class="col-md-1 no-padder">
+            <span class="text-danger">*</span>
+        </div>
+        <div class="col-md-9">
+            <input id="zipcode" class="form-control" autocomplete="chrome-off" type="text" data-val="true" data-val-required="The ZipCode field is required." name="ShippingAddress.ZipCode" value="" />
+            <label for="zipcode" class="col-sm-12 control-label">Zip Code / Postal Code</label>
+
+        </div>
+        <div class="col-md-2"></div>
+    </div>
+    <div class="form-group">
+        <div class="col-md-1 no-padder">
+            <span class="text-danger">*</span>
+        </div>
+        <div class="col-md-9">
+            <input id="phone" class="form-control" autocomplete="chrome-off" type="text" data-val="true" data-val-required="The Phone field is required." name="ShippingAddress.Phone" value="" />
+            <label for="phone" class="col-sm-12 control-label">Phone</label>
+
+        </div>
+        <div class="col-md-2"></div>
+    </div>
+</div>
+
+<script type="text/javascript">
+
+
+    //On input keydown remove google chromes autocomplete
+    $("input").keydown(() => {
+        $('form').attr('autocomplete', 'chrome-off');
+        $('input').attr('autocomplete', 'chrome-off');
+    })
+
+    //Creating our variable to store our length of address list
+    let listNum;
+
+    function AutoComplete() {
+        $('form').attr('autocomplete', 'chrome-off');
+        $('input').attr('autocomplete', 'chrome-off');
+        var listNum;
+        var searchString = $("#street").val();
+
+        //If our address list length is greater than 10 or is not yet defined or street input value is empty or list address list length is equal to 0 run SmartyStreets ajax call
+        if (listNum >= 10 || typeof listNum === "undefined" || searchString === "" || listNum === 0) {
+            console.log("running", listNum, typeof listNum)
+            $.ajax({
+                type: "GET",
+                dataType: "JSON",
+                url: "GetAutocompleteOptions",
+                data: {
+                    streetSearch: searchString
+                },
+                success: function (result) {
+                    //Creating an empty array to store our results
+                    let addressArr = [];
+
+                    //Looping through our results and adding them to our empty array
+                    $.each(result, function (i, item) {
+                        addressArr.push(result[i].Street + " " + result[i].City + ", " + result[i].StateName + " " + result[i].ZipCode);
+                    });
+
+                    //Setting our arrays length to a variable
+                    listNum = addressArr.length;
+                    //If our arrays length is greater than 0 then show all our SmartyStreet address options
+                    if (listNum > 0) {
+                        $(".streets-field-container").removeClass("noshow-street-results")
+                    }
+                    //If our array length is less than 0 remove the container showing SmartyStreet address options
+                    else {
+                        $(".streets-field-container").addClass("noshow-street-results")
+                    }
+
+                    //Creating our html list of address options using our array
+                    $(".streets-list").html(`${addressArr.map((item) => {
+                        return `<li class="street-item" tabindex="0">${item}</li>`;
+                    }).join("")}`)
+
+
+                    const chooseAddress = (e) => {
+                        e.preventDefault();
+                        //Object created for our state select option since we need the full state name
+                        let statesObj = {
+                            "AL": "Alabama",
+                            "AK": "Alaska",
+                            "AS": "American Samoa",
+                            "AZ": "Arizona",
+                            "AR": "Arkansas",
+                            "CA": "California",
+                            "CO": "Colorado",
+                            "CT": "Connecticut",
+                            "DE": "Delaware",
+                            "DC": "District Of Columbia",
+                            "FM": "Federated States Of Micronesia",
+                            "FL": "Florida",
+                            "GA": "Georgia",
+                            "GU": "Guam",
+                            "HI": "Hawaii",
+                            "ID": "Idaho",
+                            "IL": "Illinois",
+                            "IN": "Indiana",
+                            "IA": "Iowa",
+                            "KS": "Kansas",
+                            "KY": "Kentucky",
+                            "LA": "Louisiana",
+                            "ME": "Maine",
+                            "MH": "Marshall Islands",
+                            "MD": "Maryland",
+                            "MA": "Massachusetts",
+                            "MI": "Michigan",
+                            "MN": "Minnesota",
+                            "MS": "Mississippi",
+                            "MO": "Missouri",
+                            "MT": "Montana",
+                            "NE": "Nebraska",
+                            "NV": "Nevada",
+                            "NH": "New Hampshire",
+                            "NJ": "New Jersey",
+                            "NM": "New Mexico",
+                            "NY": "New York",
+                            "NC": "North Carolina",
+                            "ND": "North Dakota",
+                            "MP": "Northern Mariana Islands",
+                            "OH": "Ohio",
+                            "OK": "Oklahoma",
+                            "OR": "Oregon",
+                            "PW": "Palau",
+                            "PA": "Pennsylvania",
+                            "PR": "Puerto Rico",
+                            "RI": "Rhode Island",
+                            "SC": "South Carolina",
+                            "SD": "South Dakota",
+                            "TN": "Tennessee",
+                            "TX": "Texas",
+                            "UT": "Utah",
+                            "VT": "Vermont",
+                            "VI": "Virgin Islands",
+                            "VA": "Virginia",
+                            "WA": "Washington",
+                            "WV": "West Virginia",
+                            "WI": "Wisconsin",
+                            "WY": "Wyoming"
+                        }
+
+                        //Setting our clicked item to a variable
+                        let selectedAddress = e.target.innerHTML;
+
+                        for (let i = 0; i < addressArr.length; i++) {
+                            //If our selected address matches one of the array items
+                            if (selectedAddress === addressArr[i]) {
+                                //Autofilling our Street/City/ZipCode input fields
+                                $("#street").val(result[i].Street)
+                                $("#city").val(result[i].City)
+                                $("#zipcode").val(result[i].ZipCode);
+
+                                //Getting our full state name from our states object
+                                let selState = statesObj[`${result[i].StateName}`]
+                                console.log(selState)
+                                //Deselecting state before selecting new option
+                                $('option:selected', 'select[id="state"]').removeAttr('selected');
+                                //Using the value to select address state
+                                setTimeout(() => {
+                                    $('select[id="state"]').find(`option[value='${selState}']`).attr("selected", true);
+                                }, 500)
+
+                                $("#state").val(selState)
+
+                                //Correctly positioning our label when we fill in our input fields
+                                $(".give-focus").addClass("control-focus");
+                                $(".give-focus").addClass("control-highlight");
+
+                                //Removing our address options & address fields focus
+                                $(".streets-field-container").addClass("noshow-street-results")
+                                $(':focus').blur()
+
+                                //Giving focus to the attention field
+                                $("#phone").focus();
+                            }
+
+                        }
+                    }
+
+
+                    //function for selecting an address from the given SmartyStreets options
+                    $(".street-item").on("click", chooseAddress)
+                    $(".street-item").keydown((e) => {
+                        if (e.keyCode === 13 || e.which === 13) {
+                            chooseAddress(e)
+                        }
+                    })
+                },
+
+            });
+        }
+        else {
+            console.log("not running", listNum)
+        }
+    };
+
+    //Our function to fire SmartyStreets Address AutoComplete (fires when typing into our street input field after 1ms)
+    $("input#street").keydown((e) => {
+        if ($(".country-check").val() === "UNITED STATES OF AMERICA" && e.keyCode !== 9 || $(".country-check").val() === "UNITED STATES OF AMERICA" && e.which !== 9) {
+            setTimeout(() => {
+                AutoComplete();
+            }, 100)
+        }
+    })
+
+
+    $(document).click(() => {
+        if ($("input#street").focusout && $(".street-item").focusout) {
+            $(".streets-field-container").addClass("noshow-street-results");
+        }
+    })
+
+
+
+
+
+
+
+    function CheckStates() {
+
+            if ($("#state option").length > 2) {
+                var leng = $("#state option").length;
+                $("#state").show();
+                $("#statesLabel").show();
+            }
+            else {
+                var leng = $("#state option").length;
+                $("#state").hide();
+                $("#statesLabel").hide();
+            }
+    }
+
+
+    (function ($) {
+        'use strict';
+
+        $.fn.floatingLabel = function (option) {
+            var parent = $(this).closest('.form-group');
+
+            if (parent.length) {
+                switch (option) {
+                    case 'focusin':
+                        $(this).closest('.form-group').addClass('control-focus');
+                        break;
+                    case 'focusout':
+                        $(this).closest('.form-group').removeClass('control-focus');
+                        break;
+                    case 'ChangeFortText':
+                        if (this.val()) {
+                            parent.addClass('control-highlight');
+                        }
+                        else {
+                            parent.removeClass('control-highlight');
+                        }
+                        break;
+                    default:
+                        $(this).closest('.form-group').addClass('control-highlight');
+                        break;
+                }
+            }
+
+            return this;
+        };
+    }($));
+
+    $(document).ready(function () {
+        'use strict';
+        $(document).on('change', function () {
+            $('.form-group .form-control').each(function () {
+                $(this).floatingLabel('ChangeFortText');
+            });
+        });
+
+        $('.form-group .form-control').each(function () {
+            $(this).floatingLabel('ChangeFortText');
+        });
+
+        $(document).on('change', '.form-group .form-control', function () {
+            $(this).floatingLabel('ChangeFortText');
+        });
+
+        $(document).on('focusin', '.form-group .form-control', function () {
+            $(this).floatingLabel('focusin');
+        });
+
+        $(document).on('focusout', '.form-group .form-control', function () {
+            $(this).floatingLabel('focusout');
+        });
+
+    });
+        $(function () {
+        //whenever the shipping country changes, we need to update the
+        //shipping state select list with the appropriate states
+        $("#ShippingAddress_CountryName").change(function () {
+            var $select = $(this);
+            $.ajax({
+                type: "POST",
+                url: "/Lookup/StatesByCountry",
+                data: { countryName: $select.val() },
+                success: function (result) {
+                    var $states = $("#state");
+                    $states.empty();
+                    if (result.length > 1) {
+
+
+                        for (var i = 0; i < result.length; i++) {
+                            if (result[i].StateName.trim().length > 1) {
+                                $states.append("<option value=\"" + result[i].StateName + "\">" + result[i].StateName + "</option>");
+                            }
+                        }
+
+                    }
+                    CheckStates();
+                }
+            });
+        });
+    });
+</script>
+
+                        <div class="form-group">
+                            <div class="col-md-9 text-right right-zero">
+                                <button type="submit" class="btn btn-success">Submit</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            <input name="__RequestVerificationToken" type="hidden" value="CfDJ8F6p6RENyOlOouyPoSPZxlJVJTrtAyaprO0GmwAwzUeqhEnyabNV66u4aq6dI2Oi2j4hT_teTSnYWc5UX0UDzW8277Ku3GRMVc9OQ52EwaJ66jpFaslfsrsHQ-vTdBGbd3DJ3EVbm_O9GU7lHlSTyUs" /></form>
+        </div>
+    </div>
+</div>
+
+
+
+    </div>
+
+    <div id="layoutFooterWrap">
+        <div class="container">
+    <div class="row">
+        <div class="col-md-2">
+
+
+        </div>
+        <div class="col-md-8 text-center">
+            <ul class="list-unstyled list-inline footer-nav">
+                <li><a href="/Content/CustomerService">Customer Service</a></li>
+                <li><a href="/Content/CustomOrders">Custom Orders</a></li>
+                <li><a href="/Content/Returns">Returns</a></li>
+                <li><a href="/Content/Shipping">Shipping</a></li>
+                <li><a href="/Content/PrivacyPolicy">Privacy Policy</a></li>
+                <li><a href="/Content/SiteTerms">Site Terms</a></li>
+
+            </ul>
+
+        </div>
+        <div class="col-md-2 col-xs-12 text-center">
+            <strong>
+                Connect With Us
+            </strong>
+            <ul class="list-unstyled list-inline">
+            </ul>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12 text-center underline-top">
+            <p>
+                &copy;2026 Robinson Helicopter Company Store - Powered by <a href="https://www.cogginspromo.com" target="_blank">Coggins Promo</a>
+            </p>
+        </div>
+    </div>
+</div>
+    </div>
+
+
+
+    
+</body>
+</html>
+
+<script>
+  function handleDropdownDisplay() {
+    var dropdowns = document.querySelectorAll('.dropdown, .dropdown-toggle');
+
+    function displayDropdownMenu() {
+      var dropdownMenu = this.querySelector('.dropdown-menu');
+      if (dropdownMenu && !isMobile()) {
+        dropdownMenu.style.display = 'block';
+        this.setAttribute('aria-expanded', 'true');
+      }
+    }
+
+    function hideDropdownMenu() {
+      var dropdownMenu = this.querySelector('.dropdown-menu');
+      if (dropdownMenu) {
+        dropdownMenu.style.display = 'none';
+        this.setAttribute('aria-expanded', 'false');
+      }
+    }
+
+    function isMobile() {
+      return window.innerWidth <= 768; // Adjust the breakpoint to your desired mobile width
+    }
+
+    function updateEventListeners() {
+      if (isMobile()) {
+        dropdowns.forEach(function (dropdown) {
+          dropdown.removeEventListener('mouseover', displayDropdownMenu);
+          dropdown.removeEventListener('mouseout', hideDropdownMenu);
+          dropdown.removeEventListener('focus', displayDropdownMenu);
+          dropdown.removeEventListener('blur', hideDropdownMenu);
+          dropdown.removeAttribute('aria-expanded'); // Remove aria-expanded attribute for mobile view
+        });
+      } else {
+        dropdowns.forEach(function (dropdown) {
+          dropdown.addEventListener('mouseover', displayDropdownMenu);
+          dropdown.addEventListener('mouseout', hideDropdownMenu);
+          dropdown.addEventListener('focus', displayDropdownMenu);
+          dropdown.addEventListener('blur', hideDropdownMenu);
+          dropdown.setAttribute('aria-expanded', 'false'); // Add aria-expanded attribute for desktop view
+        });
+      }
+    }
+
+    // Initial setup
+    updateEventListeners();
+
+    // Event listener for screen size changes
+    window.addEventListener('resize', function () {
+      updateEventListeners();
+    });
+  }
+
+  handleDropdownDisplay();
+</script>

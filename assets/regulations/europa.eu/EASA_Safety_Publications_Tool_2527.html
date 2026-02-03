@@ -1,0 +1,424 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+    <title>EASA Safety Publications Tool</title>
+	<meta name="description" content="EASA Airworthiness Directives Publishing Tool">
+    <meta name="keywords" content="Safety Publication,Safety Publications,AD,ADs,EASA,European Union Aviation Safety Agency,Agence Européenne de la Sécurité Aérienne">
+    <meta name="robots" content="All">
+    <meta name="rating" content="General">
+    <meta name="resource-type" content="document">
+    <meta http-equiv="Content-type" content="text/html; charset=utf-8">
+    <meta http-equiv="Content-Script-Type" content="text/javascript">
+    <meta http-equiv="Content-Style-Type" content="text/css">
+    <meta name="revisit-after" content="7 days">
+    <meta name="robots" content="index,follow">
+    <meta name="DC.Publisher" content="easa.eu">
+
+    <link rel="shortcut icon" type="image/x-icon" href="https://ad.easa.europa.eu/static/img/favicon.ico">
+
+    <link rel="stylesheet" type="text/css" href="https://ad.easa.europa.eu/static/css/ext/css/ext-all.css">
+
+    <link rel="stylesheet" type="text/css" href="https://ad.easa.europa.eu/static/css/default/easa_adtool.css">
+    <link rel="stylesheet" type="text/css" href="https://ad.easa.europa.eu/static/css/default/tree.css">
+    <link rel="stylesheet" type="text/css" href="https://ad.easa.europa.eu/static/css/default/resultset_paging.css">
+    <link rel="stylesheet" type="text/css" href="https://ad.easa.europa.eu/static/css/default/resultset_detail.css">
+    <link rel="stylesheet" type="text/css" href="https://ad.easa.europa.eu/static/css/notices.css?v=2">
+
+
+
+<!-- IE toolbar overflow bug hack [start] -->
+<!--[if IE]>
+<style type="text/css">
+.td_toolbar {
+    text-align: left;
+    vertical-align: top;
+    background: url(/static/css/ext/images/default/toolbar/bg.gif) #d0def0 repeat-x;
+    border-bottom: 1px solid #a9bfd3;
+    height: 26px;
+}
+.div_toolbar {
+    overflow: hidden;
+    width: 100px;
+}
+</style>
+<![endif]-->
+<!-- IE toolbar overflow bug hack [end] -->
+
+
+<script type="text/javascript" src="https://ad.easa.europa.eu/static/js/custom/general.js"></script>
+
+</head>
+
+<body>
+
+<!-- header [start] -->
+<div id="divHeader">
+    <table id="tblHeader" border="0" cellpadding="0" cellspacing="0">
+        <tr class="trHeader">
+            <td  class="header_logo">
+                <div class="easa-logo">
+                </div>
+            </td>
+            <td class="header_expand">
+                <span class="header_info">You are <strong>not</strong> logged in</span>
+            </td>
+            <td class="header_right">
+                <div class="header_right_info">&nbsp;
+                    <span class="header_text_two">Safety Publications Tool</span>
+                    <!--<span class="header_text_two">AD</span>-->
+                    <!--<span class="header_text_three">easa.europa.eu</span>
+                    <span class="header_text_four">information hub</span>-->
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td class="td_toolbar" colspan="3"><div id="header_toolbar" class="div_toolbar"></div></td>
+        </tr>
+    </table>
+</div>
+<!-- header [end] -->
+
+<div class="div_footer_shadow1">
+    <div class="div_footer_shadow2">
+        <div id="divMain">
+            <!-- content [start] -->
+            <div id="ZN-main">
+                <form id="frmMain" name="frmMain" action="https://ad.easa.europa.eu/search/" onSubmit="return doQuery(this);" method="post" style="margin:0px;">                    <!-- left column [start] -->
+                    <div id="ZN-main-left">
+
+                        <input type="hidden" name="fi_action" id="fi_action" value="simple">
+                        
+                        <div id="EL-search-container">
+                            <div id="EL-search">
+                                <div style="margin:8px 0; white-space:nowrap; vertical-align:middle;">
+                                    <label for="fi_keyword">Keyword:</label>
+                                    <input value="" type="text" id="fi_keyword" name="fi_keyword" class="input_text" style="width:112px;">
+                                </div>
+                                <div style="text-align:right; margin:0; white-space:nowrap; vertical-align:middle;">
+                                    <a href="/search/advanced" style="font:11px tahoma; color:#ffffff">advanced search</a>
+                                    <a onClick="doQuery(document.forms[0]); return false;"><img src="https://ad.easa.europa.eu/static/img/button/btn_search.gif" alt="search" style="vertical-align:middle;" onmouseover="this.src='https://ad.easa.europa.eu/static/img/button/btn_search_over.gif'" onmouseout="this.src='https://ad.easa.europa.eu/static/img/button/btn_search.gif'"></a>
+                                </div>
+                            </div>
+                        </div>
+                        
+                    </div>
+                    <!-- left column [end] -->
+                <!-- AD details [start] -->
+                <div id="ZN-main-central">
+
+                    <div id="toolbar">
+                        <table style="margin-top:16px;">
+                        <tr>
+                            <td>
+                                <div id="toolbar-title">
+                                    <h2>
+                                                                                US-2026-01-02 : Wings – Airworthiness Limitations – Revision
+                                    </h2>
+                                </div>
+                            </td>
+                            <td align="right">
+                                <div id="toolbar-button" style="white-space:nowrap;">
+                                    <a href="/ad/US-2026-01-02/print" style="text-decoration:none;"><img src="/static/img/button/btn_print.gif" style="vertical-align:middle;" alt="Print" title="Print">Print</a>
+                                    <a href="/ad/US-2026-01-02#download" style="text-decoration:none;"><img src="/static/img/button/btn_download.gif" style="vertical-align:middle;" alt="Download" title="Download">Download</a>
+                                </div>
+                            </td>
+                        </tr>
+                        </table>
+                    </div>
+
+                    <div id="EL-ad-detail">
+                        <table class="table-detail">
+                        <tr>
+                            <td class="title">Number</td>
+                            <td>US-2026-01-02</td>
+                        </tr>
+                        <tr>
+                            <td class="title">Issued by</td>
+                            <td><img src="https://ad.easa.europa.eu/static/img/flags/us.gif" alt="United States of America" title="United States of America" style="vertical-align:middle;"><span style="vertical-align:middle;">&nbsp;&nbsp;United States of America</span></td>
+                        </tr>
+                        <tr>
+                            <td class="title">Issue date</td>
+                            <td>2026-01-23</td>
+                        </tr>
+                                                <tr>
+                            <td class="title">Effective date</td>
+                            <td>2026-02-24</td>
+                        </tr>
+                                                <tr>
+                            <td class="title">EASA approval number</td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td class="title">ATA Chapter</td>
+                            <td>57</td>
+                        </tr>
+                        <tr>
+                            <td class="title">Approval Holder <br>/ Type Designation</td>
+                            <td>
+                                <ul class="aircraft-tree">
+                                    <li class="tc_holder" title="TC Holder">
+                                        GULFSTREAM AEROSPACE CORPORATION
+                                        <ul>
+                                            <li class="type" title="Type">
+                                                GVI
+                                                <ul>
+                                                    <li class="model" title="Model">
+                                                        G650
+                                                    </li>
+                                                    <li class="model" title="Model">
+                                                        G650ER
+                                                    </li>
+                                                </ul>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="title">Revision</td>
+                            <td>
+                                Not applicable
+    			             </td>
+                        </tr>
+                        <tr>
+                            <td class="title">Correction</td>
+                            <td>
+                                Not applicable
+    			             </td>
+                        </tr>
+                        <tr>
+                            <td class="title">Supersedure</td>
+                            <td>
+                                None
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="title">Publication(s) and related information</td>
+                            <td>Section 05-10-10, &quot;Airworthiness Limitations,&quot; Chapter 05, &quot;Time Limits/Maintenance Checks,&quot; Gulfstream G650 Aircraft Maintenance Manual, Revision 24, dated October 30, 2024.
+Section 05-10-10, &quot;Airworthiness Limitations,&quot; Chapter 05, &quot;Time Limits/Maintenance Checks,&quot; Gulfstream G650ER Aircraft Maintenance Manual, Revision 19, dated October 30, 2024.
+For Gulfstream material identified in this AD, contact Gulfstream Aerospace Corporation, Technical Publications Dept., P.O. Box 2206, Savannah, GA 31402-2206; telephone 800-810-4853; email pubs[at]gulfstream[dot]com; website gulfstream[dot]com/en/customer-support.</td>
+                        </tr>
+                        <tr>
+                            <td class="title">Remarks</td>
+                            <td>
+                                        Comments regarding this AD should be referred to the Safety Information Section, Certification Directorate, EASA; <br> E-mail:
+                                <a href="#" onclick="location.href='amliotA:sDe@sa.aueorape.?uusjbce=toCmmne%t02no2%A0%D02SU2-20-6100-2'.replace(/(.)(.)/g, '$2$1'); return false;">ADs [at] easa.europa [dot] eu</a>
+                                    </td>
+                        </tr>
+                        </table>
+
+                        <a name="download"></a>
+
+                        <div id="EL-download" style="margin-top:16px;">
+                            <h2>Download attachments:</h2>
+                            <ul class="attachments-big">
+                                <li class="file_pdf">
+                                    <a href="https://ad.easa.europa.eu/blob/2026-01-02.pdf/AD_US-2026-01-02_1" onkeypress="window.open(this.href); return false;" onclick="window.open(this.href); return false;">
+                                    2026-01-02.pdf
+                                    (211 kb)
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                </div>
+                <!-- AD details [end] -->
+                    <div class="spacer"></div>
+                </form>
+            </div>
+            <!-- content [end] -->
+        </div>
+    </div>
+</div>
+
+<!-- footer [start] -->
+<div class="div_footer_shadow1" id="divFooter">
+    
+    <div class="div_footer_shadow2">
+        <div class="div_footer">
+            <table border="0" cellpadding="0" cellspacing="0" class="tbl_footer">
+            <tr>
+                <td style="text-align:left; padding-left:4px;">
+                    For help on using this tool, please refer to <a href="https://ad.easa.europa.eu/help/index.html" onkeypress="window.open(this.href); return false;" onclick="window.open(this.href); return false;">the help section</a><br>
+                    For any inquiry regarding ADs, please contact
+                    <a href="#" onclick="location.href='amliotA:sDe@sa.aueorape.u'.replace(/(.)(.)/g, '$2$1'); return false;">the EASA AD team</a>
+                    <br>
+                    To report any bug, broken link or problem with this application, please contact the
+                    <a href="#" onclick="location.href='amliota:sde@sa.aueorape.u'.replace(/(.)(.)/g, '$2$1'); return false;">webmaster</a>
+                </td>
+                <td style="font-size:1px; padding-left:4px;">
+                    <img src="https://ad.easa.europa.eu/static/img/valid-html401-blue-16px.gif" alt="Valid HTML 4.01 Strict" height="16" width="45">
+                </td>
+                <td style="text-align:right; padding-left:4px;">
+                    <a href="https://ad.easa.europa.eu/disclaimer">Disclaimer &amp; copyright notice</a> - 2024 &#169; <a onkeypress="window.open(this.href); return false;" onclick="window.open(this.href); return false;" href="http://www.easa.europa.eu">www.easa.europa.eu</a>
+                </td>
+            </tr>
+            </table>
+        </div>
+    </div>
+</div>
+<!-- footer [end] -->
+
+
+<script type="text/javascript" src="https://ad.easa.europa.eu/static/js/custom/fct_search.js"></script>
+<script type="text/javascript" src="https://ad.easa.europa.eu/static/js/custom/util.js"></script>
+<script type="text/javascript" src="https://ad.easa.europa.eu/static/js/external/yui-utilities.js"></script>
+<script type="text/javascript" src="https://ad.easa.europa.eu/static/js/external/ext-yui-adapter.js"></script>
+<script type="text/javascript" src="https://ad.easa.europa.eu/static/js/external/ext-all.js"></script>
+
+
+
+
+
+
+<!-- top menu [start] -->
+<script type="text/javascript">
+
+Ext.onReady(function()
+{
+    var thisScope = this;
+    Ext.QuickTips.init();
+
+    var menuExportCSV = new Ext.menu.Menu({
+        });
+    
+    var menuExport = new Ext.menu.Menu({
+        });
+
+    var tb = new Ext.Toolbar({
+        renderTo: 'header_toolbar'
+    });
+
+
+    tb.add(
+
+        {
+            cls     :   'x-btn-text',
+                text    :   'AD Home Page',
+                tooltip :   'See information about Safety Publications<br> on the EASA website',
+                handler :   function onUserGuide(btn) {
+            var winRelated = window.open('https://www.easa.europa.eu/en/domains/aircraft-products/airworthiness-directives-ad', 'winUserGuide');
+            if(winRelated && winRelated.focus)
+                winRelated.focus();
+            }
+        },
+        '-',
+        {
+            cls     :   'x-btn-text',
+            text    :   'MCAI',
+            tooltip :   'Show all available Mandatory Continuing Airworthiness Information',
+                        pressed :   true,
+                        handler :   function onHome(btn) {
+                            location.href = 'https://ad.easa.europa.eu/';
+                        }
+            },
+                        '-',
+        {
+            cls     :   'x-btn-text',
+            text    :   'SIB',
+            tooltip :   'Show all available Safety Information',
+                     handler :   function onSibDistinct(btn) {
+                            location.href = 'https://ad.easa.europa.eu/sib-docs/page-1';
+                        }
+
+
+        },
+    '-',
+
+        {
+    cls     :   'x-btn-text',
+        text    :   'SD',
+    tooltip :   'Show all available Safety Directives',
+        handler :   function onODDistinct(btn) {
+    location.href = 'https://ad.easa.europa.eu/sd-docs/page-1';
+    }
+
+    },
+        '-',
+        {
+            cls     :   'x-btn-text',
+            text    :   'Advanced search',
+            tooltip :   'Perform a detailed query based on multiple criteria',
+             handler :   function onSearch(btn) {
+                            location.href = 'https://ad.easa.europa.eu/search/advanced';
+                        }
+
+        },
+        '-',
+        {
+            cls     :   'x-btn-text',
+            text    :   'AD Biweekly reports',
+            tooltip :   'Access AD biweekly reports of previously published Mandatory Continuing Airworthiness Information',
+            handler :   function onBiweekly(btn) {
+                            location.href = '/biweekly';
+                        }
+        },
+        '-',
+        {
+            cls     :   'x-btn-text bmenu',
+            text    :   'Export list as...',
+            tooltip :   'Export the current list of publications to a CSV, PDF or XML file',
+            menu    :   menuExport
+        },
+        '-',
+        {
+            cls     :   'x-btn-text',
+            text    :   'User guide',
+            tooltip :   'Read the user guide for this application',
+            handler :   function onUserGuide(btn) {
+                            var winUserGuide = window.open('/help/index.html', 'winUserGuide');
+                            if(winUserGuide && winUserGuide.focus)
+                                winUserGuide.focus();
+                        }
+        },
+        '-',
+        {
+            cls     :   'x-btn-text',
+            text    :   'AD FAQ',
+            handler :   function onAdFaq(btn) {
+                            window.open('https://www.easa.europa.eu/the-agency/faqs/airworthiness-directives-ads', '_blank');
+                        }
+        },
+        '-',
+        {
+            cls     :   'x-btn-text',
+            text    :   'AMOC FAQ',
+            handler :   function onAmFaq(btn) {
+                            window.open('https://www.easa.europa.eu/the-agency/faqs/alternative-method-compliance-amoc-airworthiness-directive-ad', '_blank');
+                        }
+        },
+        '-'
+    );
+
+    tb.addButton(
+        {
+            cls     :   'x-btn-text',
+            text    :   'Register',
+            tooltip :   'Click here to register if you are a new user',
+            handler :   function onUserRegister(btn) {
+                            location.href = '/redirect.php?url=' + encodeURIComponent('https://hub.easa.europa.eu/security/?app=awd&act=register');
+                        }
+        }
+    );
+    tb.addSeparator();
+    tb.addButton(
+        {
+            cls     :   'x-btn-text',
+            text    :   'Login',
+            tooltip :   'Click here to login.<br>You need to be logged in to save multiple filters and receive notifications',
+            handler :   function onUserLogin(btn) {
+                            location.href = '/redirect.php?url=' + encodeURIComponent('https://hub.easa.europa.eu/security/?act=login&app=awd');
+                        }
+        }
+    );
+    
+    if(isDefined('onAfterLoad'))
+        onAfterLoad();
+});
+</script>
+<!-- top menu [end] -->
+
+</body>
+</html>

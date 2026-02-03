@@ -1,0 +1,32 @@
+# Environment and secrets
+.env
+.env.local
+*.env
+
+# Python
+venv/
+.venv/
+__pycache__/
+*.py[cod]
+*.egg-info/
+.eggs/
+dist/
+build/
+
+# IDE
+.idea/
+.vscode/
+.cursor/
+
+# Data and runtime (optional: commit ingest_state.json if you want to track state)
+qdrant_db/
+*.snapshot
+data/parsed/
+data/ingest_state_backup.json
+
+# Migration checkpoint (local only)
+migration_checkpoint.json
+
+# OS
+.DS_Store
+Thumbs.db
