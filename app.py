@@ -35,47 +35,23 @@ def main():
         """
     )
     
-    # Sidebar with instructions
+    # Sidebar — simple, client-facing
     with st.sidebar:
-        st.header("ℹ️ How to Use")
+        st.header("How to use")
         st.markdown(
             """
-            **Ask questions about:**
-            - Maintenance procedures
-            - Part numbers (e.g., "What is part 12-45A?")
-            - Regulations and compliance
-            - Troubleshooting guides
-            - Technical specifications
-            
-            **Features:**
-            - ✅ Automatic source citations
-            - ✅ Part number recognition
-            - ✅ Cross-reference handling
-            - ✅ Complete, detailed answers
-            
-            **Agentic mode** (when enabled): remembers context ("it" = last topic), decomposes complex questions, asks for clarification when vague.
+            Ask anything about maintenance procedures, part numbers, regulations, or technical specs.  
+            Answers include **source citations** so you can check the manuals.
             """
         )
-        
-        st.header("🔧 Setup")
-        st.markdown(
-            """
-            Before using the assistant:
-            1. Ensure your `.env` file has API keys configured
-            2. Run `python src/ingest.py` to index your documents
-            3. Start asking questions!
-            """
-        )
-        st.header("⚙️ Options")
+        st.header("Options")
         use_deep_search = st.checkbox(
-            "Use Agentic mode (context, decomposition, clarification)",
+            "Use Agentic mode",
             value=False,
-            help="When enabled: remembers conversation, breaks down complex questions, asks for clarification when vague. May take longer.",
+            help="Remembers context, breaks down complex questions, may ask for clarification.",
         )
-        st.caption(
-            "If the app is slow with a large index (20k+ points), set **QDRANT_URL** in `.env` "
-            "(e.g. `http://localhost:6333`) and run Qdrant in Docker for better performance."
-        )
+        if use_deep_search:
+            st.caption("🔮 *Agentic mode is experimental — we’re testing smarter, context-aware answers.*")
     
     # Display chat history
     for message in st.session_state.messages:
