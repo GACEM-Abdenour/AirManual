@@ -17,6 +17,7 @@ st.markdown(
     Enter your maintenance logbook entries. You can then ask questions about them or request a compliance review.
     """
 )
+st.info("**Preview only** — This feature is not fully working yet. Use it to try the interface; do not rely on it for real compliance or record-keeping.")
 
 # Validate configuration
 try:
