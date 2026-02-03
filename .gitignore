@@ -19,6 +19,7 @@ build/
 .cursor/
 
 # Data and runtime (optional: commit ingest_state.json if you want to track state)
+assets/
 qdrant_db/
 *.snapshot
 data/parsed/

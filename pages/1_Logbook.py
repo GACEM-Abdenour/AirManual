@@ -11,6 +11,11 @@ st.set_page_config(
     layout="wide",
 )
 
+# Preview notice in sidebar (next to Logbook in nav)
+with st.sidebar:
+    st.caption("📝 Logbook")
+    st.info("**Preview only** — Not fully working. For trying the interface only.")
+
 st.title("📝 Maintenance Logbook")
 st.markdown(
     """
