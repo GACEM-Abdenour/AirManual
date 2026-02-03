@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html class="no-js" lang="en" dir="ltr">
+<head>
+    <meta charset="utf-8">
+
+            <script async src="https://www.googletagmanager.com/gtag/js?id=UA-30780032-27"></script>
+        <script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'UA-30780032-27', {'linker': {'domains': ['nrc.canada.ca', 'cnrc.canada.ca']},'anonymize_ip': true});
+            gtag('config', 'G-9388W3ZRHF');
+        </script>
+    
+    <!-- Web Experience Toolkit (WET) / Boîte à outils de l'expérience Web (BOEW) wet-boew.github.io/wet-boew/License-en.html / wet-boew.github.io/wet-boew/Licence-fr.html -->
+    <title>Sunrise/sunset calculator - National Research Council Canada</title>
+    <meta content="width=device-width, initial-scale=1" name="viewport">
+    <meta name="dcterms.language" title="UTF-8" content="eng">
+    <meta name="dcterms.title" content="Sunrise/sunset calculator">
+    <meta name="dcterms.creator" content="Government of Canada. National Research Council Canada">
+    <meta name="dcterms.contributor" content="NRC Communications Branch">
+    <meta name="dcterms.issued" title="W3CDTF" content="2012-08-07">
+    <meta name="dcterms.modified" title="W3CDTF" content="2020-04-24">
+        <meta name="dcterms.subject" content="Sunrise/sunset calculator">    
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css">
+    <link href="apps/wet/gcweb/framework/v18.1.1/GCWeb/assets/favicon.ico" rel="icon" type="image/x-icon">
+    <link rel="stylesheet" href="apps/wet/gcweb/framework/v18.1.1/GCWeb/css/theme.min.css">
+    <noscript><link rel="stylesheet" href="apps/wet/gcweb/framework/v18.1.1/wet-boew/css/noscript.min.css"></noscript>
+
+            
+    </head>
+<body vocab="http://schema.org/" typeof="WebPage">
+<nav>
+    <ul id="wb-tphp">
+        <li class="wb-slc"><a class="wb-sl" href="#wb-cont">Skip to main content</a></li>
+                <li class="wb-slc visible-sm visible-md visible-lg"><a class="wb-sl" href="#wb-info">Skip to About this site</a></li>
+    </ul>
+</nav>
+
+<header>
+    <div id="wb-bnr" class="container">
+        <div class="row">
+
+            <section id="wb-lng" class="col-xs-3 col-sm-12 pull-right text-right">
+                <h2 class="wb-inv">Language selection</h2>
+                <ul class="list-inline mrgn-bttm-0">
+                    <li>
+                        <a lang="fr" hreflang="fr" href="/fr/recherche-developpement/produits-services/logiciels-applications/calculatrice-soleil/">
+                            <span class="hidden-xs" translate="no">Français</span>
+                            <abbr title="Français" translate="no" class="visible-xs h3 mrgn-tp-sm mrgn-bttm-0 text-uppercase">fr</abbr>
+                        </a>
+                    </li>
+                </ul>
+            </section>
+
+            <div class="brand col-xs-9 col-sm-5 col-md-4" property="publisher" typeof="GovernmentOrganization">
+                <a href="https://www.canada.ca/en.html" property="url">
+                    <img src="apps/wet/gcweb/framework/v18.1.1/GCWeb/assets/sig-blk-en.svg" alt="Government of Canada" property="logo"><span class="wb-inv"> / <span lang="fr">Gouvernement du Canada</span></span>
+                </a>
+                <meta property="name" content="Government of Canada">
+                <meta property="areaServed" typeof="Country" content="Canada">
+                <link property="logo" href="apps/wet/gcweb/framework/v18.1.1/GCWeb/assets/wmms-blk.svg">
+            </div>
+
+            <section id="wb-srch" class="col-lg-offset-4 col-md-offset-4 col-sm-offset-2 col-xs-12 col-sm-5 col-md-4">
+                <h2>Search</h2>
+                <form action="https://nrc.canada.ca/en/search" method="post" name="cse-search-box" role="search">
+                    <div class="form-group wb-srch-qry">
+                        <label for="wb-srch-q" class="wb-inv">Search NRC.Canada.ca</label>
+                        <input id="wb-srch-q" class="wb-srch-q form-control" name="keys" type="search" value="" size="34" maxlength="170" placeholder="Search NRC.Canada.ca">
+                    </div>
+                    <div class="form-group submit">
+                        <button type="submit" id="wb-srch-sub" class="btn btn-primary btn-small" name="wb-srch-sub">
+                            <span class="glyphicon-search glyphicon"></span>
+                            <span class="wb-inv">Search</span>
+                        </button>
+                    </div>
+                </form>
+            </section>
+
+        </div>
+    </div>
+    <hr>
+    <div class="container">
+        <div class="row"><div class="col-md-8">
+            <div class="transactBar"></div>
+        </div></div>
+    </div>
+    <nav id="wb-bc" property="breadcrumb">
+        <h2>You are here:</h2>
+        <div class="container">
+            <ol class="breadcrumb" typeof="BreadcrumbList">
+                <li property="itemListElement" typeof="ListItem">
+                    <a property="item" typeof="WebPage" href="https://www.canada.ca/en.html">
+                        <span property="name">Canada.ca</span>
+                    </a>
+                    <meta property="position" content="1">
+                </li>
+                <li property="itemListElement" typeof="ListItem">
+                    <a property="item" typeof="WebPage" href="https://nrc.canada.ca/en/">
+                        <span property="name">National Research Council Canada</span>
+                    </a>
+                    <meta property="position" content="2">
+                </li>
+                                                    <li property="itemListElement" typeof="ListItem">
+                        <a property="item" typeof="WebPage" href="/en/research-development/">
+                            <span property="name">Research and development</span>
+                        </a>
+                        <meta property="position" content="3">
+                    </li>
+                                                        <li property="itemListElement" typeof="ListItem">
+                        <a property="item" typeof="WebPage" href="/en/research-development/products-services/">
+                            <span property="name">Products and services</span>
+                        </a>
+                        <meta property="position" content="4">
+                    </li>
+                                                        <li property="itemListElement" typeof="ListItem">
+                        <a property="item" typeof="WebPage" href="/en/research-development/products-services/software-applications/">
+                            <span property="name">Software and applications</span>
+                        </a>
+                        <meta property="position" content="5">
+                    </li>
+                                                                </ol>
+        </div>
+    </nav>
+</header>
+
+
+<main class="container" property="mainContentOfPage" resource="#wb-main" typeof="WebPageElement">
+    <h1 property="name" id="wb-cont">Sunrise/sunset calculator</h1>
+
+            <div id="js-required" class="wb-inv">
+    <p>This application calculates sunrise and sunset times for a full year or a selected date. It can also calculate Sun positions for the 21st day of a given month.</p>
+    <div class="wb-frmvld">
+        <form id="sunrise-sunset" name="sunrise-sunset" method="post" class="form-horizontal mrgn-tp-lg" autocomplete="off">
+            <input type="hidden" name="language" value="en">
+            <input type="hidden" id="olat" name="olat" value="0">
+            <input type="hidden" id="elong" name="elong" value="0">
+    
+            <div class="form-group">
+                <label class="col-md-6 control-label required" for="calcSubject">What would you like to calculate?<strong class="required"> (required)</strong></label>
+                <div class="col-md-6">
+                    <select id="calcSubject" name="calcSubject" required="required" class="form-control">
+                        <option value="">---</option>
+                        <option value="ss-day">Sunrise/sunset, single day</option>
+                        <option value="ss-year">Sunrise/sunset, full year (Civil Twilight)</option>
+                        <option value="ss-year-nt">Sunrise/sunset, full year (Nautical Twilight)</option>
+                        <option value="ss-year-txt">Sunrise/sunset, full year (text version)</option>
+                        <option value="sa-day">Sun positions (Northern Hemisphere only)</option>
+                    </select>
+                </div>
+                <div id="sa-only" class="col-md-offset-6 col-md-6">
+                    <p><small><strong>Note:</strong> Sun positions are only calculated for the 21st of the month.</small></p>
+                </div>
+                <div class="clearfix"></div>
+            </div>
+    
+            <div class="form-group">
+                <label class="col-md-6 control-label required" for="calcMethod">How would you like to calculate it?<strong class="required"> (required)</strong></label>
+                <div class="col-md-6">
+                    <select id="calcMethod" name="calcMethod" required="required" class="form-control">
+                        <option value="">---</option>
+                        <option value="byCity">By city</option>
+                        <option value="byObserv">By observatory</option>
+                        <option value="byLatLong">By latitude and longitude</option>
+                    </select>
+                </div>
+                <div class="clearfix"></div>
+            </div>
+    
+            <div class="form-group">
+                <label class="col-md-6 control-label required" for="calcDate">Date<strong class="required"> (required)</strong></label>
+                <div class="col-md-6">
+                    <input type="date" id="calcDate" name="calcDate" required="required" class="form-control">
+                </div>
+                <div class="clearfix"></div>
+            </div> 
+    
+            <div id="calcMethods">
+                <div class="form-group" id="byCity">
+                    <label class="col-md-6 control-label required" for="city">City<strong class="required"> (required)</strong></label>
+                    <div class="col-md-6">
+                        <!--<input type="text" id="city" name="city" required="required" class="form-control" list="location-datalist">-->
+                        <select id="city" name="city" required="required" class="form-control">
+                            <option value="">---</option>
+                        </select>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="form-group" id="byObserv">
+                    <label class="col-md-6 control-label required" for="observ">Observatory<strong class="required"> (required)</strong></label>
+                    <div class="col-md-6">
+                        <select id="observ" name="observ" required="required" class="form-control">
+                            <option value="">---</option>
+                            <option value="AAT SIDING SPRING">AAT SIDING SPRING</option>
+                            <option value="APACHE POINT">APACHE POINT</option>
+                            <option value="CERRO LA SILLA">CERRO LA SILLA</option>
+                            <option value="CERRO LAS CAMPANAS">CERRO LAS CAMPANAS</option>
+                            <option value="CERRO PACHON">CERRO PACHON</option>
+                            <option value="CERRO PARANAL">CERRO PARANAL</option>
+                            <option value="CERRO TOLOLO">CERRO TOLOLO</option>
+                            <option value="DAO">DAO</option>
+                            <option value="DDO">DDO</option>
+                            <option value="EL LEONCITO">EL LEONCITO</option>
+                            <option value="KITT PEAK">KITT PEAK</option>
+                            <option value="LA PALMA">LA PALMA</option>
+                            <option value="MAUNA KEA">MAUNA KEA</option>
+                            <option value="HAUTE PROVENCE">HAUTE PROVENCE</option>
+                            <option value="MCDONALD">MCDONALD</option>
+                            <option value="MONT MEGANTIC">MONT MÉGANTIC</option>
+                            <option value="MOUNT GRAHAM">MOUNT GRAHAM</option>
+                            <option value="MOUNT HOPKINS">MOUNT HOPKINS</option>
+                            <option value="MOUNT JOHN">MOUNT JOHN</option>
+                            <option value="MOUNT PALOMAR">MOUNT PALOMAR</option>
+                            <option value="MOUNT STROMLO">MOUNT STROMLO</option>
+                            <option value="MOUNT WILSON">MOUNT WILSON</option>
+                            <option value="SAAO CAPE TOWN">SAAO CAPE TOWN</option>
+                            <option value="SAAO SUTHERLAND">SAAO SUTHERLAND</option>
+                        </select>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+ 
+                <div id="byLatLong">
+                    <!--<div class="col-md-6 col-md-push-6">
+                        <small id="lat-long-help">Need coordinates for anywhere in Canada?<br>Visit <a href="http://www4.nrcan.gc.ca/search-place-names/search">NRCan's geographical names of Canada</a> service.</small>
+                    </div>
+                    <div class="clearfix mrgn-bttm-md"></div>-->  
+                    <!--<div class="form-group form-inline mrgn-bttm-lg">
+                        <div class="checkbox col-md-offset-6 col-md-6">
+                            <label for="useCurrentLocation"><input id="useCurrentLocation" type="checkbox" value=""> Use current location?</label>
+                        </div>
+                    </div>-->
+                    <!--<div id="latError"></div>
+                    
+                    <div class="form-group">
+                        <label class="col-md-6 control-label required" for="latitude">Latitude<strong class="required"> (required)</strong></label>
+                        <div class="col-md-6">
+                            <input type="text" id="latitude" name="latitude" required="required" class="form-control" aria-describedby="latitude-help">
+                        </div>
+                        <div class="col-md-6 col-md-push-6">
+                            <small id="latitude-help">The latitude should be between -90 (South) and +90 (North) degrees. Decimal degree (DD.DDD) format accepted.</small>
+                        </div>
+                        <div class="clearfix"></div>
+                    </div>
+                    
+                    <div id="longError"></div>
+                    
+                    <div class="form-group">
+                        <label class="col-md-6 control-label required" for="longitude">Longitude<strong class="required"> (required)</strong></label>
+                        <div class="col-md-6">
+                            <input type="text" id="longitude" name="longitude" required="required" class="form-control" aria-describedby="longitude-help">
+                        </div>
+                        <div class="col-md-6 col-md-push-6">
+                            <small id="longitude-help">The longitude should be between -180 (West) and +180 (East) degrees. Decimal degree (DD.DDD) format accepted.</small>
+                        </div>
+                        <div class="clearfix"></div>
+                    </div>
+    
+                    <br>
+                    
+                    <div id="tzError"></div>-->
+
+                    <!--<h2 class="h4 col-md-6 text-right">Latitude</h2>
+                    <div class="clearfix"></div>-->
+
+                    <br>
+                    <div id="latError" class="text-center text-danger"></div>
+                    <div class="clearfix"></div>
+                    <br>
+
+                    <div class="form-group">
+                        <label class="col-md-6 control-label required" for="degrees-latitude">Degrees (latitude)<strong class="required"> (required)</strong></label>
+                        <div class="col-md-2 input-group">
+                            <input type="text" id="degrees-latitude" name="degrees-latitude" required="required" class="form-control mrgn-lft-md" value=""><span class="input-group-addon">°</span>
+                        </div>
+                        <div class="col-md-4"></div>
+                        <div class="clearfix"></div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-md-6 control-label required" for="minutes-latitude">Minutes (latitude)<strong class="required"> (required)</strong></label>
+                        <div class="col-md-2 input-group">
+                            <input type="text" id="minutes-latitude" name="minutes-latitude" required="required" class="form-control mrgn-lft-md" value=""> <span class="input-group-addon">'</span>
+                        </div>
+                        <div class="col-md-4"></div>
+                        <div class="clearfix"></div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-md-6 control-label required" for="latitude">Latitude<strong class="required"> (required)</strong></label>
+                        <div class="col-md-6">
+                            <select name="latitude" id="latitude" required="required" class="form-control">
+                                <option value="">---</option>
+                                <option value="North">North</option>
+                                <option value="South">South</option>
+                            </select>
+                        </div>
+                        <div class="clearfix"></div>
+                    </div>
+                    
+                    <br>
+                    <div id="longError" class="text-center text-danger"></div>
+                    <div class="clearfix"></div>
+                    <br>
+                    
+                    <div class="form-group">
+                        <label class="col-md-6 control-label required" for="degrees-longitude">Degrees (longitude)<strong class="required"> (required)</strong></label>
+                        <div class="col-md-2 input-group">
+                            <input type="text" id="degrees-longitude" name="degrees-longitude" required="required" class="form-control mrgn-lft-md" value=""><span class="input-group-addon">°</span>
+                        </div>
+                        <div class="col-md-4"></div>
+                        <div class="clearfix"></div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-md-6 control-label required" for="minutes-longitude">Minutes (longitude)<strong class="required"> (required)</strong></label>
+                        <div class="col-md-2 input-group">
+                            <input type="text" id="minutes-longitude" name="minutes-longitude" required="required" class="form-control mrgn-lft-md" value=""> <span class="input-group-addon">'</span>
+                        </div>
+                        <div class="col-md-4"></div>
+                        <div class="clearfix"></div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-md-6 control-label required" for="longitude">Longitude<strong class="required"> (required)</strong></label>
+                        <div class="col-md-6">
+                            <select name="longitude" id="longitude" required="required" class="form-control">
+                                <option value="">---</option>
+                                <option value="East">East</option>
+                                <option value="West">West</option>
+                            </select>
+                        </div>
+                        <div class="clearfix"></div>
+                    </div>
+                    
+                    <br>
+                    <div id="tzError" class="text-center text-danger"></div>
+                    <div class="clearfix"></div>
+                    <br>
+            
+                    <div class="form-group">
+                        <label class="col-md-6 control-label required" for="timezone">Time zone<strong class="required"> (required)</strong></label>
+                        <div class="col-md-6">
+                            <select id="timezone" name="timezone" required="required" class="form-control">
+                                <option value="">---</option>
+                                <option value="PST|8">Pacific Standard Time (Canada &amp; US) (UTC-8:00)</option>
+                                <option value="YST|7">Yukon (UTC-7:00)</option>
+                                <option value="MST|7">Mountain Standard Time (Canada &amp; US) (UTC-7:00)</option>
+                                <option value="CST|6">Central Standard Time (Canada &amp; US) (UTC-6:00)</option>
+                                <option value="EST|5">Eastern Time (Canada &amp; US) (UTC-5:00)</option>
+                                <option value="AST|4">Atlantic Standard Time (UTC-4:00)</option>
+                                <option value="NST|3.5">Newfoundland Standard Time (UTC-3:30)</option>
+                                <option value="Alaska|9">Alaska (UTC-9:00)</option>
+                                <option value="HST|10">Hawaii, Tahiti (UTC-10:00)</option>
+                                <option value="MIT|11">Samoa, Niue (UTC-11:00)</option>
+                                <option value="America/Tegucigalpa|6">Tegucigalpa, El Salvador, Costa Rica (UTC-6:00)</option>
+                                <option value="America/Bogota|5">Bogota, Lima, Quito (UTC-5:00)</option>
+                                <option value="America/LaPaz|4">La Paz (UTC-4:00)</option>
+                                <option value="America/Sao Paulo|3">Sao Paulo (UTC-3:00)</option>
+                                <option value="America/Buenos Aires|3">Buenos Aires, Montevideo (UTC-3:00)</option>
+                                <option value="America/Noronha|2">Mid-Atlantic (UTC-2:00)</option>
+                                <option value="Atlantic/Azores|1">Azores (UTC-1:00)</option>
+                                <option value="Atlantic/Cape_Verde|1">Cape Verde Island (UTC-1:00)</option>
+                                <option value="Africa/Casablanca|0">Casablanca, Monrivia (UTC+0:00)</option>
+                                <option value="Europe/London|0">Dublin, Edinburgh, London (UTC+0:00)</option>
+                                <option value="Africa/Lagos|-1">Algiers, Lagos (UTC+1:00)</option>
+                                <option value="Europe/Rome|-1">Brussels, Berlin, Rome, Prague (UTC+1:00)</option>
+                                <option value="Africa/Harare|-2">Harare, Pretoria (UTC+2:00)</option>
+                                <option value="Europe/Helsinki|-2">Helsinki, Riga, Tallinn, Athens, Cairo, Beirut (UTC+2:00)</option>
+                                <option value="Europe/Moscow|-3">Moscow, St. Petersburg, Baghdad (UTC+3:00)</option>
+                                <option value="Africa/Nairobi|-3">Nairobi, Kuwait (UTC+3:00)</option>
+                                <option value="Asia/Tehran|-3.5">Tehran (UTC+3:30)</option>
+                                <option value="Asia/Dubai|-4">Muscat, Dubai (UTC+4:00)</option>
+                                <option value="Asia/Baku|-4">Baku, Tbilisi (UTC+4:00)</option>
+                                <option value="Asia/Kabul|-4.5">Kabul (UTC+4:30)</option>
+                                <option value="Asia/Bishkek|-5">Bishkek, Yekaterinburg (UTC+5:00)</option>
+                                <option value="Asia/Karachi|-5">Islamabad, Karachi, Tashkent (UTC+5:00)</option>
+                                <option value="Asia/Calcutta|-5.5">Calcutta (UTC+5:30)</option>
+                                <option value="Asia/Katmandu|-5.75">Katmandu (UTC+5:45)</option>
+                                <option value="Asia/Colombo|-6">Colombo, Dhaka (UTC+6:00)</option>
+                                <option value="Asia/Alma-Ata|-6">Alma-Ata, Novosibirsk (UTC+6:00)</option>
+                                <option value="Asia/Rangoon|-6.5">Cocos, Rangoon (UTC+6:30)</option>
+                                <option value="Asia/Bangkok|-7">Bangkok, Hanoi, Jakarta (UTC+7:00)</option>
+                                <option value="Asia/Hong_Kong|-8">Beijing, Hong Kong, Perth, Singapore (UTC+8:00)</option>
+                                <option value="Asia/Ulan_Bator|-8">Ulan Bator, Irkutsk (UTC+8:00)</option>
+                                <option value="Asia/Seoul|-9">Osaka, Sapporo, Tokyo, Seoul (UTC+9:00)</option>
+                                <option value="Asia/Yakutsk|-9">Yakutsk (UTC+9:00)</option>
+                                <option value="Australia/Adelaide|-9.5">Adelaide (UTC+9:30)</option>
+                                <option value="Australia/Darwin|-9.5">Darwin (UTC+9:30)</option>
+                                <option value="Australia/Brisbane|-10">Brisbane, Guam (UTC+10:00)</option>
+                                <option value="Australia/Sydney|-10">Canberra, Melbourne, Sydney (UTC+10:00)</option>
+                                <option value="Asia/Magadan|-11">Solomon Islands, New Caledonia, Magadan (UTC+11:00)</option>
+                                <option value="Pacific/Auckland|-12">Auckland, Wellington (UTC+12:00)</option>
+                                <option value="Pacific/Fiji|-12">Fiji, Marshall Islands (UTC+12:00)</option>
+                            </select>
+                        </div>
+                        <div class="clearfix"></div>
+                    </div>
+                </div>
+            </div>
+    
+            <div class="col-md-6 col-md-push-6 mrgn-tp-md">
+                <button type="submit" id="ss-submit" class="btn btn-primary">Calculate</button>
+            </div>
+        </form>
+    </div>
+    <div class="clearfix"></div>
+    <p class="mrgn-tp-lg">If you experience difficulties with this form, please <a href="mailto:NRC.NSIHerzbergAstroInfoISN.CNRC@nrc-cnrc.gc.ca">contact the Herzberg Astronomy and Astrophysics Research Centre</a>.</p>
+        
+    
+    <section class="panel panel-info">
+        <header class="panel-heading">
+            <h2 class="panel-title">Supplemental information</h2>
+        </header>
+        <div class="panel-body">
+            <ul>
+                <li><a href="https://nrc.canada.ca/en/research-development/products-services/software-applications/interpreting-results-sunrisesunset-calculator">Interpreting the results of the sunrise/sunset calculator</a></li>
+                <li><a href="https://nrc.canada.ca/en/research-development/products-services/software-applications/fee-accuracy-certification-sunrisesunset-data">Fee, accuracy and confirmation of sunrise/sunset data</a></li>
+            </ul>            
+        </div>
+    </section>
+    
+</div>
+
+
+<noscript>
+    <p>Please enable Javascript in order to use this form.</p>
+</noscript>
+
+<datalist id="location-datalist"></datalist>
+
+    
+    <section class="pagedetails">
+        <h2 class="wb-inv">Page details</h2>
+        <div class="row">
+                        <div class="col-xs-12">
+                <p id="nrc-byline"><strong>From:</strong> <a href="https://nrc.canada.ca/en/">National Research Council Canada</a></p>
+                <dl id="wb-dtmd">
+                    <dt>Date modified:</dt>
+                    <dd><time property="dateModified">2020-04-24</time></dd>
+                </dl>
+            </div>
+        </div>
+            </section>
+</main>
+
+
+<footer id="wb-info">
+    <h2 class="wb-inv">About this site</h2>
+            <div class="gc-contextual">
+            <div class="container">
+                <nav>
+                    <h3>Sunrise/sunset calculator</h3>
+                    <ul class="list-col-xs-1 list-col-sm-2 list-col-md-3">
+                                                                            <li><a href="https://nrc.canada.ca/en/form/report-a-problem?problem_page_url=https://nrc.canada.ca/en/research-development/products-services/software-applications/sun-calculator/index.html">Provide feedback</a></li>
+                                            </ul>
+                </nav>
+            </div>
+        </div>
+    
+    <div class="gc-main-footer">
+        <div class="container">
+            <nav>
+                <h3>Government of Canada</h3>
+                <ul class="list-col-xs-1 list-col-sm-2 list-col-md-3">
+                    <li><a href="https://www.canada.ca/en/contact.html">All Contacts</a></li>
+                    <li><a href="https://www.canada.ca/en/government/dept.html">Departments and agencies</a></li>
+                    <li><a href="https://www.canada.ca/en/government/system.html">About government</a></li>
+                </ul>
+                <h4><span class="wb-inv">Themes and topics</span></h4>
+                <ul class="list-unstyled colcount-sm-2 colcount-md-3">
+                    <li><a href="https://www.canada.ca/en/services/jobs.html">Jobs</a></li>
+                    <li><a href="https://www.canada.ca/en/services/immigration-citizenship.html">Immigration and citizenship</a></li>
+                    <li><a href="https://travel.gc.ca/">Travel and tourism</a></li>
+                    <li><a href="https://www.canada.ca/en/services/business.html">Business</a></li>
+                    <li><a href="https://www.canada.ca/en/services/benefits.html">Benefits</a></li>
+                    <li><a href="https://www.canada.ca/en/services/health.html">Health</a></li>
+                    <li><a href="https://www.canada.ca/en/services/taxes.html">Taxes</a></li>
+                    <li><a href="https://www.canada.ca/en/services/environment.html">Environment and natural resources</a></li>
+                    <li><a href="https://www.canada.ca/en/services/defence.html">National security and defence</a></li>
+                    <li><a href="https://www.canada.ca/en/services/culture.html">Culture, history and sport</a></li>
+                    <li><a href="https://www.canada.ca/en/services/policing.html">Policing, justice and emergencies</a></li>
+                    <li><a href="https://www.canada.ca/en/services/transport.html">Transport and infrastructure</a></li>
+                    <li><a href="https://www.international.gc.ca/world-monde/index.aspx?lang=eng">Canada and the world</a></li>
+                    <li><a href="https://www.canada.ca/en/services/finance.html">Money and finance</a></li>
+                    <li><a href="https://www.canada.ca/en/services/science.html">Science and innovation</a></li>
+                    <li><a href="https://www.canada.ca/en/services/indigenous-peoples.html">Indigenous peoples</a></li>
+                    <li><a href="https://www.canada.ca/en/services/veterans-military.html">Veterans and military</a></li>
+                    <li><a href="https://www.canada.ca/en/services/youth.html">Youth</a></li>
+                    <li><a href="https://www.canada.ca/en/services/life-events.html">Manage life events</a></li>
+                </ul>
+            </nav>
+        </div>
+    </div>
+
+    <div class="gc-sub-footer">
+        <div class="container d-flex align-items-center">
+            <nav>
+                <h3 class="wb-inv">Government of Canada Corporate</h3>
+                <ul>
+                    <li><a href="https://www.canada.ca/en/social.html">Social media</a></li>
+                    <li><a href="https://www.canada.ca/en/mobile.html">Mobile applications</a></li>
+                    <li><a href="https://canada.ca/en/government/about-canada-ca.html">About Canada.ca</a></li>
+                    <li><a href="https://www.canada.ca/en/transparency/terms.html">Terms and conditions</a></li>
+                    <li><a href="https://www.canada.ca/en/transparency/privacy.html">Privacy</a></li></ul>
+            </nav>
+            <div class="wtrmrk align-self-end">
+                <img src="apps/wet/gcweb/framework/v18.1.1/GCWeb/assets/wmms-blk.svg" alt="Symbol of the Government of Canada">
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js" integrity="sha384-rY/jv8mMhqDabXSo+UCggqKtdmBfd3qC2/KvyTDNQ6PcUJXaxK1tMepoQda4g5vB" crossorigin="anonymous"></script>
+<script src="apps/wet/gcweb/framework/v18.1.1/wet-boew/js/wet-boew.min.js"></script>
+<script src="apps/wet/gcweb/framework/v18.1.1/GCWeb/js/theme.min.js"></script>
+
+<script src="apps/wet/wet4/assets/js/search-fix.js"></script>
+
+    <script src="apps/sun-soleil/assets/js/sun-soleil.js"></script>
+
+
+</body>
+</html>

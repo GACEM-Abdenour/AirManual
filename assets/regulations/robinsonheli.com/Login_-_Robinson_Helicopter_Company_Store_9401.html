@@ -1,0 +1,653 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0,user-scalable=0"/>
+    <title>Login - Robinson Helicopter Company Store</title>
+
+    <script type="text/javascript">
+	
+    var appInsights=window.appInsights||function(a){
+        function b(a){c[a]=function(){var b=arguments;c.queue.push(function(){c[a].apply(c,b)})}}var c={config:a},d=document,e=window;setTimeout(function(){var b=d.createElement("script");b.src=a.url||"https://az416426.vo.msecnd.net/scripts/a/ai.0.js",d.getElementsByTagName("script")[0].parentNode.appendChild(b)});try{c.cookie=d.cookie}catch(a){}c.queue=[];for(var f=["Event","Exception","Metric","PageView","Trace","Dependency"];f.length;)b("track"+f.pop());if(b("setAuthenticatedUserContext"),b("clearAuthenticatedUserContext"),b("startTrackEvent"),b("stopTrackEvent"),b("startTrackPage"),b("stopTrackPage"),b("flush"),!a.disableExceptionTracking){f="onerror",b("_"+f);var g=e[f];e[f]=function(a,b,d,e,h){var i=g&&g(a,b,d,e,h);return!0!==i&&c["_"+f](a,b,d,e,h),i}}return c
+    }({
+        instrumentationKey: '93bab1a4-43d2-461b-ad58-fee2bd8724b5'
+    });
+
+    window.appInsights=appInsights,appInsights.queue&&0===appInsights.queue.length&&appInsights.trackPageView();
+	
+    </script>
+
+    
+
+
+    <link rel="stylesheet" title="Coggins" href="/css/theme-coggins.css" />
+    <link href="https://kendo.cdn.telerik.com/2020.3.915/styles/kendo.common-material.min.css" rel="stylesheet" type="text/css" />
+    <link href="https://kendo.cdn.telerik.com/2020.3.915/styles/kendo.mobile.all.min.css" rel="stylesheet" type="text/css" />
+    <link href="https://kendo.cdn.telerik.com/2020.3.915/styles/kendo.material.min.css" rel="stylesheet" type="text/css" />
+    <!-- Scrollbar Custom CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.min.css">
+
+    <script src="https://kendo.cdn.telerik.com/2020.3.915/js/jquery.min.js"></script>
+    <script src="https://kendo.cdn.telerik.com/2020.3.915/js/jszip.min.js"></script>
+    <script src="/lib/bootstrap/dist/js/bootstrap.js"></script>
+    <script src="https://kendo.cdn.telerik.com/2020.3.915/js/kendo.all.min.js"></script>
+    <script src="https://kendo.cdn.telerik.com/2020.3.915/js/kendo.aspnetmvc.min.js"></script>
+
+    <script src="/js/achilles.js?v=JgGkPnwCAfgRHOxJO3vHWfKcRv_iHY2oqSZoqLFr_CM"></script>
+    <script src="/js/site.js?v=WCW_3M3La-pY9S4q7fLVDrQiLWMzcashBdBXfuQJuFo"></script>
+    <!-- Popper.JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js" integrity="sha384-cs/chFZiN24E4KMATLdqdvsezGxaGsi4hLGOzlXwp5UZB1LY//20VyM2taTB4QvJ" crossorigin="anonymous"></script>
+    <!-- jQuery Custom Scroller CDN -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.concat.min.js"></script>
+    <script src="/lib/jquery-validation/dist/jquery.creditCardValidator.js"></script>
+    <!-- jQuery matchHeight-->
+    <script src="/lib/matchHeight/dist/jquery.matchHeight-min.js"></script>
+
+
+
+
+</head>
+<body>
+    
+<style type="text/css">
+    .bd-example-modal-lg .modal-dialog {
+        display: table;
+        position: relative;
+        margin: 0 auto;
+        top: calc(50% - 24px);
+    }
+
+    .bd-example-modal-lg .modal-dialog .modal-content {
+        background-color: transparent;
+        border: none;
+    }
+</style>
+
+<div id="modalLoader" class="modal fade bd-example-modal-lg" data-backdrop="static" data-keyboard="false" tabindex="-1">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content" style="width: 48px">
+            <span class="fa fa-spinner fa-spin fa-3x"></span>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    function isLoading(value) {
+        var $modal = $("#modalLoader");
+        if (value == true)
+            $modal.modal("show");
+        else
+            $modal.modal("hide");
+    }
+</script>
+    <div class="shipping-banner">
+        <p class="shipping-text">
+            <a target="_blank" href="https://www.robinsonheli.com/">Visit RobinsonHeli.com</a>
+            </p>
+
+
+    </div>
+
+    <div id="layoutHeaderWrap" class="hidden-xs">
+        <div class="container">
+
+    <div class="row">
+
+        <div class="col-md-6">
+
+            <a class="logo-site" style="background: url(/images/logo-main.svg ) no-repeat;" href="/">Robinson Helicopter Company Store</a>
+
+        </div>
+
+
+            <div class="col-md-6">                
+                <ul class="nav navbar-nav navbar-right navbar-user">
+    <li>
+        <div id="fancySearch">
+            <div class="box">
+                <form action="/Products/Search" method="post">
+                    <div class="container-2">
+                        <input type="text" id="search" name="searchText" placeholder="Search..." onchange="submit();" autocomplete="off" />
+                        <span class="icon"><i class="fa fa-search"></i></span>
+
+                    </div>
+                <input name="__RequestVerificationToken" type="hidden" value="CfDJ8F6p6RENyOlOouyPoSPZxlKyNnFU-A27Xnqf9m2qg8tUah62bgiaKj54-8CHrgE5ov-x8CEXMr4PglsCcKqUc0Z3mB5eNbSgjUjNWES9owoe-f3cGIMUNQ0PLozws-leQFB47-ec3MUtbMJw8dcvbzE" /></form>
+            </div>
+
+        </div>
+    </li>
+
+
+        <li>
+    <a href="/Account/Login">
+        <div class="hidden-xs">
+            <span class="glyphicon glyphicon-user"></span> Login
+        </div>
+        <div class="visible-xs">
+            <div class="col-xs-12"><span class="glyphicon glyphicon-user"></span> Login</div>
+        </div>
+    </a>
+</li>
+    <li>
+        <a href="/Account/Login">
+            <div class="hidden-xs">
+                <span class="glyphicon glyphicon-heart"></span> My Wishlist
+            </div>
+            <div class="visible-xs">
+                <div class="col-xs-12"><span class="glyphicon glyphicon-heart"></span> My Wishlist</div>
+            </div>
+        </a>
+    </li>
+
+    <li class="dropdown cart-preview">
+        
+<a class="dropdown-toggle hidden-xs" href="/ShoppingCart/Cart">
+    <span class="glyphicon glyphicon-shopping-cart"></span> My Cart: <span class="badge label-success item-count">0</span>
+</a>
+<a class="button-mobile hidden-lg hidden-md hidden-sm" role="button" href="/ShoppingCart/Cart">
+        <span class="glyphicon glyphicon-shopping-cart"></span><span class="badge label-success item-count">0</span>
+</a>
+
+<ul id="cartToggle" class="dropdown-menu">
+    <li class="shopping-cart-popup">
+        <div class="shopping-cart-header">
+            <span class="shopping-cart-total">
+                Subtotal: <strong>$0.00</strong>
+            </span>
+        </div>
+        <div class="items-container">
+            <ul class="list-unstyled shopping-cart-items">
+
+            </ul>
+        </div>
+        <div>
+        </div>
+    </li>
+</ul>
+    </li>
+</ul>
+
+
+
+            </div>
+
+    </div>
+
+</div>
+    </div>
+
+    <nav id="sidebar" class="hidden-sm hidden-md hidden-lg">
+        
+<div class="sidebar-header">
+    <div class="row">
+        <div class="col-xs-12 dismiss-bar">
+            <div id="dismiss" >
+                <i class="fa light fa-times fa-2x" tabindex="0"></i>
+            </div>
+        </div>
+        <div class="col-xs-12 sign-in">
+            <ul class="nav navbar-nav navbar-right navbar-user">
+                    <li>
+    <a href="/Account/Login">
+        <div class="hidden-xs">
+            <span class="glyphicon glyphicon-user"></span> Login
+        </div>
+        <div class="visible-xs">
+            <div class="col-xs-12"><span class="glyphicon glyphicon-user"></span> Login</div>
+        </div>
+    </a>
+</li>
+    <li>
+        <a href="/Account/Login">
+            <div class="hidden-xs">
+                <span class="glyphicon glyphicon-heart"></span> My Wishlist
+            </div>
+            <div class="visible-xs">
+                <div class="col-xs-12"><span class="glyphicon glyphicon-heart"></span> My Wishlist</div>
+            </div>
+        </a>
+    </li>
+
+            </ul>
+        </div>
+
+    </div>
+</div>
+<ul class="nav navbar-nav  mr-auto">
+
+    <li class="dropdown">
+        <!-- <a asp-area="" asp-controller="Products" asp-action="ProductGrid" asp-route-id="Apparel" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">-->
+        <a  class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+            <div class="col-xs-10">
+                Apparel
+            </div>
+            <div class="col-xs-2 arrow-dropdown">
+                <i class="fa fa-angle-down"></i>
+            </div>
+        </a>
+        <ul class="dropdown-menu">
+                    <li class="sub-category">
+                        <a href="/Products/ProductGrid/mnsapparel">Men&#x27;s</a>
+                    </li>
+                    <li class="sub-category">
+                        <a href="/Products/ProductGrid/wmnsappare">Women&#x27;s</a>
+                    </li>
+        </ul>
+    </li>
+            <li>
+                <a href="/Products/ProductGrid/headwear">
+                    <div class="col-xs-12">
+                        Headwear
+                    </div>
+                </a>    
+            </li>
+            <li>
+                <a href="/Products/ProductGrid/bags">
+                    <div class="col-xs-12">
+                        Bags
+                    </div>
+                </a>    
+            </li>
+            <li>
+                <a href="/Products/ProductGrid/accessory">
+                    <div class="col-xs-12">
+                        Accessories
+                    </div>
+                </a>    
+            </li>
+            <li>
+                <a href="/Products/ProductGrid/drinkware">
+                    <div class="col-xs-12">
+                        Drinkware
+                    </div>
+                </a>    
+            </li>
+            <li>
+                <a href="/Products/ProductGrid/youth">
+                    <div class="col-xs-12">
+                        Youth
+                    </div>
+                </a>    
+            </li>
+
+</ul>
+<script>
+    $('.dropdown-toggle').click(function () {
+        $(this).find('i').toggleClass('fa fa-angle-down').toggleClass('fa fa-angle-up');
+    });
+
+</script>
+    </nav>
+
+    <div class="overlay"></div>
+
+    <div id="layoutNavMainWrap" data-spy="affix" data-offset-top="110">
+
+        
+
+
+
+<nav class="navbar navbar-default navbar-expand-lg hidden-sm hidden-md hidden-lg">
+    <div class="container">
+        <div class="navbar-header sticky">
+            <div class="fixed-logo-mobile">
+                <a class="logo-site" href="/"><img class="fixed-logo-image" src="/images/logo-main.svg" alt="Coggins Logo" /></a>
+            </div>
+            <div class="new-navbar-mobile">
+                <div class="burger-menu">
+                    <button type="button" class="navbar-toggle hamburger-toggle" id="sidebarCollapse">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="fa fa-align-justify fa-2x"></span>
+                    </button>
+                </div>
+                <div class="hidden-sm hidden-md hidden-lg navbar-toggle text-center">
+                    <a href="#" data-toggle="modal" data-target="#myModal" class="clickable"><span class="fa fa-search fa-2x"></span></a>
+                </div>
+                <div class="hidden-sm hidden-md hidden-lg  navbar-toggle text-center">
+                    <a href="/Account/Settings"><span class="fa fa-user-circle-o fa-2x"></span></a>
+                </div>
+                    <div class="hidden-sm hidden-md hidden-lg  navbar-toggle text-center">
+                        
+<a class="hidden-lg hidden-md hidden-sm" role="button" href="/Account/WishList">
+    <span class="fa fa-heart fa-2x"></span></a>
+<a class="hidden-xs" role="button" aria-haspopup="true" aria-expanded="false" href="/Account/WishList">
+    <span class="glyphicon glyphicon-heart"></span> My Wishlist </a>
+                    </div>
+                <div class="hidden-sm hidden-md hidden-lg navbar-toggle text-center header-cart">
+                    
+<a class="dropdown-toggle hidden-xs" href="/ShoppingCart/Cart">
+    <span class="glyphicon glyphicon-shopping-cart"></span> My Cart: <span class="badge label-success item-count">0</span>
+</a>
+<a class="button-mobile hidden-lg hidden-md hidden-sm" role="button" href="/ShoppingCart/Cart">
+        <span class="glyphicon glyphicon-shopping-cart"></span><span class="badge label-success item-count">0</span>
+</a>
+
+<ul id="cartToggle" class="dropdown-menu">
+    <li class="shopping-cart-popup">
+        <div class="shopping-cart-header">
+            <span class="shopping-cart-total">
+                Subtotal: <strong>$0.00</strong>
+            </span>
+        </div>
+        <div class="items-container">
+            <ul class="list-unstyled shopping-cart-items">
+
+            </ul>
+        </div>
+        <div>
+        </div>
+    </li>
+</ul>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+</nav>
+
+<script>
+
+    $(function () {
+        var wishlist = true ;
+
+        if (wishlist == false) {
+            console.log("false")
+            //$(".sticky .col-xs-2").css("width", "20%");
+        };
+
+    });
+
+</script>
+
+<!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel"><span class="icon"><i class="fa fa-search"></i></span> Submit</h4>
+            </div>
+            <form action="/Products/Search" method="post">
+                <div class="modal-body">
+
+                    <input type="text" class="form-control" id="prdsearch" name="searchText" placeholder="Search..." onchange="submit();" autocomplete="off" />
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-success" data-dismiss="modal">Submit</button>
+                </div>
+            <input name="__RequestVerificationToken" type="hidden" value="CfDJ8F6p6RENyOlOouyPoSPZxlKyNnFU-A27Xnqf9m2qg8tUah62bgiaKj54-8CHrgE5ov-x8CEXMr4PglsCcKqUc0Z3mB5eNbSgjUjNWES9owoe-f3cGIMUNQ0PLozws-leQFB47-ec3MUtbMJw8dcvbzE" /></form>
+        </div>
+    </div>
+</div>
+
+    </div>
+
+    <div id="layoutBodyWrap">
+        <div class="shipping-banner-two">
+            <p class="shipping-text">
+                <a target="_blank" href="https://www.robinsonheli.com/">Visit RobinsonHeli.com</a>
+            </p>
+
+        </div>
+        
+
+<div id="loginRegister">
+
+    <div class="container">
+
+        <div class="row">
+
+            <div class="col-md-6 col-xs-12">
+                <div class="well-checkout">
+
+                    <h2 class="h3">Create an Account</h2>
+
+                    <p id="register-info">
+                        Opening an account on our website allows you to place orders online, check order status, track orders, save address information, and review your order history.
+                    </p>
+                    <div>
+                            <a class="btn btn-success" href="/Account/NewCustomer?returnUrl=%2FAccount%2FWishList">New Customer Registration</a>
+
+                    </div>
+
+                </div>
+
+
+            </div>
+
+
+            <div class="col-md-6 col-xs-12">
+
+                <div class="well-checkout">
+                        <h2 class="h3">Login</h2>
+
+                    <form method="post">
+                        <input type="hidden" id="ForwardAction" name="ForwardAction" value="Index" />
+                        <input type="hidden" id="ForwardController" name="ForwardController" value="Home" />
+                        <input type="hidden" id="RouteId" name="RouteId" value="" />
+                        <input type="hidden" id="ReturnUrl" name="ReturnUrl" value="/Account/WishList" />
+                        <div class="form-horizontal">
+                            <div class="text-danger validation-summary-valid" data-valmsg-summary="true"><ul><li style="display:none"></li>
+</ul></div>
+                            <div class="form-group">
+                                <div class="col-md-12">
+                                    <input type="email" class="form-control" id="inputEmail3" data-val="true" data-val-email="The Email field is not a valid e-mail address." data-val-required="The Email field is required." name="Email" value="">
+                                    <label for="inputEmail3" class="col-sm-12 control-label">Email address</label>
+
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-md-12">
+                                    <input type="password" class="form-control" id="inputPassword3" data-val="true" data-val-required="The Password field is required." name="Password">
+                                    <label for="inputPassword3" class="control-label">Password</label>
+
+
+                                </div>
+                            </div>
+                            <div class="form-group last">
+                                <div class="col-sm-12 col-xs-12">
+                                    <div class="row">
+                                        <div class="remember-me col-sm-8 col-xs-6">
+
+                                            <label class="checkbox">
+                                                <span>Remember me</span>
+                                                <input type="checkbox">
+                                                <span class="checkmark"></span>
+                                            </label>
+
+                                        </div>
+                                        <div class="help-block col-sm-4 col-xs-6 text-right"><a href="/Account/ForgotPassword">Forgot Password?</a></div>
+                                    </div>
+
+
+                                </div>
+                                <div class="col-md-12 col-xs-12">
+                                    <input type="submit" value="Sign In" class="btn btn-success" />
+                                </div>
+
+                            </div>
+
+                        </div>
+                    <input name="__RequestVerificationToken" type="hidden" value="CfDJ8F6p6RENyOlOouyPoSPZxlKyNnFU-A27Xnqf9m2qg8tUah62bgiaKj54-8CHrgE5ov-x8CEXMr4PglsCcKqUc0Z3mB5eNbSgjUjNWES9owoe-f3cGIMUNQ0PLozws-leQFB47-ec3MUtbMJw8dcvbzE" /></form>
+
+                </div>
+
+            </div>
+
+
+
+
+        </div>
+    </div>
+</div>
+
+
+<script>
+
+    (function ($) {
+        'use strict';
+
+        $.fn.floatingLabel = function (option) {
+            var parent = $(this).closest('.form-group');
+
+            if (parent.length) {
+                switch (option) {
+                    case 'focusin':
+                        $(this).closest('.form-group').addClass('control-focus');
+                        break;
+                    case 'focusout':
+                        $(this).closest('.form-group').removeClass('control-focus');
+                        break;
+                    case 'ChangeFortText':
+                        if (this.val()) {
+                            parent.addClass('control-highlight');
+                        }
+                        else {
+                            parent.removeClass('control-highlight');
+                        }
+                        break;
+                    default:
+                        $(this).closest('.form-group').addClass('control-highlight');
+                        break;
+                }
+            }
+
+            return this;
+        };
+    }($));
+
+    $(document).ready(function () {
+        'use strict';
+        $(document).on('change', function () {
+            $('.form-group .form-control').each(function () {
+                $(this).floatingLabel('ChangeFortText');
+            });
+        });
+
+        $('.form-group .form-control').each(function () {
+            $(this).floatingLabel('ChangeFortText');
+        });
+
+        $(document).on('change', '.form-group .form-control', function () {
+            $(this).floatingLabel('ChangeFortText');
+        });
+
+        $(document).on('focusin', '.form-group .form-control', function () {
+            $(this).floatingLabel('focusin');
+        });
+
+        $(document).on('focusout', '.form-group .form-control', function () {
+            $(this).floatingLabel('focusout');
+        });
+
+    });
+
+</script>
+
+    </div>
+
+    <div id="layoutFooterWrap">
+        <div class="container">
+    <div class="row">
+        <div class="col-md-2">
+
+
+        </div>
+        <div class="col-md-8 text-center">
+            <ul class="list-unstyled list-inline footer-nav">
+                <li><a href="/Content/CustomerService">Customer Service</a></li>
+                <li><a href="/Content/CustomOrders">Custom Orders</a></li>
+                <li><a href="/Content/Returns">Returns</a></li>
+                <li><a href="/Content/Shipping">Shipping</a></li>
+                <li><a href="/Content/PrivacyPolicy">Privacy Policy</a></li>
+                <li><a href="/Content/SiteTerms">Site Terms</a></li>
+
+            </ul>
+
+        </div>
+        <div class="col-md-2 col-xs-12 text-center">
+            <strong>
+                Connect With Us
+            </strong>
+            <ul class="list-unstyled list-inline">
+            </ul>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12 text-center underline-top">
+            <p>
+                &copy;2026 Robinson Helicopter Company Store - Powered by <a href="https://www.cogginspromo.com" target="_blank">Coggins Promo</a>
+            </p>
+        </div>
+    </div>
+</div>
+    </div>
+
+
+
+    
+
+
+</body>
+</html>
+
+<script>
+  function handleDropdownDisplay() {
+    var dropdowns = document.querySelectorAll('.dropdown, .dropdown-toggle');
+
+    function displayDropdownMenu() {
+      var dropdownMenu = this.querySelector('.dropdown-menu');
+      if (dropdownMenu && !isMobile()) {
+        dropdownMenu.style.display = 'block';
+        this.setAttribute('aria-expanded', 'true');
+      }
+    }
+
+    function hideDropdownMenu() {
+      var dropdownMenu = this.querySelector('.dropdown-menu');
+      if (dropdownMenu) {
+        dropdownMenu.style.display = 'none';
+        this.setAttribute('aria-expanded', 'false');
+      }
+    }
+
+    function isMobile() {
+      return window.innerWidth <= 768; // Adjust the breakpoint to your desired mobile width
+    }
+
+    function updateEventListeners() {
+      if (isMobile()) {
+        dropdowns.forEach(function (dropdown) {
+          dropdown.removeEventListener('mouseover', displayDropdownMenu);
+          dropdown.removeEventListener('mouseout', hideDropdownMenu);
+          dropdown.removeEventListener('focus', displayDropdownMenu);
+          dropdown.removeEventListener('blur', hideDropdownMenu);
+          dropdown.removeAttribute('aria-expanded'); // Remove aria-expanded attribute for mobile view
+        });
+      } else {
+        dropdowns.forEach(function (dropdown) {
+          dropdown.addEventListener('mouseover', displayDropdownMenu);
+          dropdown.addEventListener('mouseout', hideDropdownMenu);
+          dropdown.addEventListener('focus', displayDropdownMenu);
+          dropdown.addEventListener('blur', hideDropdownMenu);
+          dropdown.setAttribute('aria-expanded', 'false'); // Add aria-expanded attribute for desktop view
+        });
+      }
+    }
+
+    // Initial setup
+    updateEventListeners();
+
+    // Event listener for screen size changes
+    window.addEventListener('resize', function () {
+      updateEventListeners();
+    });
+  }
+
+  handleDropdownDisplay();
+</script>

@@ -1,0 +1,472 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+    <title>EASA Safety Publications Tool</title>
+	<meta name="description" content="EASA Airworthiness Directives Publishing Tool">
+    <meta name="keywords" content="Safety Publication,Safety Publications,AD,ADs,EASA,European Union Aviation Safety Agency,Agence Européenne de la Sécurité Aérienne">
+    <meta name="robots" content="All">
+    <meta name="rating" content="General">
+    <meta name="resource-type" content="document">
+    <meta http-equiv="Content-type" content="text/html; charset=utf-8">
+    <meta http-equiv="Content-Script-Type" content="text/javascript">
+    <meta http-equiv="Content-Style-Type" content="text/css">
+    <meta name="revisit-after" content="7 days">
+    <meta name="robots" content="index,follow">
+    <meta name="DC.Publisher" content="easa.eu">
+
+    <link rel="shortcut icon" type="image/x-icon" href="https://ad.easa.europa.eu/static/img/favicon.ico">
+
+    <link rel="stylesheet" type="text/css" href="https://ad.easa.europa.eu/static/css/ext/css/ext-all.css">
+
+    <link rel="stylesheet" type="text/css" href="https://ad.easa.europa.eu/static/css/default/easa_adtool.css">
+    <link rel="stylesheet" type="text/css" href="https://ad.easa.europa.eu/static/css/default/tree.css">
+    <link rel="stylesheet" type="text/css" href="https://ad.easa.europa.eu/static/css/default/resultset_paging.css">
+    <link rel="stylesheet" type="text/css" href="https://ad.easa.europa.eu/static/css/default/resultset_detail.css">
+    <link rel="stylesheet" type="text/css" href="https://ad.easa.europa.eu/static/css/notices.css?v=2">
+
+
+
+<!-- IE toolbar overflow bug hack [start] -->
+<!--[if IE]>
+<style type="text/css">
+.td_toolbar {
+    text-align: left;
+    vertical-align: top;
+    background: url(/static/css/ext/images/default/toolbar/bg.gif) #d0def0 repeat-x;
+    border-bottom: 1px solid #a9bfd3;
+    height: 26px;
+}
+.div_toolbar {
+    overflow: hidden;
+    width: 100px;
+}
+</style>
+<![endif]-->
+<!-- IE toolbar overflow bug hack [end] -->
+
+
+<script type="text/javascript" src="https://ad.easa.europa.eu/static/js/custom/general.js"></script>
+
+</head>
+
+<body>
+
+<!-- header [start] -->
+<div id="divHeader">
+    <table id="tblHeader" border="0" cellpadding="0" cellspacing="0">
+        <tr class="trHeader">
+            <td  class="header_logo">
+                <div class="easa-logo">
+                </div>
+            </td>
+            <td class="header_expand">
+                <span class="header_info">You are <strong>not</strong> logged in</span>
+            </td>
+            <td class="header_right">
+                <div class="header_right_info">&nbsp;
+                    <span class="header_text_two">Safety Publications Tool</span>
+                    <!--<span class="header_text_two">AD</span>-->
+                    <!--<span class="header_text_three">easa.europa.eu</span>
+                    <span class="header_text_four">information hub</span>-->
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td class="td_toolbar" colspan="3"><div id="header_toolbar" class="div_toolbar"></div></td>
+        </tr>
+    </table>
+</div>
+<!-- header [end] -->
+
+<div class="div_footer_shadow1">
+    <div class="div_footer_shadow2">
+        <div id="divMain">
+            <!-- content [start] -->
+            <div id="ZN-main">
+                <form id="frmMain" name="frmMain" action="https://ad.easa.europa.eu/search/" onSubmit="return doQuery(this);" method="post" style="margin:0px;">
+
+
+<script type="text/javascript">
+function isDateValid(obj)
+{
+    if(!obj || !obj.value)
+        return false;
+    if(obj.value.length == 0)
+        return true;
+
+    if(obj.value.match(/\d{4}-\d{2}-\d{2}/))
+    {
+        obj.style.border = "1px solid #888888";
+        return true;
+    }
+    else
+    {
+         alert('Please enter the date in the format "YYYY-MM-DD". You can use the calendar button to the right of the field to assist you.');
+         obj.focus();
+        return false;
+    }
+}
+
+
+function isFilterChanged()
+{
+    var f = null;
+    if(isDefined('getSelectedFilterDetails')) {
+        f = getSelectedFilterDetails();
+    }
+    if(f && f.id != 'f_current' && isDefined('updateFilterDetailsFromForm')) {
+        updateFilterDetailsFromForm();
+    }
+    if(isDefined('updateFilterDescription')) {
+        updateFilterDescription();
+    }
+    if(f && f.id != 'f_current') {
+        markFilterAsChanged(f, true);
+    }
+}
+</script>
+
+                    <!-- left column [start] -->
+                    <div id="ZN-main-left">
+                        <div id="EL-search-container">
+
+                            <input type="hidden" name="fi_action" id="fi_action" value="advanced">
+                            <input type="hidden" name="fi_tree" id="fi_tree" value="">
+
+                            <div id="EL-search">
+                                <div style="margin:8px 0; white-space:nowrap;">
+                                    <label for="fi_keyword">Keyword:</label>
+                                    <input value="" type="text" id="fi_keyword" name="fi_keyword" class="input_text" style="width:112px;" onblur="isFilterChanged()">
+                                </div>
+                                <div style="margin:8px 0; white-space:nowrap; vertical-align:baseline;">
+                                    Show me:
+                                    <table border="0" cellpadding="0" cellspacing="0" style="width:100%;">
+                                            <tr>
+                                                <td style="text-align:left; padding:2px 8px 2px 0px; vertical-align:top; white-space:nowrap;">
+                                                    <input type="checkbox" style="margin:0px; padding:0px;" name="fi_adclass[]" id="fi_adclass_AD" value="AD"  class="input_checkbox" onclick="isFilterChanged()">
+                                                    <label for="fi_adclass_AD" style="margin:0px; padding:0px;">AD</label>
+                                                </td>
+                                                <td style="text-align:left; padding:2px 8px 2px 0px; vertical-align:top; white-space:nowrap;">
+                                                    <input type="checkbox" style="margin:0px; padding:0px;" name="fi_adclass[]" id="fi_adclass_EAD" value="EAD"  class="input_checkbox" onclick="isFilterChanged()">
+                                                    <label for="fi_adclass_EAD" style="margin:0px; padding:0px;">EAD</label>
+                                                </td>
+                                                <td style="text-align:left; padding:2px 8px 2px 0px; vertical-align:top; white-space:nowrap;">
+                                                    <input type="checkbox" style="margin:0px; padding:0px;" name="fi_adclass[]" id="fi_adclass_PAD" value="PAD"  class="input_checkbox" onclick="isFilterChanged()">
+                                                    <label for="fi_adclass_PAD" style="margin:0px; padding:0px;">PAD</label>
+                                                </td>
+                                                <td style="width:100%;" rowspan="2">&nbsp;</td>
+                                            </tr>
+                                            <tr>
+                                                <td style="text-align:left; padding:2px 8px 2px 0px; vertical-align:top; white-space:nowrap;">
+                                                    <input type="checkbox" style="margin:0px; padding:0px;" name="fi_adclass[]" id="fi_adclass_SIB" value="SIB"  class="input_checkbox" onclick="isFilterChanged()">
+                                                    <label for="fi_adclass_SIB" style="margin:0px; padding:0px;">SIB</label>
+                                                </td>
+                                                <td style="text-align:left; padding:2px 8px 2px 0px; vertical-align:top; white-space:nowrap;">
+                                                    <input type="checkbox" style="margin:0px; padding:0px;" name="fi_adclass[]" id="fi_adclass_PSD" value="PSD"  class="input_checkbox" onclick="isFilterChanged()">
+                                                    <label for="fi_adclass_PSD" style="margin:0px; padding:0px;">PSD</label>
+                                                </td>
+                                                <td style="text-align:left; padding:2px 8px 2px 0px; vertical-align:top; white-space:nowrap;">
+                                                    <input type="checkbox" style="margin:0px; padding:0px;" name="fi_adclass[]" id="fi_adclass_SD" value="SD"  class="input_checkbox" onclick="isFilterChanged()">
+                                                    <label for="fi_adclass_SD" style="margin:0px; padding:0px;">SD</label>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                </div>
+                                <div style="margin:8px 0; white-space:nowrap;">Filter By date:
+                                   <table border="0" cellpadding="0" cellspacing="2" style="width:100%">
+                                       <tr>
+                                          <td style="text-align:right; width:100%;">
+                                            <label for="fi_date_start">From:</label>
+                                          </td>
+                                          <td style="padding-right:2px;">
+                                            <input value="" id="fi_date_start" name="fi_date_start" type="text" style="width:72px;" onblur="if(isDateValid(this)) isFilterChanged();">
+                                          </td>
+                                      </tr>
+                                      <tr>
+                                        <td style="text-align:right; width:100%;">
+                                            <label for="fi_date_end">To:</label>
+                                        </td>
+                                        <td style="padding-right:2px;">
+                                            <input value="" id="fi_date_end" name="fi_date_end" type="text" style="width:72px;" onblur="if(isDateValid(this)) isFilterChanged();">
+                                        </td>
+                                    </tr>
+                               </table>
+                        </div>
+                        <div style="text-align:right; margin:0; white-space:nowrap; vertical-align:middle;">
+                            <a onclick="if(isDefined('buildFilter') &amp;&amp; typeof(buildFilter) == 'function') { buildFilter(); } doQuery(document.forms[0]); return false;"><img src="https://ad.easa.europa.eu/static/img/button/btn_search.gif" alt="Search" onmouseover="this.src='https://ad.easa.europa.eu/static/img/button/btn_search_over.gif'" onmouseout="this.src='https://ad.easa.europa.eu/static/img/button/btn_search.gif'"></a>
+                       </div>
+                </div>
+            </div>
+
+                        <div id="divDescriptionCaption" style="margin:8px; color:white; font-weight:bold; display:none;">Filter description:</div>
+                        <div id="divDescription" style="background-color:white; border:1px solid #888888; padding:4px; margin:8px; display:none; line-height: 1.9;"></div>
+                    </div>
+                    <!-- left column [end] -->
+                    <!-- TC holder/Type/Model categories [start] -->
+                    <div id="ZN-main-central">
+
+                        <table border="0" cellpadding="0" cellspacing="0" style="height:440px; overflow:hidden;">
+                        <tr>
+                            <th style="padding-bottom:4px; text-align:center;"><h3>Taxonomy</h3></th>
+                            <th style="padding-bottom:4px; text-align:center;"><h3>Your filters</h3></th>
+                        </tr>
+                        <tr>
+                            <td style="vertical-align:top; width:248px; height:408px; white-space:nowrap;">
+                                <div style="width:248px; height:100%; overflow:hidden;">
+                                    <div id="treeTaxonomy" style="width:240px; height:400px; border:1px solid #888888; padding:0; margin:0; font-family:tahoma; font-size:11px; overflow:auto;"></div>
+                                </div>
+                            </td>
+                            <td style="vertical-align:top; height:408px; padding-left:8px;" id="tdFilters">
+                                 <div id="treeFilter" style="width:240px; height:400px; border:1px solid #888888; padding:0; margin:0; font-family:tahoma; font-size:11px; overflow:auto;"></div>
+                            </td>
+                            <td style="vertical-align:top; height:408px; padding-left:8px;">
+                                <table border="0" cellpadding="0" cellspacing="0" style="height:408px;">
+                                <tr>
+                                    <td style="vertical-align:top; height:40px;">
+                                        &nbsp;
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="vertical-align:top; height:40px;">
+                                        &nbsp;
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td id="tdRemove" style="padding-bottom:4px; vertical-align:bottom; height:320px; visibility:hidden;">
+                                        <img id="imgSelectedNodeType" src="https://ad.easa.europa.eu/static/img/tree/tcholder_16x16.gif" alt="TC holder"><img src="https://ad.easa.europa.eu/static/img/arrow/arrow_drop.gif" alt="TC holder"><br>
+                                        <img id="imgTrashCan" src="https://ad.easa.europa.eu/static/img/button/btn_trash.gif" alt="Click here to remove this from your filter" title="Click here to remove this from your filter" style="cursor:pointer;" onclick="removeFromFilter()">
+                                    </td>
+                                </tr>
+                                </table>
+                            </td>
+                        </tr>
+                        </table>
+                        
+                        <input type="hidden" name="ps_src_tree" id="ps_src_tree" value="">
+                        <input type="hidden" name="fi_notification" id="fi_notification" value="N">
+                        <input type="hidden" name="is_default" id="is_default" value="N">
+
+                        <div class="hint">Double-click on a TC holder/Type/Model in the Taxonomy panel <strong>or</strong> drag'n'drop them onto the current filter to narrow down your search.</div>
+                        <div id="spacer" style="height:16px;"></div>
+
+                    </div>
+                    <!-- TC holder/Type/Model categories [end] -->
+                    <div class="spacer"></div>
+                </form>
+            </div>
+            <!-- content [end] -->
+        </div>
+    </div>
+</div>
+
+<!-- footer [start] -->
+<div class="div_footer_shadow1" id="divFooter">
+    
+    <div class="div_footer_shadow2">
+        <div class="div_footer">
+            <table border="0" cellpadding="0" cellspacing="0" class="tbl_footer">
+            <tr>
+                <td style="text-align:left; padding-left:4px;">
+                    For help on using this tool, please refer to <a href="https://ad.easa.europa.eu/help/index.html" onkeypress="window.open(this.href); return false;" onclick="window.open(this.href); return false;">the help section</a><br>
+                    For any inquiry regarding ADs, please contact
+                    <a href="#" onclick="location.href='amliotA:sDe@sa.aueorape.u'.replace(/(.)(.)/g, '$2$1'); return false;">the EASA AD team</a>
+                    <br>
+                    To report any bug, broken link or problem with this application, please contact the
+                    <a href="#" onclick="location.href='amliota:sde@sa.aueorape.u'.replace(/(.)(.)/g, '$2$1'); return false;">webmaster</a>
+                </td>
+                <td style="font-size:1px; padding-left:4px;">
+                    <img src="https://ad.easa.europa.eu/static/img/valid-html401-blue-16px.gif" alt="Valid HTML 4.01 Strict" height="16" width="45">
+                </td>
+                <td style="text-align:right; padding-left:4px;">
+                    <a href="https://ad.easa.europa.eu/disclaimer">Disclaimer &amp; copyright notice</a> - 2024 &#169; <a onkeypress="window.open(this.href); return false;" onclick="window.open(this.href); return false;" href="http://www.easa.europa.eu">www.easa.europa.eu</a>
+                </td>
+            </tr>
+            </table>
+        </div>
+    </div>
+</div>
+<!-- footer [end] -->
+
+
+<script type="text/javascript" src="https://ad.easa.europa.eu/static/js/custom/fct_search.js"></script>
+<script type="text/javascript" src="https://ad.easa.europa.eu/static/js/custom/util.js"></script>
+<script type="text/javascript" src="https://ad.easa.europa.eu/static/js/external/yui-utilities.js"></script>
+<script type="text/javascript" src="https://ad.easa.europa.eu/static/js/external/ext-yui-adapter.js"></script>
+<script type="text/javascript" src="https://ad.easa.europa.eu/static/js/external/ext-all.js"></script>
+
+<script type="text/javascript" src="https://ad.easa.europa.eu/static/js/custom/make_ext_widgets.js"></script>
+
+<script type="text/javascript">
+var URL_STATIC = "https://ad.easa.europa.eu/static/";
+var URL_ROOT = "https://ad.easa.europa.eu/";
+</script>
+                        
+<script type="text/javascript" src="https://ad.easa.europa.eu/static/js/custom/filter_tree_ext.js"></script>
+                        
+<script type="text/javascript">
+    var aUserFilters = new Array();
+    
+    aUserFilters[0] = {
+        id:         "f_current",
+        text:       "(current)",
+        keyword:    null,
+        dateStart:  null,
+        dateEnd:    null,
+        classesAD:  "",
+        isActive:   false,
+        isDefault:  false,
+        isChanged:  false,
+        aNodes:     []
+    };
+                        
+    function showUserFilters()
+    {
+        showUserFilterNodes();
+    }
+</script>
+
+
+
+
+<!-- top menu [start] -->
+<script type="text/javascript">
+
+Ext.onReady(function()
+{
+    var thisScope = this;
+    Ext.QuickTips.init();
+
+    var menuExportCSV = new Ext.menu.Menu({
+        });
+    
+    var menuExport = new Ext.menu.Menu({
+        });
+
+    var tb = new Ext.Toolbar({
+        renderTo: 'header_toolbar'
+    });
+
+
+    tb.add(
+
+        {
+            cls     :   'x-btn-text',
+                text    :   'AD Home Page',
+                tooltip :   'See information about Safety Publications<br> on the EASA website',
+                handler :   function onUserGuide(btn) {
+            var winRelated = window.open('https://www.easa.europa.eu/en/domains/aircraft-products/airworthiness-directives-ad', 'winUserGuide');
+            if(winRelated && winRelated.focus)
+                winRelated.focus();
+            }
+        },
+        '-',
+        {
+            cls     :   'x-btn-text',
+            text    :   'MCAI',
+            tooltip :   'Show all available Mandatory Continuing Airworthiness Information',
+                        handler :   function onHome(btn) {
+                            location.href = 'https://ad.easa.europa.eu/';
+                        }
+            },
+                        '-',
+        {
+            cls     :   'x-btn-text',
+            text    :   'SIB',
+            tooltip :   'Show all available Safety Information',
+                     handler :   function onSibDistinct(btn) {
+                            location.href = 'https://ad.easa.europa.eu/sib-docs/page-1';
+                        }
+
+
+        },
+    '-',
+
+        {
+    cls     :   'x-btn-text',
+        text    :   'SD',
+    tooltip :   'Show all available Safety Directives',
+        handler :   function onODDistinct(btn) {
+    location.href = 'https://ad.easa.europa.eu/sd-docs/page-1';
+    }
+
+    },
+        '-',
+        {
+            cls     :   'x-btn-text',
+            text    :   'Advanced search',
+            tooltip :   'Perform a detailed query based on multiple criteria',
+            pressed :   true,
+             handler :   function onSearch(btn) {
+                            location.href = 'https://ad.easa.europa.eu/search/advanced';
+                        }
+
+        },
+        '-',
+        {
+            cls     :   'x-btn-text',
+            text    :   'AD Biweekly reports',
+            tooltip :   'Access AD biweekly reports of previously published Mandatory Continuing Airworthiness Information',
+            handler :   function onBiweekly(btn) {
+                            location.href = '/biweekly';
+                        }
+        },
+        '-',
+        {
+            cls     :   'x-btn-text',
+            text    :   'User guide',
+            tooltip :   'Read the user guide for this application',
+            handler :   function onUserGuide(btn) {
+                            var winUserGuide = window.open('/help/index.html', 'winUserGuide');
+                            if(winUserGuide && winUserGuide.focus)
+                                winUserGuide.focus();
+                        }
+        },
+        '-',
+        {
+            cls     :   'x-btn-text',
+            text    :   'AD FAQ',
+            handler :   function onAdFaq(btn) {
+                            window.open('https://www.easa.europa.eu/the-agency/faqs/airworthiness-directives-ads', '_blank');
+                        }
+        },
+        '-',
+        {
+            cls     :   'x-btn-text',
+            text    :   'AMOC FAQ',
+            handler :   function onAmFaq(btn) {
+                            window.open('https://www.easa.europa.eu/the-agency/faqs/alternative-method-compliance-amoc-airworthiness-directive-ad', '_blank');
+                        }
+        },
+        '-'
+    );
+
+    tb.addButton(
+        {
+            cls     :   'x-btn-text',
+            text    :   'Register',
+            tooltip :   'Click here to register if you are a new user',
+            handler :   function onUserRegister(btn) {
+                            location.href = '/redirect.php?url=' + encodeURIComponent('https://hub.easa.europa.eu/security/?app=awd&act=register');
+                        }
+        }
+    );
+    tb.addSeparator();
+    tb.addButton(
+        {
+            cls     :   'x-btn-text',
+            text    :   'Login',
+            tooltip :   'Click here to login.<br>You need to be logged in to save multiple filters and receive notifications',
+            handler :   function onUserLogin(btn) {
+                            location.href = '/redirect.php?url=' + encodeURIComponent('https://hub.easa.europa.eu/security/?act=login&app=awd');
+                        }
+        }
+    );
+    
+    if(isDefined('onAfterLoad'))
+        onAfterLoad();
+});
+</script>
+<!-- top menu [end] -->
+
+</body>
+</html>

@@ -1,0 +1,339 @@
+
+
+<!DOCTYPE html>
+
+<html lang="en">
+<head><meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" /><title>
+	 PAROS 3.0
+</title><script src="/paros/bundles/modernizr?v=inCVuEFe6J4Q07A0AcRsbJic_UE5MwpRMNGcOtk94TE1"></script>
+<link href="/paros/Content/css?v=naTm_Rs--qZgawrjpVb7diauEsbRXcPVZTnfTPRULWI1" rel="stylesheet"/>
+<link href="favicon.ico" rel="shortcut icon" type="image/x-icon" /><link href="Content/BackRoom.css" rel="stylesheet" /><link href="Content/Calendar.css" rel="stylesheet" /><link href="Content/bootstrap-multiselect.css" rel="stylesheet" /><link href="Content/Site.css" rel="stylesheet" /><link href="Content/5star.css" rel="stylesheet" />
+
+	<script src="Scripts/jquery-3.6.0.slim.min.js"  type="text/javascript" ></script>
+    <script src="Scripts/jquery-3.6.0.slim.js"  type="text/javascript" ></script>
+    <script src="Scripts/jquery-3.6.0.js"  type="text/javascript" ></script>
+    <script src="Scripts/jquery-3.6.0.min.js"  type="text/javascript" ></script>
+	<script src="intl-tel-input-master/build/js/data.js"></script>
+    <script src="intl-tel-input-master/build/js/data.min.js"></script>
+    <script src="intl-tel-input-master/build/js/intlTelInput-jquery.js"></script>
+    <script src="intl-tel-input-master/build/js/intlTelInput-jquery.min.js"></script>
+    <script src="intl-tel-input-master/build/js/intlTelInput.js"></script>
+    <script src="intl-tel-input-master/build/js/intlTelInput.min.js"></script>
+    <script src="intl-tel-input-master/build/js/utils.js"></script>
+
+    <link href="Scripts/dhtmlxscheduler_glossy.css" rel="stylesheet" type="text/css" /><link href="intl-tel-input-master/build/css/intlTelInput.min.css" rel="stylesheet" /><link href="intl-tel-input-master/build/css/intlTelInput.css" rel="stylesheet" /><link href="tooltipster-master/css/tooltipster.css" rel="stylesheet" />
+
+    <script src="tooltipster-master/js/jquery.tooltipster.js"></script>
+    <script src="tooltipster-master/js/jquery.tooltipster.min.js"></script>
+
+	<script src="Scripts/master_page.js"></script>
+	<script src="Scripts/Request.js"></script>
+	<script src="Scripts/encription.js"></script>
+	<script src="Scripts/initialising.js"></script>
+	<script src="Scripts/Check_User_Session.js"></script>
+	<script src="Scripts/asynchronious_Updates_and_Emails.js"></script>
+    <script src="Scripts/JavaScript.js"></script>
+	<script src="ckeditor/ckeditor.js"></script>
+    
+	<script src="Scripts/dhtmlxscheduler.js" type="text/javascript"></script>
+	<script src="Scripts/ext/dhtmlxscheduler_tooltip.js"  type="text/javascript" ></script>
+	<script src='Scripts/ext/dhtmlxscheduler_minical.js' type="text/javascript"></script>
+	<script src="Scripts/ext/dhtmlxscheduler_pdf.js" type="text/javascript"></script>
+	<script src="Scripts/ext/dhtmlxscheduler_serialize.js" type="text/javascript"></script>
+	<script src="Scripts/Scheduler_Methods.js" type="text/javascript"></script>
+	<script src="Scripts/Scheduler_First_Fill_Calendar.js" type="text/javascript"></script>
+	<script src="Scripts/Scheduler_Event_Methods.js" type="text/javascript"></script>
+
+    <link href="Content/Site.css" rel="stylesheet" /><link href="Content/Calendar.css" rel="stylesheet" /><link href="Content/bootstrap.rtl.min.css" rel="stylesheet" /><link href="Content/bootstrap.rtl.css" rel="stylesheet" /><link href="Content/bootstrap.min.css" rel="stylesheet" /><link href="Content/bootstrap.css" rel="stylesheet" /><link href="Content/bootstrap-utilities.rtl.min.css" rel="stylesheet" /><link href="Content/bootstrap-utilities.rtl.css" rel="stylesheet" /><link href="Content/bootstrap-utilities.min.css" rel="stylesheet" /><link href="Content/bootstrap-utilities.css" rel="stylesheet" /><link href="Content/bootstrap-reboot.rtl.min.css" rel="stylesheet" /><link href="Content/bootstrap-reboot.rtl.css" rel="stylesheet" /><link href="Content/bootstrap-reboot.min.css" rel="stylesheet" /><link href="Content/bootstrap-reboot.css" rel="stylesheet" /><link href="Content/bootstrap-multiselect.css" rel="stylesheet" /><link href="Content/bootstrap-grid.rtl.min.css" rel="stylesheet" /><link href="Content/bootstrap-grid.rtl.css" rel="stylesheet" /><link href="Content/bootstrap-grid.min.css" rel="stylesheet" /><link href="Content/bootstrap-grid.css" rel="stylesheet" /><link href="Content/BackRoom.css" rel="stylesheet" /><link href="Content/5star.css" rel="stylesheet" /><link href="/paros/WebResource.axd?d=hcXDZhXiidgsQUtEo5iT3262UM_0um_JZPuU3BrJSZ_wMD6Js6rZAjH5jtIBG-x3aw_OmFLbF9DZF_CiSWqnqh2hPNoXcx1EMwRb5HCHTdOStXXMXynPjrcJfyjCOuDJHPNa5MDsVEUQdvWCl5rihpLXctU1&amp;t=635818281100000000" type="text/css" rel="stylesheet" /></head>
+<body id="body" onload="init('PAROS');" >
+		 
+	 <script type="text/javascript">
+		 var timeout = 720;
+     </script>
+
+    <form method="post" action="./" id="form1" autocomplete="off">
+<input type="hidden" name="__VIEWSTATEFIELDCOUNT" id="__VIEWSTATEFIELDCOUNT" value="2" />
+<input type="hidden" name="__VIEWSTATE" id="__VIEWSTATE" value="vP37xEe6sBwX1wW/04NUwLNR24ePnXtSJjqDl/yNsyOGNC+5/MI12egNlms7U+x1UTt80LII8FG/dp6e7EHiYrgyhIL6KSaZ/STIXtKxFDLtZCthW/XAhmWYx0xHstwG+EW09o3iCM+AUmTd8BuEst1lVzlBQT9cHSiuM0WdzJhe6T8HIbjTCMWLM5nXaVGk3mJy7RK0MnFmXLEsC0PsoROb/TCiO7TL84Nr69ZNA1PdYw1Kp8msGoO8379VmT//FByuA9JKQkCdd2ZCsl8j5bZievoeQvg0gtpE9uQrTbVMNYySKxKIcTvSpmfH3LPxbGcRhBv0vdS2+Q3XE+MaL0kjJTghy5qdZdn88n09j7O8MDGhPlgvG3MucKcLmdwt4sTjTnn1SU5dIkapKkcuhlJPTG+dbKrl4p8FRIZXj1pv3guFSo3/9srlhdGBgIQk7y174bSYsZ4tLF6v4GGI2ZJ2SJZ4dLFH61JJJzKzW8DV2pn5co62" />
+<input type="hidden" name="__VIEWSTATE1" id="__VIEWSTATE1" value="7dShHbDYtRiTM0oGPA1HcUOAsCnsmewTcOINWeRmXs4VwRUF3GVpDsTZwLqYRwG31vE2Dt1hUvC6bMAIOePwh7dovCJ5uUy282I9PgSu6aotlxiI4L0l4gNhpLt533fsOQkZl0js6s0rtyFLIW3B1Txcqudu9GufL7u06WA=" />
+
+
+<script src="/paros/bundles/MsAjaxJs?v=c42ygB2U07n37m_Sfa8ZbLGVu4Rr2gsBo7MvUEnJeZ81" type="text/javascript"></script>
+<script src="Scripts/jquery-3.6.0.min.js" type="text/javascript"></script>
+<script src="Scripts/bootstrap.min.js" type="text/javascript"></script>
+<script src="Scripts/respond.js" type="text/javascript"></script>
+<script src="Scripts/WebForms.js" type="text/javascript"></script>
+<script src="/paros/bundles/WebFormsJs?v=AAyiAYwMfvmwjNSBfIMrBAqfU5exDukMVhrRuZ-PDU01" type="text/javascript"></script>
+<script src="/paros/ScriptResource.axd?d=eE6V8nDbUVn0gtG6hKNX_JtZujWPxriMUH0dMrThTHFDEdYlmg_WX4nj13_aa4jBSCf-Trvprw2zd7KcKuBAucoBGKvcE10RK9ZtF9noH7z6204k0&amp;t=ac64ff3" type="text/javascript"></script>
+<script src="/paros/ScriptResource.axd?d=jwf4VSQi7LeShc44FJ-gAasXwUCoGpKpG_EOJcnU3oOh2xdfMODidJ4-HlzFzyMXTn1mVe6caEhpQ-uqBmfmQ27gElUrskiXTKVdHmuAlCogzf930&amp;t=ac64ff3" type="text/javascript"></script>
+<script src="/paros/ScriptResource.axd?d=mcAASOSteirJeuV-3by3UcZKIY7b_qAH4s3lfT8wSQcxl6cA8JtnUyoHePBJdyUfg3OlWgfGIAA72kyqyiAEMq7UAF41&amp;t=ac64ff3" type="text/javascript"></script>
+<script src="/paros/ScriptResource.axd?d=nai7mGcYyE2dix_TwveLDU7PZxW_38MXhusGnwhRGWRgdAXjBM_zRSBo_UWGH1rqbuTiokrAZO49tYtfAGmW2udcCq4YL4h7CO8DfKetx-B_KCZL0&amp;t=ac64ff3" type="text/javascript"></script>
+<script src="/paros/ScriptResource.axd?d=LQ1q2RBSthBAZhliMjtG_23mMtgjTPuNsAAxXR4eOOWaibSU1EPKCxwZKRr1L6Jg-USGGVjwgwLw5I9pYN8CubiA-v-WdAYf9UH0PYl9ek9OWP5-0&amp;t=ac64ff3" type="text/javascript"></script>
+<script src="/paros/ScriptResource.axd?d=HEFpVKbnoeQjkjHkFKu3MBfKOKukAn5C-zuFKpIf4HksxE5ts7-5fAQGMfzACfxGcNG-PM8tRBcUIVV-dtD1PkTUp7l38JqaSBOeBdbBYzdrvZG70&amp;t=ac64ff3" type="text/javascript"></script>
+<script src="/paros/ScriptResource.axd?d=VOYD8Xe7kQA0lniBYXVpAgz3OIkFY0tfhg9kLResg6-v_aqnYUoaGfjulECb_9d_9iuKPkiw1mT0BaqYpNrozyVkCdEJzVqzFjRw7p1-XvlGx4MK0&amp;t=ac64ff3" type="text/javascript"></script>
+<script src="/paros/ScriptResource.axd?d=yDT7ulzE00Yqzs5zd38bJ2yFYbVEP8ouWVSk_aJv-8HI1GStl2CZyzTEpKGhVd8Nn_weHajn0H1OxzYuRJ9gLugPeAhCudUnTYi-LIJLuwjgk32T0&amp;t=ac64ff3" type="text/javascript"></script>
+<script src="/paros/ScriptResource.axd?d=5ib3lCcyinHeLQmkwMF7Eo6TD6BhnBICeZt0ZO3lJpsucCyj2W0Z4Q3ZkEJ1SH5t3UDP3xB15gydSAMEPevvaPR-MFVLzAfoPWfCtTKkFuBeWe990&amp;t=ac64ff3" type="text/javascript"></script>
+<script src="/paros/ScriptResource.axd?d=iON9Jxe8QCRam1nkdNLgkdPH8Bet0wO2BwbOuMlgGT6qhPEQvTFdrcoFKqx8Tf2LZueRbP0r-uT9VnNjSa1Dodc5a6MzXPTHvsDKV_uIom7BduJs0&amp;t=ac64ff3" type="text/javascript"></script>
+<script src="/paros/ScriptResource.axd?d=xGmPTKfsNy0_1Sr5I58kO9fpkk5ECC4b6rL85SpahZWpUZBP6VYyARFMe7srr8Eu1z1KIbG-sCIdXVhRrL8mLUy729RILSFG_JgJU2f0OQYSRxIJ0&amp;t=ac64ff3" type="text/javascript"></script>
+<script src="/paros/ScriptResource.axd?d=hOeJu0xhC-uW6Gf8ooKdXoiC9BzFXmXL-iDVNC6CEqZcqi8UoIJyaj7Fdftu5vkljA00n0t1P3Ngtj3fXRXm_GnDeVUOxBBE9Sfn1PksS2oflQ7i0&amp;t=ac64ff3" type="text/javascript"></script>
+<script src="/paros/ScriptResource.axd?d=XlV9GqTk6b5uqDuL38kZ4OlsMfEc7ib2mIvushYaKmAARSk2Z9UIdIqQDj91HHHCCWrBlT8BVagahi1qS0LPe0rMkh2L-g3Qv_vac3Kq5AC8EFy_0&amp;t=ac64ff3" type="text/javascript"></script>
+<script src="PAROS_WebService.asmx/js" type="text/javascript"></script>
+<input type="hidden" name="__VIEWSTATEGENERATOR" id="__VIEWSTATEGENERATOR" value="27BABDC5" />
+<input type="hidden" name="__EVENTVALIDATION" id="__EVENTVALIDATION" value="np2eNxjhpX+zsyFUzPIIEKKTUnKbqOdS6jhMZIAcJlTmR7X0pZQUfrENhcl+YfQ1GJcMkWmRCCkzAwuk6XRq3EEdm6vggotDi3vUGkXTao2sseiMpL93j2u4K9361OrF34Y1iHNOE/EQosADQtvfOGKmu8SURUvxhTzS7Ir6bxGciWph" />
+        
+		
+		<div id="_div_Header_Banner_Back_Room" style="text-align:center;  ">
+			 <header>
+				<div class="navbar navbar-fixed-top" style="background-image:url(images/background_image_banner.png); height:80px; margin-left:auto; margin-right:auto; padding-top:0px;  padding-right:50px; text-align:center; width:95%;  " >
+					<table width="100%">
+	<tr>
+		<td width="15%"><img src="images/esa_logo_dark_blue.png" /></td><td align="left" width="15%"><span style="font-family:Arial, Helvetica, sans-serif; text-decoration:none; color:#ffffff; 	font-size:10pt;">European Space Agency </span> <br />
+								<span style="font-family:Arial, Helvetica, sans-serif; text-decoration:none; color:#ffffff; 	font-size:10pt;">European Astronaut Centre </span></td><td align="left"><span style="font-family:Arial, Helvetica, sans-serif; text-decoration:none; color:#ffffff; 	font-size:14pt;">PUBLIC APPEARANCE REQUEST ORGANISATION SYSTEM - PAROS </span></td><td valign="top" width="10%"><img src="images/paros_top_banner.png" border="0" /></td>
+	</tr>
+</table>
+				</div>
+			</header>
+	   </div>
+        
+        <div style="margin-left:auto; margin-right:auto;  width:95%; " >
+			
+		</div>
+		
+
+        <div class="container body-content"  style="max-width: 94%; " >
+            
+	<br />	
+    <script src="tooltipster-master/dist/js/tooltipster.main.min.js"></script>
+    <script src="tooltipster-master/dist/js/tooltipster.main.js"></script>
+    <script src="tooltipster-master/dist/js/tooltipster.bundle.min.js"></script>
+    <script src="tooltipster-master/dist/js/tooltipster.bundle.js"></script>
+    <link href="tooltipster-master/dist/css/tooltipster.main.min.css" rel="stylesheet" />
+    <link href="tooltipster-master/dist/css/tooltipster.main.css" rel="stylesheet" />
+    <link href="tooltipster-master/dist/css/tooltipster.bundle.min.css" rel="stylesheet" />
+    <link href="tooltipster-master/dist/css/tooltipster.bundle.css" rel="stylesheet" />
+	<link rel="stylesheet" type="text/css" href="tooltipster-master/css/tooltipster.css" />
+	<script type="text/javascript" src="tooltipster-master/js/jquery.tooltipster.min.js"></script>
+    <link href="Content/jquery-eu-cookie-law-popup.css" rel="stylesheet" />
+    <script src="Scripts/jquery-eu-cookie-law-popup.js"></script>
+	<link href="Content/jquery-eu-cookie-law-popup.css" rel="stylesheet" />
+    <script src="Scripts/jquery-eu-cookie-law-popup.js"></script>
+    <script src="Scripts/JavaScript.js"></script>
+    <link href="Content/purecookie.css" rel="stylesheet" />
+    <script src="Scripts/purecookie.js"></script>
+
+	<script  type="text/javascript" >
+		$(document).ready(function () {
+			$('.tooltip').tooltipster({
+				animation: 'fade',
+				delay: 200,
+				theme: 'my-custom-theme',
+				touchDevices: false,
+				trigger: 'hover',
+				position: 'right',
+				touchDevices: true,
+				arrow: true,
+				contentAsHTML:true
+			});
+		});
+
+        </script>
+	<style>
+		.my-custom-theme {
+			border-radius: 4px; 
+			border: 1px solid #2952a3;
+			background: #ebf0fa;
+			color: #2952a3;
+		}
+		.my-custom-theme .tooltipster-content {
+			font-family: Arial, sans-serif;
+			font-size: 12px;
+			line-height: 16px;
+			padding: 8px 10px;
+		}
+	</style>
+
+
+
+	<div class="row">
+		<div class="container" style="background-color:#ffffff; height:150px; text-align:center; " >
+			<label style="color:#8585ad; font-size:28pt; font-family:NotesEsa;">connect with our astronauts</label>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+			<img src="images/esa_logo.png" alt="ESA Logo"  />
+		</div>
+		<div  class="container" style="background-color:#ffffff; height:50px; text-align:center;"  >
+			<span><b><font face="Arial,Helvetica,sans-serif" color="Navy" size="4">PUBLIC APPEARANCE REQUEST ORGANISATION SYSTEM - PAROS</font></b></span>
+		</div>
+		<div class="container" style=" height:70px;  text-align:center; vertical-align:central; " >
+			<p>
+				<a href="interview.aspx" class="buttons2" style="font-family:Arial, Helvetica, sans-serif;  background-color:#0098DB; height:35px;" >Interview</a> &nbsp&nbsp&nbsp;    
+				<a href="Public_Appearance.aspx" class="buttons2" style=" font-family:Arial, Helvetica, sans-serif; background-color:#0098DB; height:35px;" > Public Appearance </a>
+			</p>
+		</div>
+	</div>
+	<div >
+		<div style="background-color:#ffffff; text-align:center; ">
+			<fieldset>
+			<legend>Active Astronauts</legend>
+				<div style="height:125px">
+				<img title="Samantha Cristoforetti - ( Astronaut )" src="images/Samantha_Cristoforetti.png" /> 
+
+				<img title="Luca Parmitano - ( Astronaut )" src="images/Luca_Parmitano.png" />
+				 
+				<img title="Andreas Mogensen  - (Astronaut)" src="images/Andreas_Mogensen.png" />  
+				
+				<img title="Thomas Pesquet - ( Astronaut )" src="images/Thomas_Pesquet.png" />   
+
+				<img title="Matthias Maurer - ( Astronaut )" src="images/Matthias_Maurer.png" /> 
+
+				<img title="Tim Peake - ( Astronaut )" src="images/Tim_Peake.png" />      
+			 
+				<img title="Alexander Gerst - ( Astronaut )" src="images/Alexander_Gerst.png" />       
+						  
+				<img title="Sophie Adenot - ( Astronaut )" src="images/Sophie_Adenot_1.jpg" />   
+
+				<img title="Pablo Alvarez Fernandez - ( Astronaut )" src="images/Pablo_Alvarez_Fernandez_1.jpg" />   
+
+				<img title="Rosemary Coogan - ( Astronaut )" src="images/Rosemary_Coogan_1.jpg" />  
+
+				<img title="Raphael_Liegeois - ( Astronaut )" src="images/Raphael_Liegeois_1.jpg" />  
+
+				<img title="Marco Sieber - ( Astronaut )" src="images/Marco_Sieber_1.jpg" />  
+				</div>
+      											  	
+		   </fieldset>
+			<br />
+			<table width="100%">
+	<tr>
+		<td width="80%">
+						<fieldset>
+								<legend>
+									Members of the Astronaut Reserve
+								</legend>
+									<div>
+									<img title="Ales Svoboda - ( Member of the Astronaut Reserve )" src="images/Ales_Svoboda.jpg" />  &nbsp;
+
+									<img title="Amelie Schoenenwald - (  Member of the Astronaut Reserve  )" src="images/Amelie_Schoenenwald.jpg" />   &nbsp;
+
+									<img title="Andrea Patassa - ( Member of the Astronaut Reserve   )" src="images/Andrea_Patassa.jpg" />   &nbsp;
+				
+									<img title="Anthea Comellini - ( Member of the Astronaut Reserve  )" src="images/Anthea_Comellini.jpg" />  &nbsp;
+			
+									<img title="Arnaud Prost - ( Member of the Astronaut Reserve  )" src="images/Arnaud_Prost.jpg" />  &nbsp;
+						
+									<img title="Carmen Possnig - ( Member of the Astronaut Reserve  )" src="images/Carmen_Possnig.jpg" />  &nbsp;
+					
+									<img title="Marcus Wandt - ( Member of the Astronaut Reserve  )" src="images/Marcus_Wandt.jpg" /> &nbsp;
+					
+									<img title="Meganne Christian - ( Member of the Astronaut Reserve  )" src="images/Meganne_Christian.jpg" /> &nbsp;
+
+									<img title="Nicola Winter - ( Member of the Astronaut Reserve  )" src="images/Nicola_Winter.jpg" /> &nbsp;
+						
+									<img title="Sara Garcia Alonso - ( Member of the Astronaut Reserve  )" src="images/Sara_Garcia_Alonso.jpg" /> &nbsp;
+
+									<img title="Slawosz Uznanski - ( Member of the Astronaut Reserve  )" src="images/Slawosz_Uznanski.jpg" />  &nbsp;
+
+									<img title="John McFall - ( Member of the Astronaut Reserve  )" src="images/John_McFall.jpg" /> 
+						
+								</div> 
+							</fieldset>
+					</td>
+	</tr>
+</table>
+
+			<br />
+			<fieldset>
+				<legend>
+					Inactive Astronauts
+				</legend>
+					<div>
+					<img title="Pedro Duque - ( Not Active Astronaut )" src="images/Pedro_Duque.png" />  
+
+					<img title="Reinhold Ewald - ( Not Active Astronaut )" src="images/Reinhold_Ewald.png" />   
+
+		   
+				
+					<img title="Frank De Winne - (Not Active Astronaut and Head of the European Astronaut Center)" src="images/Frank_De_Winne.png" />  
+			
+					<img title="Paolo Nespoli - ( Not Active Astronaut )" src="images/Paolo_Nespoli.png" />  
+										   
+		
+
+					<img title="Thomas Reiter - ( Not Active Astronaut )" src="images/Thomas_Reiter.png" />  
+				 
+					<img title="Hans Schlegel  - ( Not Active Astronaut )" src="images/Hans_Schlegel.png" />   
+				
+					<img title="Jean-Francois Clervoy - ( Not Active Astronaut )" src="images/Jean-Francois_Clervoy.png" />     
+
+					<img title="Claudie Haignere - ( Not Active Astronaut )" src="images/Claudie_Haignere.png" />  
+
+					<img title="Leopold Eyharts - ( Not Active Astronaut )" src="images/Leopold_Eyharts.png" />  
+			
+				</div> 
+			</fieldset>
+
+		</div>
+	</div>
+	<br />
+	<div id="MainContent__pnl_first_Popup" class="modalPopup_AddNew_User" align="justify">
+	
+	   <table id="MainContent__tbl_Header_Message" width="99%" style="cursor:pointer;">
+		<tr valign="middle" bgcolor="#00287A">
+			<td width="50%"><span id="MainContent_Label3" class="request_Title" style="font-size:14pt; padding-left:10px;"><font color="White">Important Note</font></span></td><td align="right" width="50%"><img src="images/esa_logo_dark_blue_mini.png" /></td>
+		</tr>
+	</table>
+			<br />
+		<table id="MainContent__tbl_Agreement" width="95%">
+		<tr>
+			<td style="color:#04317D;"><strong>Welcome to PAROS! </strong><br />
+<br />
+We thank you for your interest in interviewing or inviting an ESA astronaut. Before you proceed, we would like you to be aware of a few things:
+<ul>
+	<li>Our astronauts are in high demand, but they are usually busy training, flying to space or fulfilling technical assignments. Only very few days every month can be dedicated to outreach activities, therefore only a fraction of the requests can be satisfied.</li>
+	<li>We typically start planning communication activities for our astronauts with a lead time of 9 weeks. We realise that this can be a problem, but please understand that we need to plan public appearances around our astronauts&rsquo; primary duties. Also, be aware the schedule of our astronauts occasionally changes on short notice.</li>
+	<li>ESA may request a lump sum reimbursement for travel expenses and internal costs related to an astronaut appearance.</li>
+	<li>Our astronauts do not receive speaker fees or other monetary compensation. Talks and other public appearances are part of our astronauts&rsquo; duties as ambassadors for the European Space Agency, space and science.</li>
+</ul>
+We will take a close look at each request, but we would like to ask you for a little patience. We will contact you as soon as possible,<br />
+With best regards,<br />
+The ESA European Astronaut Centre Communications Team.<br />
+&nbsp;</td>
+		</tr>
+	</table>
+		<br /><br />
+		<table id="MainContent__tbl_Agreement_Buttons" width="95%">
+		<tr>
+			<td align="center"><input type="submit" name="ctl00$MainContent$_btn_Agree_terms" value="I am aware" onclick="return close_PopUP_Window(&#39;MainContent__mpe_agree_terms&#39;); return false;" id="MainContent__btn_Agree_terms" class="buttons" /></td>
+		</tr>
+	</table>
+	
+</div>
+	  
+	<input type="hidden" name="ctl00$MainContent$_hdd_Description_event_attachment" id="MainContent__hdd_Description_event_attachment" />
+	<input type="hidden" name="ctl00$MainContent$_hdd_LanguageID" id="MainContent__hdd_LanguageID" value="1" />
+	<input type="hidden" name="ctl00$MainContent$_hdd_AgreemenmtID" id="MainContent__hdd_AgreemenmtID" value="5" />
+
+
+
+
+        </div>
+		
+		<br />
+	   <div id="_div_Bottom_Banner_Back_Room" style="background-image:url(images/background_image_banner.png); height:80px; max-width: 95%; margin-left:auto; margin-right:auto; ">
+			 <footer >
+				<div class="container body-content" style="background-image:url(images/background_image_banner.png); height:80px; text-align:center; padding-top:15px; padding-right:50px; text-align:right; max-width: 98%; " >
+					<label style="font-family:NotesEsa; text-decoration:none; color:#FFFFFF; font-size:10pt;" >&copy; 2026 - PAROS 3.0 - European Space Agency </label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+					<img src="images/esa_logo_dark_blue.png" />
+				</div>
+			</footer>
+	   </div>
+
+    
+
+<script type="text/javascript">
+//<![CDATA[
+(function() {var fn = function() {Sys.Extended.UI.ModalPopupBehavior.invokeViaServer('MainContent__mpe_agree_terms', true); Sys.Application.remove_load(fn);};Sys.Application.add_load(fn);})();Sys.Application.add_init(function() {
+    $create(Sys.Extended.UI.ModalPopupBehavior, {"backgroundCssClass":"modalBackground","dynamicServicePath":"/paros/Request.aspx","id":"MainContent__mpe_agree_terms","popupControlID":"MainContent__pnl_first_Popup"}, null, null, $get("MainContent__hdd_Description_event_attachment"));
+});
+//]]>
+</script>
+</form>
+</body>
+</html>

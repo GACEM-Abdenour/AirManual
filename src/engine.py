@@ -1,0 +1,829 @@
+"""Query engine for the Aircraft Maintenance Assistant."""
+import asyncio
+from typing import List, Dict, Any, Tuple, Optional
+from llama_index.core.query_engine import RetrieverQueryEngine
+from llama_index.core.chat_engine import ContextChatEngine
+from llama_index.core.response import Response
+from llama_index.core.schema import NodeWithScore, QueryBundle
+from llama_index.core.retrievers import BaseRetriever
+from llama_index.llms.openai import OpenAI
+from llama_index.core.prompts import PromptTemplate, ChatPromptTemplate
+from llama_index.core.memory import ChatMemoryBuffer
+from src.config import Config
+from src.index_store import get_index, get_retriever
+
+# For regulation questions: only use chunks with at least this similarity (0–1).
+REGULATION_SIMILARITY_THRESHOLD = 0.7
+REGULATION_KNOWLEDGE_FALLBACK = (
+    "I don't have enough knowledge to reply to this, maybe try to decompose your question."
+)
+
+# System prompt for the Expert Aviation Technician (used by query engine and regulation path)
+SYSTEM_PROMPT = """You are an Expert Aviation Maintenance Technician with comprehensive knowledge of aircraft maintenance procedures, technical manuals, Illustrated Parts Catalogs (IPC), regulations, and all aviation documentation.
+
+Your role is to provide accurate, detailed, and complete answers about aircraft maintenance based solely on the documentation provided to you.
+
+CRITICAL RULES:
+1. **Always cite sources**: Every answer MUST include the document name and page number where the information comes from. Format citations as: [Document Name, Page X]
+
+2. **Part Number handling**: 
+   - When asked about a part number (e.g., "Part 12-45A", "PN 123-456", "A23-554"), you MUST search explicitly for that exact part number in the documentation
+   - Always include the part number in your response when discussing parts
+   - If a part number is mentioned, provide its description, location, and any relevant specifications
+
+3. **Completeness**: 
+   - Provide complete, thorough answers using ALL relevant information from the documentation
+   - Never give vague or partial answers when more detail is available
+   - If information spans multiple documents or pages, cite all sources
+
+4. **Cross-references (CRITICAL)**: 
+   - ALWAYS follow cross-references (e.g., "See Section 5", "Refer to Table 2-1", "See IPC for part numbers")
+   - If the retrieved context mentions a reference (section number, table number, another document, etc.) that is not fully present in the current snippet, you MUST use your retrieval tools to search for that specific section/reference
+   - Combine information from the original query context AND any cross-referenced sections to provide a unified, complete answer
+   - Example: If context says "See Section 5.2 for torque values", search for "Section 5.2" and include those torque values in your answer
+
+5. **Accuracy**: 
+   - Only answer based on the provided documentation
+   - If information is not available in the documentation, clearly state: "This information is not available in the provided documentation"
+   - Never hallucinate or make up information
+
+6. **Stay on topic**: 
+   - Only answer questions related to aircraft maintenance, aviation regulations, technical procedures, and parts
+   - Politely redirect off-topic questions back to aviation maintenance topics
+
+7. **Technical precision**: 
+   - Use exact terminology from the documentation
+   - Include specific values, measurements, and specifications when available
+   - Reference exact procedure numbers, section numbers, and regulation numbers when mentioned
+
+Remember: You are the expert technician who has memorized every manual and regulation. Provide answers as if you have that level of knowledge, but always cite your sources. When you see cross-references, actively search for them to provide complete answers."""
+
+# System prompt for the Agentic Technician (decomposition, context, clarification)
+AGENT_SYSTEM_PROMPT = """You are an advanced Aviation Maintenance AI with access to aircraft manuals and regulations.
+
+Capabilities:
+- **Context Awareness**: If the user says "it", "that", or "the part", refer to the previous conversation. Remember what component or procedure was discussed.
+- **Decomposition**: If the user asks a complex question (e.g., "Compare A and B", "Check the pump and the landing gear"), break it down. Search for A, then search for B, then synthesize the answer.
+- **Clarification**: If the user's query is vague (e.g., "How do I fix it?" without prior context, or "Is it broken?"), DO NOT search blindly. Instead, ask the user to clarify what component they are referring to.
+- **Citations**: Always cite the manual name and page from the tool output. Format: [Document Name, Page X]
+
+Use the aviation_manuals_tool for any technical lookup. Never guess or hallucinate—only answer from tool results."""
+
+
+def detect_part_number(question: str) -> Optional[str]:
+    """Detect if the question contains a part number.
+    
+    Args:
+        question: The question text
+        
+    Returns:
+        Part number string if detected, None otherwise
+    """
+    import re
+    
+    # Common part number patterns
+    patterns = [
+        r'\b(?:Part|PN|P/N|Part Number|Part No\.?)\s*[:\-]?\s*([A-Z0-9\-]+)',  # "Part 12-45A", "PN: 123-456"
+        r'\b([A-Z]{1,3}[\-\s]?\d{2,4}[\-\s]?[A-Z]?)\b',  # "12-45A", "123-456"
+        r'\b\d{2,4}[\-\s]\d{2,4}[\-\s]?[A-Z]?\b',  # "12-45", "123-456-A"
+    ]
+    
+    for pattern in patterns:
+        match = re.search(pattern, question, re.IGNORECASE)
+        if match:
+            return match.group(1) if match.groups() else match.group(0)
+    
+    return None
+
+
+def detect_regulation_question(question: str) -> bool:
+    """Detect if the question is about regulations (CARs, standards, legal, compliance).
+    
+    When True, we enforce a higher similarity threshold and fallback if no high-scoring chunks exist.
+    """
+    import re
+    q = (question or "").lower().strip()
+    patterns = [
+        r"\bregulation(s)?\b",
+        r"\bcar(s)?\b",  # Canadian Aviation Regulations
+        r"\bstandard(s)?\s+\d",  # e.g. "Standard 624"
+        r"\badvisory\b",
+        r"\btransport\s+canada\b",
+        r"\blegal\b",
+        r"\bcompliance\b",
+        r"\bsor[-/]?\d",  # SOR/96-433
+        r"\bsubpart\s+\d",
+        r"\bact(s)?\b.*aviation",
+        r"aviation.*\bact(s)?\b",
+    ]
+    return any(re.search(p, q) for p in patterns)
+
+
+class _FixedNodesRetriever(BaseRetriever):
+    """Retriever that always returns a fixed list of nodes (used for regulation path)."""
+
+    def __init__(self, nodes: List[NodeWithScore]) -> None:
+        super().__init__()
+        self._nodes = nodes
+
+    def _retrieve(self, query_bundle: QueryBundle) -> List[NodeWithScore]:
+        return self._nodes
+
+
+def create_agent(
+    similarity_top_k: int = 10,
+    temperature: float = 0.1,
+):
+    """Create an OpenAIAgent (FunctionAgent) with QueryEngineTool for decomposition and context.
+    
+    The agent can:
+    - Remember conversation context (ChatMemoryBuffer)
+    - Decompose complex questions into multiple searches
+    - Ask for clarification when vague
+    - Call the search tool multiple times in a loop
+    
+    Returns:
+        FunctionAgent instance
+    """
+    if not Config.OPENAI_API_KEY:
+        raise ValueError("OPENAI_API_KEY is required for the agent")
+    
+    from llama_index.core.agent.workflow import FunctionAgent
+    from llama_index.core.tools import QueryEngineTool
+    
+    llm = OpenAI(
+        model="gpt-4o",
+        api_key=Config.OPENAI_API_KEY,
+        temperature=temperature,
+        timeout=120.0,
+    )
+    
+    index = get_index()
+    query_engine = index.as_query_engine(
+        similarity_top_k=similarity_top_k,
+        llm=llm,
+    )
+    # Update query engine with system prompt
+    qa_prompt = PromptTemplate(
+        f"{SYSTEM_PROMPT}\n\n"
+        "Context information from the documentation is below.\n"
+        "---------------------\n"
+        "{{context_str}}\n"
+        "---------------------\n"
+        "Given the context information and not prior knowledge, "
+        "answer the question: {{query_str}}\n"
+    )
+    query_engine.update_prompts(
+        {"response_synthesizer:text_qa_template": qa_prompt}
+    )
+    
+    aviation_tool = QueryEngineTool.from_defaults(
+        query_engine=query_engine,
+        name="aviation_manuals_tool",
+        description=(
+            "Useful for looking up technical procedures, part numbers, and maintenance "
+            "intervals in the Aircraft Manuals and Regulations. Always use this for "
+            "technical questions about maintenance, parts, inspections, or compliance."
+        ),
+    )
+    
+    agent = FunctionAgent(
+        tools=[aviation_tool],
+        llm=llm,
+        system_prompt=AGENT_SYSTEM_PROMPT,
+        memory=ChatMemoryBuffer.from_defaults(token_limit=4000),
+    )
+    return agent
+
+
+def create_chat_engine(
+    similarity_top_k: int = 10,
+    temperature: float = 0.1,  # Low temperature for factual accuracy
+) -> ContextChatEngine:
+    """Create a ChatEngine with context mode (legacy fallback).
+    
+    For agentic behavior (decomposition, clarification), use create_agent instead.
+    """
+    # Validate configuration
+    if not Config.OPENAI_API_KEY:
+        raise ValueError("OPENAI_API_KEY is required for the query engine")
+    
+    llm = OpenAI(
+        model="gpt-4o",
+        api_key=Config.OPENAI_API_KEY,
+        temperature=temperature,
+        timeout=120.0,
+    )
+    
+    index = get_index()
+    chat_engine = index.as_chat_engine(
+        chat_mode="context",
+        llm=llm,
+        similarity_top_k=similarity_top_k,
+        memory=ChatMemoryBuffer.from_defaults(token_limit=3000),
+        system_prompt=SYSTEM_PROMPT,
+    )
+    
+    return chat_engine
+
+
+def create_query_engine(
+    similarity_top_k: int = 10,
+    temperature: float = 0.1,  # Low temperature for factual accuracy
+) -> RetrieverQueryEngine:
+    """Create a QueryEngine with the configured LLM and retriever.
+    
+    This is a fallback for non-conversational queries.
+    
+    Args:
+        similarity_top_k: Number of top results to retrieve
+        temperature: LLM temperature (lower = more factual, higher = more creative)
+        
+    Returns:
+        RetrieverQueryEngine instance
+    """
+    # Validate configuration
+    if not Config.OPENAI_API_KEY:
+        raise ValueError("OPENAI_API_KEY is required for the query engine")
+    
+    # Initialize LLM
+    llm = OpenAI(
+        model="gpt-4o",
+        api_key=Config.OPENAI_API_KEY,
+        temperature=temperature,
+    )
+    
+    # Get the index
+    index = get_index()
+    
+    # Get retriever with hybrid search
+    retriever = get_retriever(similarity_top_k=similarity_top_k)
+    
+    # Create query engine with system prompt
+    query_engine = RetrieverQueryEngine.from_args(
+        retriever=retriever,
+        llm=llm,
+        response_mode="compact",  # Compact mode for focused answers
+    )
+    
+    # Set custom prompt template that includes system prompt
+    qa_prompt_template = PromptTemplate(
+        f"{SYSTEM_PROMPT}\n\n"
+        "Context information from the documentation is below.\n"
+        "---------------------\n"
+        "{{context_str}}\n"
+        "---------------------\n"
+        "Given the context information and not prior knowledge, "
+        "answer the question: {{query_str}}\n"
+    )
+    
+    # Update the query engine's prompt
+    query_engine.update_prompts(
+        {"response_synthesizer:text_qa_template": qa_prompt_template}
+    )
+    
+    return query_engine
+
+
+# Global agent instance (for agentic mode: decomposition, context, clarification)
+_agent = None
+
+# Global chat engine instance (legacy context mode)
+_chat_engine: Optional[ContextChatEngine] = None
+
+# Global query engine instance (fallback)
+_query_engine: Optional[RetrieverQueryEngine] = None
+
+
+def get_agent(similarity_top_k: int = 10, force_reload: bool = False):
+    """Get or create the global FunctionAgent (agentic technician)."""
+    global _agent
+    if _agent is None or force_reload:
+        _agent = create_agent(similarity_top_k=similarity_top_k)
+    return _agent
+
+
+def get_chat_engine(
+    similarity_top_k: int = 10,
+    force_reload: bool = False,
+):
+    """Get or create the agent (agentic mode). Alias for get_agent for backward compatibility."""
+    return get_agent(similarity_top_k=similarity_top_k, force_reload=force_reload)
+
+
+def get_query_engine(
+    similarity_top_k: int = 10,
+    force_reload: bool = False,
+) -> RetrieverQueryEngine:
+    """Get or create the global query engine instance.
+    
+    Args:
+        similarity_top_k: Number of top results to retrieve
+        force_reload: If True, recreate the query engine
+        
+    Returns:
+        RetrieverQueryEngine instance
+    """
+    global _query_engine
+    
+    if _query_engine is None or force_reload:
+        _query_engine = create_query_engine(similarity_top_k=similarity_top_k)
+    
+    return _query_engine
+
+
+def extract_source_info(node: NodeWithScore) -> Dict[str, Any]:
+    """Extract source information from a node.
+    
+    Args:
+        node: NodeWithScore object
+        
+    Returns:
+        Dictionary with source information (file_name, page_number, etc.)
+    """
+    metadata = node.node.metadata if hasattr(node.node, 'metadata') else {}
+    
+    return {
+        "file_name": metadata.get("file_name", "Unknown"),
+        "page_number": metadata.get("page_number", "Unknown"),
+        "element_type": metadata.get("element_type", "Unknown"),
+        "score": node.score if hasattr(node, 'score') else None,
+    }
+
+
+def ask_assistant(
+    question: str,
+    similarity_top_k: int = 10,
+    use_chat_mode: bool = True,  # Use chat mode for agentic cross-reference following
+) -> Tuple[str, List[Dict[str, Any]]]:
+    """Ask a question to the aircraft maintenance assistant.
+    
+    Uses ContextChatEngine with chat_mode="context" to enable agentic behavior:
+    - LLM can use retrieval tools to follow cross-references
+    - Maintains conversation context
+    - Can search for specific sections when mentioned
+    
+    Args:
+        question: The question to ask
+        similarity_top_k: Number of top results to retrieve (increased for part number queries)
+        use_chat_mode: If True, use ContextChatEngine for agentic behavior
+        
+    Returns:
+        Tuple of (response_text, source_nodes) where:
+        - response_text: The assistant's answer
+        - source_nodes: List of dictionaries with source information (file_name, page_number, etc.)
+    """
+    # Regulation questions: enforce 70% similarity threshold; fallback if no high-scoring chunks
+    if detect_regulation_question(question):
+        index = get_index()
+        base_retriever = index.as_retriever(similarity_top_k=15)
+        nodes = base_retriever.retrieve(question)
+        high_nodes = [
+            n for n in nodes
+            if getattr(n, "score", None) is not None and n.score >= REGULATION_SIMILARITY_THRESHOLD
+        ]
+        if not high_nodes:
+            return REGULATION_KNOWLEDGE_FALLBACK, []
+        fixed_retriever = _FixedNodesRetriever(high_nodes)
+        llm = OpenAI(model="gpt-4o", api_key=Config.OPENAI_API_KEY, temperature=0.1)
+        qa_prompt = PromptTemplate(
+            f"{SYSTEM_PROMPT}\n\n"
+            "Context information from the documentation is below.\n"
+            "---------------------\n"
+            "{{context_str}}\n"
+            "---------------------\n"
+            "Given the context information and not prior knowledge, "
+            "answer the question: {{query_str}}\n"
+        )
+        reg_engine = RetrieverQueryEngine.from_args(
+            retriever=fixed_retriever,
+            llm=llm,
+            response_mode="compact",
+        )
+        reg_engine.update_prompts({"response_synthesizer:text_qa_template": qa_prompt})
+        response = reg_engine.query(question)
+        source_nodes = [extract_source_info(n) for n in (response.source_nodes or [])]
+        return str(response), source_nodes
+
+    # Detect if this is a part number query
+    part_number = detect_part_number(question)
+    if part_number:
+        # Increase retrieval for part number queries to ensure we find exact matches
+        # Hybrid search (BM25) will prioritize exact part number matches
+        similarity_top_k = max(similarity_top_k, 15)
+        print(f"Detected part number query: {part_number}")
+
+    # Use agent for agentic behavior (decomposition, context, clarification)
+    if use_chat_mode:
+        agent = get_agent(similarity_top_k=similarity_top_k)
+        
+        async def _run_agent():
+            from llama_index.core.agent.workflow import ToolCallResult
+            from llama_index.core.workflow import Context
+            
+            ctx = Context(agent)
+            handler = agent.run(question, ctx=ctx)
+            tool_outputs = []
+            async for ev in handler.stream_events():
+                if isinstance(ev, ToolCallResult):
+                    tool_outputs.append(ev.tool_output)
+            result = await handler
+            return result, tool_outputs
+        
+        result, tool_outputs = asyncio.run(_run_agent())
+        
+        # Extract response text from AgentOutput
+        response_text = str(result.response.content or "")
+        if not response_text and hasattr(result, "response"):
+            from llama_index.core.llms import ChatMessage
+            msg = result.response
+            if hasattr(msg, "content") and msg.content:
+                response_text = msg.content
+        
+        # Extract source nodes from tool outputs (QueryEngineTool returns Response)
+        source_nodes: List[Dict[str, Any]] = []
+        for tool_out in tool_outputs:
+            raw = getattr(tool_out, "raw_output", None)
+            if raw is not None and hasattr(raw, "source_nodes") and raw.source_nodes:
+                for node in raw.source_nodes:
+                    if hasattr(node, "node") and hasattr(node, "score"):
+                        source_nodes.append(extract_source_info(node))
+    else:
+        # Fallback to query engine
+        query_engine = get_query_engine(similarity_top_k=similarity_top_k)
+        response: Response = query_engine.query(question)
+        response_text = str(response)
+        
+        # Extract source nodes
+        source_nodes: List[Dict[str, Any]] = []
+        if hasattr(response, 'source_nodes') and response.source_nodes:
+            for node in response.source_nodes:
+                source_info = extract_source_info(node)
+                source_nodes.append(source_info)
+    
+    return response_text, source_nodes
+
+
+def generate_formal_log_entry(part_ref: str, raw_action: str) -> Tuple[str, str]:
+    """Generate a formal aviation log entry from raw action notes.
+    
+    Uses RAG to find the maintenance procedure for the part, then rewrites
+    the raw notes into Standard Aviation Phraseology.
+    
+    Args:
+        part_ref: Part name or system reference (e.g., "fuel pump", "Part 12-45A")
+        raw_action: Raw engineering notes (e.g., "replaced fuel pump, checked for leaks")
+        
+    Returns:
+        Tuple of (formal_log_entry, reference_cited)
+    """
+    # Search for the maintenance procedure
+    query = f"{part_ref} maintenance procedure removal installation"
+    response_text, source_nodes = ask_assistant(query, similarity_top_k=5, use_chat_mode=False)
+    
+    # Extract reference from sources
+    reference = "Manual Reference"
+    if source_nodes:
+        ref_parts = []
+        for src in source_nodes[:2]:  # Use top 2 sources
+            file_name = src.get('file_name', '')
+            page = src.get('page_number', '')
+            if file_name and page:
+                ref_parts.append(f"{file_name}, Page {page}")
+        if ref_parts:
+            reference = " / ".join(ref_parts)
+    
+    # Create specialized prompt for log entry generation
+    log_prompt = f"""You are an Aviation Maintenance Logger. Rewrite the user's raw notes into a formal log entry using Standard Aviation Phraseology (Uppercase).
+
+RAW NOTES: {raw_action}
+
+PART/SYSTEM: {part_ref}
+
+CONTEXT FROM MANUALS:
+{response_text}
+
+INSTRUCTIONS:
+1. Rewrite the raw notes into formal aviation logbook language
+2. Use UPPERCASE for key actions (REMOVED, INSTALLED, INSPECTED, REPLACED, etc.)
+3. Include the manual reference format: "IAW [Manual Name] [Section/Page]"
+4. Keep it concise (1-2 sentences maximum)
+5. Use standard aviation terminology
+
+FORMAL LOG ENTRY:"""
+
+    llm = OpenAI(model="gpt-4o", api_key=Config.OPENAI_API_KEY, temperature=0.1)
+    response = llm.complete(log_prompt)
+    formal_entry = str(response).strip() if hasattr(response, '__str__') else (response.text if hasattr(response, 'text') else str(response))
+    
+    return formal_entry, reference
+
+
+def audit_log_compliance(date_performed: str, part_name: str, aircraft_type: str) -> Tuple[str, str]:
+    """Audit if a maintenance action is compliant or overdue.
+    
+    Calculates days elapsed since maintenance, searches for inspection intervals,
+    and determines compliance status.
+    
+    Args:
+        date_performed: Date string (format: YYYY-MM-DD)
+        part_name: Name of the part/system maintained
+        aircraft_type: Aircraft type (e.g., "R44", "R22")
+        
+    Returns:
+        Tuple of (status, reasoning) where status is "COMPLIANT" or "OVERDUE"
+    """
+    from datetime import datetime, date
+    
+    # Parse date and calculate days elapsed
+    try:
+        if isinstance(date_performed, str):
+            perf_date = datetime.strptime(date_performed, "%Y-%m-%d").date()
+        else:
+            perf_date = date_performed
+        today = date.today()
+        days_elapsed = (today - perf_date).days
+    except Exception as e:
+        return "ERROR", f"Invalid date format: {e}"
+    
+    # Search for maintenance interval
+    query = f"{aircraft_type} {part_name} maintenance interval frequency inspection schedule"
+    response_text, source_nodes = ask_assistant(query, similarity_top_k=5, use_chat_mode=False)
+    
+    # Extract reference
+    reference = "Manual Reference"
+    if source_nodes:
+        ref_parts = []
+        for src in source_nodes[:2]:
+            file_name = src.get('file_name', '')
+            page = src.get('page_number', '')
+            if file_name and page:
+                ref_parts.append(f"{file_name}, Page {page}")
+        if ref_parts:
+            reference = " / ".join(ref_parts)
+    
+    # Create audit prompt
+    audit_prompt = f"""Today is {today.strftime('%Y-%m-%d')}. The user performed maintenance on {part_name} on {date_performed} ({days_elapsed} days ago).
+
+CONTEXT FROM MANUALS:
+{response_text}
+
+INSTRUCTIONS:
+1. Extract the required inspection/maintenance interval from the context (e.g., "12 months", "500 hours", "every 6 months")
+2. Convert the interval to days if needed (assume 1 month = 30 days, 1 year = 365 days)
+3. Compare {days_elapsed} days elapsed vs. the required interval
+4. Determine if the maintenance is COMPLIANT or OVERDUE
+5. Provide specific reasoning with the interval found
+
+Answer format:
+STATUS: [COMPLIANT or OVERDUE]
+REASONING: [Specific explanation with interval found and comparison]"""
+
+    llm = OpenAI(model="gpt-4o", api_key=Config.OPENAI_API_KEY, temperature=0.1)
+    response = llm.complete(audit_prompt)
+    audit_result = str(response).strip() if hasattr(response, '__str__') else (response.text if hasattr(response, 'text') else str(response))
+    
+    # Parse status
+    status = "COMPLIANT"
+    if "OVERDUE" in audit_result.upper() or "NON-COMPLIANT" in audit_result.upper():
+        status = "OVERDUE"
+    
+    reasoning = audit_result.replace("STATUS:", "").replace("REASONING:", "").strip()
+    if not reasoning:
+        reasoning = audit_result
+    
+    return status, f"{reasoning}\n\nReference: {reference}"
+
+
+def review_logbook_entries(logbook_df) -> str:
+    """Review logbook entries for compliance and completeness.
+    
+    Analyzes each entry and checks if it's compliant with maintenance intervals.
+    If information is missing or insufficient, clearly states what's needed.
+    
+    Args:
+        logbook_df: DataFrame with columns: Date, Aircraft Type, Part/System, Action Description
+        
+    Returns:
+        Review result as a formatted string
+    """
+    import pandas as pd
+    from datetime import datetime, date
+    
+    if logbook_df.empty:
+        return "No logbook entries to review."
+    
+    # Build logbook summary
+    logbook_summary = "LOGBOOK ENTRIES TO REVIEW:\n\n"
+    entries_to_review = []
+    missing_info_entries = []
+    
+    for idx, row in logbook_df.iterrows():
+        date_val = row.get("Date", "")
+        aircraft_type = str(row.get("Aircraft Type", "")).strip()
+        part_name = str(row.get("Part/System", "")).strip()
+        action_desc = str(row.get("Action Description", "")).strip()
+        
+        # Check for missing info
+        missing = []
+        if pd.isna(date_val) or date_val == "":
+            missing.append("Date")
+        if not aircraft_type:
+            missing.append("Aircraft Type")
+        if not part_name:
+            missing.append("Part/System")
+        if not action_desc:
+            missing.append("Action Description")
+        
+        if missing:
+            missing_info_entries.append({
+                "entry": idx + 1,
+                "missing": missing,
+                "partial_info": f"Aircraft: {aircraft_type or 'N/A'}, Part: {part_name or 'N/A'}, Action: {action_desc or 'N/A'}"
+            })
+        else:
+            # Format date
+            if isinstance(date_val, str):
+                date_str = date_val
+            else:
+                date_str = date_val.strftime("%Y-%m-%d") if hasattr(date_val, 'strftime') else str(date_val)
+            
+            entries_to_review.append({
+                "entry": idx + 1,
+                "date": date_str,
+                "aircraft": aircraft_type,
+                "part": part_name,
+                "action": action_desc,
+            })
+            
+            logbook_summary += f"Entry {idx + 1}: Date={date_str}, Aircraft={aircraft_type}, Part={part_name}, Action={action_desc}\n"
+    
+    # If there are entries with missing info, state clearly what's needed
+    if missing_info_entries:
+        missing_msg = "⚠️ **CANNOT REVIEW - MISSING INFORMATION**\n\n"
+        missing_msg += "The following entries are missing critical information and cannot be reviewed:\n\n"
+        for item in missing_info_entries:
+            missing_msg += f"**Entry {item['entry']}:** Missing: {', '.join(item['missing'])}\n"
+            missing_msg += f"  Partial info: {item['partial_info']}\n\n"
+        missing_msg += "**Please provide complete information (Date, Aircraft Type, Part/System, Action Description) for all entries before requesting a review.**\n\n"
+        
+        if entries_to_review:
+            missing_msg += "---\n\n**Entries with complete information will be reviewed below:**\n\n"
+        else:
+            return missing_msg
+    
+    if not entries_to_review:
+        return "No complete entries to review. Please ensure all entries have Date, Aircraft Type, Part/System, and Action Description."
+    
+    # Review complete entries
+    today = date.today()
+    review_results = []
+    
+    for entry in entries_to_review:
+        try:
+            # Calculate days elapsed
+            perf_date = datetime.strptime(entry["date"], "%Y-%m-%d").date()
+            days_elapsed = (today - perf_date).days
+            
+            # Search for maintenance interval
+            query = f"{entry['aircraft']} {entry['part']} maintenance interval frequency inspection schedule"
+            response_text, source_nodes = ask_assistant(query, similarity_top_k=5, use_chat_mode=False)
+            
+            # Extract reference
+            reference = "Manual Reference"
+            if source_nodes:
+                ref_parts = []
+                for src in source_nodes[:2]:
+                    file_name = src.get('file_name', '')
+                    page = src.get('page_number', '')
+                    if file_name and page:
+                        ref_parts.append(f"{file_name}, Page {page}")
+                if ref_parts:
+                    reference = " / ".join(ref_parts)
+            
+            # Create review prompt
+            review_prompt = f"""Today is {today.strftime('%Y-%m-%d')}. Review this maintenance logbook entry:
+
+ENTRY {entry['entry']}:
+- Date Performed: {entry['date']} ({days_elapsed} days ago)
+- Aircraft Type: {entry['aircraft']}
+- Part/System: {entry['part']}
+- Action: {entry['action']}
+
+CONTEXT FROM MAINTENANCE MANUALS:
+{response_text}
+
+INSTRUCTIONS:
+1. Extract the required inspection/maintenance interval for {entry['part']} on {entry['aircraft']} from the context
+2. If the interval is not clearly found in the context, state: "CANNOT REVIEW - Interval information not found in manuals. Please provide the specific maintenance interval requirement."
+3. If interval is found, convert to days (1 month = 30 days, 1 year = 365 days, 1 hour = assume 0.1 days for calculation)
+4. Compare {days_elapsed} days elapsed vs. the required interval
+5. Determine if COMPLIANT or OVERDUE
+6. Provide clear reasoning
+
+Answer format:
+STATUS: [COMPLIANT / OVERDUE / CANNOT REVIEW]
+REASONING: [Specific explanation]"""
+
+            llm = OpenAI(model="gpt-4o", api_key=Config.OPENAI_API_KEY, temperature=0.1)
+            response = llm.complete(review_prompt)
+            review_result = str(response).strip() if hasattr(response, '__str__') else (response.text if hasattr(response, 'text') else str(response))
+            
+            review_results.append({
+                "entry": entry['entry'],
+                "result": review_result,
+                "reference": reference,
+            })
+            
+        except Exception as e:
+            review_results.append({
+                "entry": entry['entry'],
+                "result": f"ERROR: Could not review entry {entry['entry']}: {str(e)}",
+                "reference": "N/A",
+            })
+    
+    # Format final review
+    final_review = ""
+    if missing_info_entries:
+        final_review += missing_msg
+    
+    final_review += "## 📋 Logbook Review Results\n\n"
+    
+    compliant_count = 0
+    overdue_count = 0
+    cannot_review_count = 0
+    
+    for result in review_results:
+        final_review += f"### Entry {result['entry']}\n\n"
+        final_review += f"{result['result']}\n\n"
+        final_review += f"**Reference:** {result['reference']}\n\n"
+        final_review += "---\n\n"
+        
+        if "CANNOT REVIEW" in result['result'].upper():
+            cannot_review_count += 1
+        elif "OVERDUE" in result['result'].upper():
+            overdue_count += 1
+        elif "COMPLIANT" in result['result'].upper():
+            compliant_count += 1
+    
+    # Summary
+    final_review += f"## 📊 Summary\n\n"
+    final_review += f"- ✅ **Compliant:** {compliant_count}\n"
+    final_review += f"- ⚠️ **Overdue:** {overdue_count}\n"
+    final_review += f"- ❓ **Cannot Review:** {cannot_review_count}\n"
+    
+    if overdue_count > 0:
+        final_review += f"\n⚠️ **{overdue_count} entry/entries require immediate attention!**\n"
+    
+    if cannot_review_count > 0:
+        final_review += f"\n❓ **{cannot_review_count} entry/entries could not be reviewed due to missing information in manuals. Please verify intervals manually.**\n"
+    
+    return final_review
+
+
+def main():
+    """Test the assistant engine."""
+    import sys
+    
+    # Validate configuration
+    try:
+        Config.validate()
+    except ValueError as e:
+        print(f"Configuration error: {e}")
+        return
+    
+    # Get question from command line or use default
+    if len(sys.argv) > 1:
+        question = " ".join(sys.argv[1:])
+    else:
+        question = "What is the procedure for inspecting a fuel pump?"
+    
+    print(f"\nQuestion: {question}\n")
+    print("=" * 80)
+    
+    try:
+        response_text, source_nodes = ask_assistant(question)
+        
+        print("\nAnswer:")
+        print("-" * 80)
+        print(response_text)
+        print("-" * 80)
+        
+        print(f"\n\nSources ({len(source_nodes)}):")
+        print("=" * 80)
+        for i, source in enumerate(source_nodes, 1):
+            print(f"\nSource {i}:")
+            print(f"  File: {source['file_name']}")
+            print(f"  Page: {source['page_number']}")
+            print(f"  Type: {source['element_type']}")
+            if source.get('score') is not None:
+                print(f"  Score: {source['score']:.4f}")
+        
+    except Exception as e:
+        print(f"Error: {e}")
+        import traceback
+        traceback.print_exc()
+
+
+if __name__ == "__main__":
+    main()

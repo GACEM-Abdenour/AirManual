@@ -1,0 +1,1136 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0,user-scalable=0"/>
+    <title>ProductGrid - Robinson Helicopter Company Store</title>
+
+    <script type="text/javascript">
+	
+    var appInsights=window.appInsights||function(a){
+        function b(a){c[a]=function(){var b=arguments;c.queue.push(function(){c[a].apply(c,b)})}}var c={config:a},d=document,e=window;setTimeout(function(){var b=d.createElement("script");b.src=a.url||"https://az416426.vo.msecnd.net/scripts/a/ai.0.js",d.getElementsByTagName("script")[0].parentNode.appendChild(b)});try{c.cookie=d.cookie}catch(a){}c.queue=[];for(var f=["Event","Exception","Metric","PageView","Trace","Dependency"];f.length;)b("track"+f.pop());if(b("setAuthenticatedUserContext"),b("clearAuthenticatedUserContext"),b("startTrackEvent"),b("stopTrackEvent"),b("startTrackPage"),b("stopTrackPage"),b("flush"),!a.disableExceptionTracking){f="onerror",b("_"+f);var g=e[f];e[f]=function(a,b,d,e,h){var i=g&&g(a,b,d,e,h);return!0!==i&&c["_"+f](a,b,d,e,h),i}}return c
+    }({
+        instrumentationKey: '93bab1a4-43d2-461b-ad58-fee2bd8724b5'
+    });
+
+    window.appInsights=appInsights,appInsights.queue&&0===appInsights.queue.length&&appInsights.trackPageView();
+	
+    </script>
+
+    
+
+
+    <link rel="stylesheet" title="Coggins" href="/css/theme-coggins.css" />
+    <link href="https://kendo.cdn.telerik.com/2020.3.915/styles/kendo.common-material.min.css" rel="stylesheet" type="text/css" />
+    <link href="https://kendo.cdn.telerik.com/2020.3.915/styles/kendo.mobile.all.min.css" rel="stylesheet" type="text/css" />
+    <link href="https://kendo.cdn.telerik.com/2020.3.915/styles/kendo.material.min.css" rel="stylesheet" type="text/css" />
+    <!-- Scrollbar Custom CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.min.css">
+
+    <script src="https://kendo.cdn.telerik.com/2020.3.915/js/jquery.min.js"></script>
+    <script src="https://kendo.cdn.telerik.com/2020.3.915/js/jszip.min.js"></script>
+    <script src="/lib/bootstrap/dist/js/bootstrap.js"></script>
+    <script src="https://kendo.cdn.telerik.com/2020.3.915/js/kendo.all.min.js"></script>
+    <script src="https://kendo.cdn.telerik.com/2020.3.915/js/kendo.aspnetmvc.min.js"></script>
+
+    <script src="/js/achilles.js?v=JgGkPnwCAfgRHOxJO3vHWfKcRv_iHY2oqSZoqLFr_CM"></script>
+    <script src="/js/site.js?v=WCW_3M3La-pY9S4q7fLVDrQiLWMzcashBdBXfuQJuFo"></script>
+    <!-- Popper.JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js" integrity="sha384-cs/chFZiN24E4KMATLdqdvsezGxaGsi4hLGOzlXwp5UZB1LY//20VyM2taTB4QvJ" crossorigin="anonymous"></script>
+    <!-- jQuery Custom Scroller CDN -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.concat.min.js"></script>
+    <script src="/lib/jquery-validation/dist/jquery.creditCardValidator.js"></script>
+    <!-- jQuery matchHeight-->
+    <script src="/lib/matchHeight/dist/jquery.matchHeight-min.js"></script>
+
+
+
+
+</head>
+<body>
+    
+<style type="text/css">
+    .bd-example-modal-lg .modal-dialog {
+        display: table;
+        position: relative;
+        margin: 0 auto;
+        top: calc(50% - 24px);
+    }
+
+    .bd-example-modal-lg .modal-dialog .modal-content {
+        background-color: transparent;
+        border: none;
+    }
+</style>
+
+<div id="modalLoader" class="modal fade bd-example-modal-lg" data-backdrop="static" data-keyboard="false" tabindex="-1">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content" style="width: 48px">
+            <span class="fa fa-spinner fa-spin fa-3x"></span>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    function isLoading(value) {
+        var $modal = $("#modalLoader");
+        if (value == true)
+            $modal.modal("show");
+        else
+            $modal.modal("hide");
+    }
+</script>
+    <div class="shipping-banner">
+        <p class="shipping-text">
+            <a target="_blank" href="https://www.robinsonheli.com/">Visit RobinsonHeli.com</a>
+            </p>
+
+
+    </div>
+
+    <div id="layoutHeaderWrap" class="hidden-xs">
+        <div class="container">
+
+    <div class="row">
+
+        <div class="col-md-6">
+
+            <a class="logo-site" style="background: url(/images/logo-main.svg ) no-repeat;" href="/">Robinson Helicopter Company Store</a>
+
+        </div>
+
+
+            <div class="col-md-6">                
+                <ul class="nav navbar-nav navbar-right navbar-user">
+    <li>
+        <div id="fancySearch">
+            <div class="box">
+                <form action="/Products/Search" method="post">
+                    <div class="container-2">
+                        <input type="text" id="search" name="searchText" placeholder="Search..." onchange="submit();" autocomplete="off" />
+                        <span class="icon"><i class="fa fa-search"></i></span>
+
+                    </div>
+                <input name="__RequestVerificationToken" type="hidden" value="CfDJ8F6p6RENyOlOouyPoSPZxlJDlb3kEA0ZMmrVz_on7R-rdTTvN9fvaixHpkGbSwtZxHimxawCR5DKjtX6iEYt58xadq9E7BiLVjSdKpKYYOrrfJ0JU2bsvranGQFQaFzG_ZN-mUSoZPd_W99rZOeTS58" /></form>
+            </div>
+
+        </div>
+    </li>
+
+
+        <li>
+    <a href="/Account/Login">
+        <div class="hidden-xs">
+            <span class="glyphicon glyphicon-user"></span> Login
+        </div>
+        <div class="visible-xs">
+            <div class="col-xs-12"><span class="glyphicon glyphicon-user"></span> Login</div>
+        </div>
+    </a>
+</li>
+    <li>
+        <a href="/Account/Login">
+            <div class="hidden-xs">
+                <span class="glyphicon glyphicon-heart"></span> My Wishlist
+            </div>
+            <div class="visible-xs">
+                <div class="col-xs-12"><span class="glyphicon glyphicon-heart"></span> My Wishlist</div>
+            </div>
+        </a>
+    </li>
+
+    <li class="dropdown cart-preview">
+        
+<a class="dropdown-toggle hidden-xs" href="/ShoppingCart/Cart">
+    <span class="glyphicon glyphicon-shopping-cart"></span> My Cart: <span class="badge label-success item-count">0</span>
+</a>
+<a class="button-mobile hidden-lg hidden-md hidden-sm" role="button" href="/ShoppingCart/Cart">
+        <span class="glyphicon glyphicon-shopping-cart"></span><span class="badge label-success item-count">0</span>
+</a>
+
+<ul id="cartToggle" class="dropdown-menu">
+    <li class="shopping-cart-popup">
+        <div class="shopping-cart-header">
+            <span class="shopping-cart-total">
+                Subtotal: <strong>$0.00</strong>
+            </span>
+        </div>
+        <div class="items-container">
+            <ul class="list-unstyled shopping-cart-items">
+
+            </ul>
+        </div>
+        <div>
+        </div>
+    </li>
+</ul>
+    </li>
+</ul>
+
+
+
+            </div>
+
+    </div>
+
+</div>
+    </div>
+
+    <nav id="sidebar" class="hidden-sm hidden-md hidden-lg">
+        
+<div class="sidebar-header">
+    <div class="row">
+        <div class="col-xs-12 dismiss-bar">
+            <div id="dismiss" >
+                <i class="fa light fa-times fa-2x" tabindex="0"></i>
+            </div>
+        </div>
+        <div class="col-xs-12 sign-in">
+            <ul class="nav navbar-nav navbar-right navbar-user">
+                    <li>
+    <a href="/Account/Login">
+        <div class="hidden-xs">
+            <span class="glyphicon glyphicon-user"></span> Login
+        </div>
+        <div class="visible-xs">
+            <div class="col-xs-12"><span class="glyphicon glyphicon-user"></span> Login</div>
+        </div>
+    </a>
+</li>
+    <li>
+        <a href="/Account/Login">
+            <div class="hidden-xs">
+                <span class="glyphicon glyphicon-heart"></span> My Wishlist
+            </div>
+            <div class="visible-xs">
+                <div class="col-xs-12"><span class="glyphicon glyphicon-heart"></span> My Wishlist</div>
+            </div>
+        </a>
+    </li>
+
+            </ul>
+        </div>
+
+    </div>
+</div>
+<ul class="nav navbar-nav  mr-auto">
+
+    <li class="dropdown">
+        <!-- <a asp-area="" asp-controller="Products" asp-action="ProductGrid" asp-route-id="Apparel" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">-->
+        <a  class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+            <div class="col-xs-10">
+                Apparel
+            </div>
+            <div class="col-xs-2 arrow-dropdown">
+                <i class="fa fa-angle-down"></i>
+            </div>
+        </a>
+        <ul class="dropdown-menu">
+                    <li class="sub-category">
+                        <a href="/Products/ProductGrid/mnsapparel">Men&#x27;s</a>
+                    </li>
+                    <li class="sub-category">
+                        <a href="/Products/ProductGrid/wmnsappare">Women&#x27;s</a>
+                    </li>
+        </ul>
+    </li>
+            <li>
+                <a href="/Products/ProductGrid/headwear">
+                    <div class="col-xs-12">
+                        Headwear
+                    </div>
+                </a>    
+            </li>
+            <li>
+                <a href="/Products/ProductGrid/bags">
+                    <div class="col-xs-12">
+                        Bags
+                    </div>
+                </a>    
+            </li>
+            <li>
+                <a href="/Products/ProductGrid/accessory">
+                    <div class="col-xs-12">
+                        Accessories
+                    </div>
+                </a>    
+            </li>
+            <li>
+                <a href="/Products/ProductGrid/drinkware">
+                    <div class="col-xs-12">
+                        Drinkware
+                    </div>
+                </a>    
+            </li>
+            <li>
+                <a href="/Products/ProductGrid/youth">
+                    <div class="col-xs-12">
+                        Youth
+                    </div>
+                </a>    
+            </li>
+
+</ul>
+<script>
+    $('.dropdown-toggle').click(function () {
+        $(this).find('i').toggleClass('fa fa-angle-down').toggleClass('fa fa-angle-up');
+    });
+
+</script>
+    </nav>
+
+    <div class="overlay"></div>
+
+    <div id="layoutNavMainWrap" data-spy="affix" data-offset-top="110">
+
+        
+
+
+<nav class="navbar navbar-default navbar-expand-lg">
+    <div class="container">
+        <div class="navbar-header sticky">
+            <div class="row" style="margin-left: -15px !important; margin-right: -15px !important;">
+                <div class="col-xs-2">
+                    <button type="button" class="navbar-toggle" id="sidebarCollapse">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="fa fa-align-justify fa-2x"></span>
+                    </button>
+                </div>
+                <div class="col-xs-2  hidden-sm hidden-md hidden-lg navbar-toggle text-center">
+                    <a href="#" data-toggle="modal" data-target="#myModal" class="clickable"><span class="fa fa-search fa-2x"></span></a>
+                </div>
+                <div class="col-xs-2  hidden-sm hidden-md hidden-lg  navbar-toggle text-center">
+                    <a href="/Account/Settings"><span class="fa fa-user-circle-o fa-2x"></span></a>
+                </div>
+                    <div class="col-xs-2  hidden-sm hidden-md hidden-lg  navbar-toggle text-center">
+                        
+<a class="hidden-lg hidden-md hidden-sm" role="button" href="/Account/WishList">
+    <span class="fa fa-heart fa-2x"></span></a>
+<a class="hidden-xs" role="button" aria-haspopup="true" aria-expanded="false" href="/Account/WishList">
+    <span class="glyphicon glyphicon-heart"></span> My Wishlist </a>
+                    </div>
+                <div class="col-xs-2 hidden-sm hidden-md hidden-lg navbar-toggle text-center header-cart">
+                    
+<a class="dropdown-toggle hidden-xs" href="/ShoppingCart/Cart">
+    <span class="glyphicon glyphicon-shopping-cart"></span> My Cart: <span class="badge label-success item-count">0</span>
+</a>
+<a class="button-mobile hidden-lg hidden-md hidden-sm" role="button" href="/ShoppingCart/Cart">
+        <span class="glyphicon glyphicon-shopping-cart"></span><span class="badge label-success item-count">0</span>
+</a>
+
+<ul id="cartToggle" class="dropdown-menu">
+    <li class="shopping-cart-popup">
+        <div class="shopping-cart-header">
+            <span class="shopping-cart-total">
+                Subtotal: <strong>$0.00</strong>
+            </span>
+        </div>
+        <div class="items-container">
+            <ul class="list-unstyled shopping-cart-items">
+
+            </ul>
+        </div>
+        <div>
+        </div>
+    </li>
+</ul>
+                </div>
+            </div>
+        </div>
+
+        <div id="navbar" class="navbar-collapse collapse">
+
+            <ul class="nav navbar-nav  mr-auto">
+
+                        <li class="dropdown">
+
+                            <a href="/Products/ProductGrid/Apparel">Apparel <span class="caret"></span></a>
+                            
+<ul class="dropdown-menu">
+            <li class="sub-category">
+                <!--<a asp-area="" asp-controller="Products" asp-action="ProductGrid" asp-route-parentcategory="Apparel" asp-route-category="mnsapparel">-->
+                <a href="/Products/ProductGrid/Apparel/Men&#x27;s" class="selected" title="Apparel">
+                    Men&#x27;s
+                    <div class="icon">
+                    </div>
+                </a>
+
+            </li>
+            <li class="sub-category">
+                <!--<a asp-area="" asp-controller="Products" asp-action="ProductGrid" asp-route-parentcategory="Apparel" asp-route-category="wmnsappare">-->
+                <a href="/Products/ProductGrid/Apparel/Women&#x27;s" class="selected" title="Apparel">
+                    Women&#x27;s
+                    <div class="icon">
+                    </div>
+                </a>
+
+            </li>
+</ul>
+                        </li>
+                            <li><a class="selected" href="/Products/ProductGrid/headwear">Headwear </a></li>
+                            <li><a class="selected" href="/Products/ProductGrid/bags">Bags </a></li>
+                            <li><a class="selected" href="/Products/ProductGrid/accessory">Accessories </a></li>
+                            <li><a class="selected" href="/Products/ProductGrid/drinkware">Drinkware </a></li>
+                            <li><a class="selected" href="/Products/ProductGrid/youth">Youth </a></li>
+
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<script>
+
+    $(function () {
+        var wishlist = true ;
+
+        if (wishlist == false) {
+            console.log("false")
+            //$(".sticky .col-xs-2").css("width", "20%");
+        };
+
+    });
+
+</script>
+
+<!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel"><span class="icon"><i class="fa fa-search"></i></span> Submit</h4>
+            </div>
+            <form action="/Products/Search" method="post">
+                <div class="modal-body">
+
+                    <input type="text" class="form-control" id="searchModal" name="searchText" placeholder="Search..." onchange="submit();" autocomplete="off" />
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-success" data-dismiss="modal">Submit</button>
+                </div>
+            <input name="__RequestVerificationToken" type="hidden" value="CfDJ8F6p6RENyOlOouyPoSPZxlJDlb3kEA0ZMmrVz_on7R-rdTTvN9fvaixHpkGbSwtZxHimxawCR5DKjtX6iEYt58xadq9E7BiLVjSdKpKYYOrrfJ0JU2bsvranGQFQaFzG_ZN-mUSoZPd_W99rZOeTS58" /></form>
+        </div>
+    </div>
+</div>
+
+    </div>
+
+    <div id="layoutBodyWrap">
+        <div class="shipping-banner-two">
+            <p class="shipping-text">
+                <a target="_blank" href="https://www.robinsonheli.com/">Visit RobinsonHeli.com</a>
+            </p>
+
+        </div>
+        
+
+<div id="productGrid" class="container">
+
+    <div class="row">
+
+        <div class="col-md-7">
+            
+
+<ul class="breadcrumb">
+    <li><a href="/">Home</a></li>
+       
+        <li><a href="/Products/ProductGrid/Apparel/">Apparel</a></li>
+        <li><a href="/Products/ProductGrid/Apparel/Men&#x27;s">Men&#x27;s</a></li>
+
+</ul>
+
+
+        </div>
+
+        <div class="col-md-5">
+            
+<div id="pageSelector">
+    
+    <div class="row hidden-xs">
+        <div class="col-md-12 text-right">
+            <div class="form-inline">
+                <input type="hidden" id="hidCurrentSort" data-val="true" data-val-required="The CurrentSort field is required." name="CurrentSort" value="0" />
+                <div id="sortBy" class="form-group">
+                    <label>Sort By</label>
+                    <select Id="sort" class="form-control input-sm" name="CurrentSort">
+                        <option value="0" selected="selected">Default</option>
+                        <option value="1">A-Z</option>
+                        <option value="2">Z-A</option>
+                        <option value="3">Price Lowest</option>
+                        <option value="4">Price Highest</option>
+                    </select>
+                </div>
+                <div id="viewType" class="form-group">
+                    <label >View</label>
+                    <select id="productViewType" class="form-control input-sm">
+                        <option value="/Products/ProductGrid/mnsapparel?sort=0">Grid</option>
+                        <option value="/Products/ProductList/mnsapparel?sort=0">List</option>
+                            <option value="/Products/InventoryList/mnsapparel?sort=0">Inventory List</option>
+                    </select>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    $(document).ready(function () {
+        var currUrl = window.location.pathname;
+        if (currUrl.includes("ProductGrid")) {
+            $('#productViewType').find("option").filter(function () {
+                return $(this).text() === "Grid";
+            }).prop("selected", "selected");
+
+        }
+        else if (currUrl.includes("InventoryList")) {
+            $('#productViewType').find("option").filter(function () {
+                return $(this).text() === "Inventory List";
+            }).prop("selected", "selected");
+        }
+        else {
+
+            $('#productViewType').find("option").filter(function () {
+                return $(this).text() === "List";
+            }).prop("selected","selected");
+        }
+    });
+    $(window).on('pageshow', function () {
+        var currUrl = window.location.pathname;
+        if (currUrl.includes("ProductGrid")) {
+            $('#productViewType').find("option").filter(function () {
+                return $(this).text() === "Grid";
+            }).prop("selected", "selected");
+
+        }
+        else if (currUrl.includes("InventoryList")) {
+            $('#productViewType').find("option").filter(function () {
+                return $(this).text() === "Inventory List";
+            }).prop("selected", "selected");
+        }
+        else {
+
+            $('#productViewType').find("option").filter(function () {
+                return $(this).text() === "List";
+            }).prop("selected", "selected");
+        }
+    });
+
+    $('#productViewType').change(function () {
+        window.location.href = this.value;
+    });
+</script>
+
+        </div>
+
+    </div>
+
+
+
+            <div class="col-md-4">
+                
+<div class="product">
+
+    <div class="row">
+
+        <div class="col-1">
+            <a class="product-figure" href="/Products/ProductDetails/S-RHC-055/Men&#x27;s-Marine-Layer-Schematic-R44-Tee">
+                    <img src="/Products/GetImage/803215" alt="..." class="img-responsive">
+            </a>
+
+        </div>
+
+        <div class="col-2">
+
+            <h2><a href="/Products/ProductDetails/S-RHC-055/Men&#x27;s-Marine-Layer-Schematic-R44-Tee">Men&#x27;s Marine Layer Schematic R44 Tee</a></h2>
+
+                <p>&lt;b&gt;&lt;a href=&quot;/images/S-RHC-055.PNG&quot; target=&quot;_blank&quot;&gt;&lt;Font color=#bc955a&gt;Size Chart&lt;/font&gt;&lt;/a&gt;&lt;/b&gt;&#xD;&#xA;&lt;BR&gt;&lt;BR&gt;&#xD;&#xA;&#xD;&#xA;&lt;li&gt;50% Supima Cotton, 50% Micromodal&#xD;&#xA;&lt;li&gt;Pre-washed and pre-shrunk&#xD;&#xA;&lt;li&gt;Standard Fit&#xD;&#xA;&lt;li&gt;Wash cold, dry low&#xD;&#xA;&lt;li&gt;Made in the USA, by adults&#xD;&#xA;&lt;BR&gt;&lt;BR&gt;</p>
+                                <span class="h5 colors-available">2 Colors Available</span>
+                            <span class="h5 price-current">$42.00</span>
+        </div>
+
+    </div>
+
+</div>
+            </div>
+            <div class="col-md-4">
+                
+<div class="product">
+
+    <div class="row">
+
+        <div class="col-1">
+            <a class="product-figure" href="/Products/ProductDetails/S-RHC-020/Men&#x27;s-OGIO-Modern-Performance-Full!2DZip">
+                    <img src="/Products/GetImage/676486" alt="..." class="img-responsive">
+            </a>
+
+        </div>
+
+        <div class="col-2">
+
+            <h2><a href="/Products/ProductDetails/S-RHC-020/Men&#x27;s-OGIO-Modern-Performance-Full!2DZip">Men&#x27;s OGIO Modern Performance Full-Zip</a></h2>
+
+                <p>&lt;b&gt;&lt;a href=&quot;/images/S-RHC-020.PDF&quot; target=&quot;_blank&quot;&gt;&lt;Font color=blue&gt;Size Chart&lt;/font&gt;&lt;/a&gt;&lt;/b&gt;&#xD;&#xA;&#xD;&#xA;&lt;BR&gt;&lt;BR&gt;&#xD;&#xA;&lt;li&gt; 7.4-ounce, 85/15 poly/spandex with stay-cool wicking technology&#xD;&#xA;&lt;li&gt; Reflective OGIO heat transfer label for tag-free comfort&#xD;&#xA;&lt;li&gt; Zip-through cadet collar&#xD;&#xA;&lt;li&gt; Black reflective O heat transfer on center back collar&#xD;&#xA;&lt;li&gt; Front and shoulder piecing details&#xD;&#xA;&lt;li&gt; Metaluxe&#xAE; zipper&#xD;&#xA;&lt;li&gt; Engraved matte black metal O zipper pull&#xD;&#xA;&lt;li&gt; Black reflective O heat transfer on left pocket&#xD;&#xA;</p>
+                                        <span class="h5 price-current">$73.00</span>
+        </div>
+
+    </div>
+
+</div>
+            </div>
+            <div class="col-md-4">
+                
+<div class="product">
+
+    <div class="row">
+
+        <div class="col-1">
+            <a class="product-figure" href="/Products/ProductDetails/S-RHC-053/Unisex-Schematic-R66-Tee">
+                    <img src="/Products/GetImage/803199" alt="..." class="img-responsive">
+            </a>
+
+        </div>
+
+        <div class="col-2">
+
+            <h2><a href="/Products/ProductDetails/S-RHC-053/Unisex-Schematic-R66-Tee">Unisex Schematic R66 Tee</a></h2>
+
+                <p>&lt;b&gt;&lt;a href=&quot;/images/S-RHC-053.PDF&quot; target=&quot;_blank&quot;&gt;&lt;Font color=#bc955a&gt;Size Chart&lt;/font&gt;&lt;/a&gt;&lt;/b&gt;&#xD;&#xA;&lt;BR&gt;&lt;BR&gt;&#xD;&#xA;&#xD;&#xA;&lt;li&gt;4.3-ounce, 60/40 combed ring spun cotton/poly, 32 singles&#xD;&#xA;&lt;li&gt;CVC blend&#xD;&#xA;&lt;li&gt;1x1 rib knit neck&#xD;&#xA;&lt;li&gt;Shoulder to shoulder taping&#xD;&#xA;&lt;li&gt;Tear-away label&#xD;&#xA;&lt;li&gt;Side seamed&#xD;&#xA;&lt;BR&gt;&lt;BR&gt;</p>
+                                <span class="h5 colors-available">3 Colors Available</span>
+                            <span class="h5 price-current">$12.00</span>
+        </div>
+
+    </div>
+
+</div>
+            </div>
+            <div class="col-md-4">
+                
+<div class="product">
+
+    <div class="row">
+
+        <div class="col-1">
+            <a class="product-figure" href="/Products/ProductDetails/S-RHC-052/Unisex-Next-Level-Apparel-Sueded-Long-Sleeve-Crew">
+                    <img src="/Products/GetImage/678196" alt="..." class="img-responsive">
+            </a>
+
+        </div>
+
+        <div class="col-2">
+
+            <h2><a href="/Products/ProductDetails/S-RHC-052/Unisex-Next-Level-Apparel-Sueded-Long-Sleeve-Crew">Unisex Next Level Apparel Sueded Long Sleeve Crew</a></h2>
+
+                <p>&lt;b&gt;&lt;a href=&quot;/images/S-RHC-052.PDF&quot; target=&quot;_blank&quot;&gt;&lt;Font color=blue&gt;Size Chart&lt;/font&gt;&lt;/a&gt;&lt;/b&gt;&#xD;&#xA;&#xD;&#xA;&lt;li&gt; 4.3 oz., 32 singles&#xD;&#xA;&lt;li&gt; 60% combed ringspun cotton, 40% polyester sueded jersey&#xD;&#xA;&lt;li&gt; Note: The Polyester content is transitioning to Recycled Polyester. Mixed inventory may occur.&#xD;&#xA;&lt;li&gt; Fabric laundered for reduced shrinkage&#xD;&#xA;&lt;li&gt; 1x1 sueded baby rib-knit set-in collar and cuffs&#xD;&#xA;&lt;li&gt; Satin label&#xD;&#xA;&lt;li&gt; Side seamed&#xD;&#xA;&lt;li&gt; Next Level Apparel has a recycling program for all fabric waste collected from the cutting process. All fabric scraps are sent to a recycling company that cleans and processes them to be used for cushion filling, rugs, etc. To date, 24.3M pounds of fabric have been recycled.</p>
+                                <span class="h5 colors-available">2 Colors Available</span>
+                            <span class="h5 price-current">$27.00</span>
+        </div>
+
+    </div>
+
+</div>
+            </div>
+            <div class="col-md-4">
+                
+<div class="product">
+
+    <div class="row">
+
+        <div class="col-1">
+            <a class="product-figure" href="/Products/ProductDetails/S-RHC-028/Carhartt-Force-Solid-Short-Sleeve-Shirt">
+                    <img src="/Products/GetImage/677202" alt="..." class="img-responsive">
+            </a>
+
+        </div>
+
+        <div class="col-2">
+
+            <h2><a href="/Products/ProductDetails/S-RHC-028/Carhartt-Force-Solid-Short-Sleeve-Shirt">Carhartt Force Solid Short Sleeve Shirt</a></h2>
+
+                <p>&lt;b&gt;&lt;a href=&quot;/images/S-RHC-028.PDF&quot; target=&quot;_blank&quot;&gt;&lt;Font color=blue&gt;Size Chart&lt;/font&gt;&lt;/a&gt;&lt;/b&gt;&#xD;&#xA;&lt;BR&gt;&lt;BR&gt;&#xD;&#xA;&#xD;&#xA;&lt;li&gt;2.9-ounce, 71/29 poly/nylon chambray&#xD;&#xA;&lt;li&gt;FastDry&#xAE; technology keeps you cool for all-day comfort&#xD;&#xA;&lt;li&gt;Rugged Flex&#xAE; technology for ease of movement&#xD;&#xA;&lt;li&gt;UPF 50&#x2B;&#xD;&#xA;&lt;li&gt;Button-down collar&#xD;&#xA;&lt;li&gt;Back yoke shoulder pleats for ease of movement&#xD;&#xA;&lt;li&gt;Two chest pockets with pen stalls, mitered flaps and button closures&#xD;&#xA;&lt;li&gt;Carhartt label sewn on left chest pocket&#xD;&#xA;&lt;li&gt;Relaxed fit&#xD;&#xA;&#xD;&#xA;&lt;BR&gt;&lt;BR&gt;</p>
+                                        <span class="h5 price-current">$72.00</span>
+        </div>
+
+    </div>
+
+</div>
+            </div>
+            <div class="col-md-4">
+                
+<div class="product">
+
+    <div class="row">
+
+        <div class="col-1">
+            <a class="product-figure" href="/Products/ProductDetails/S-RHC-033/Men&#x27;s-Adidas-Pine-Tree-Polo">
+                    <img src="/Products/GetImage/677212" alt="..." class="img-responsive">
+            </a>
+
+        </div>
+
+        <div class="col-2">
+
+            <h2><a href="/Products/ProductDetails/S-RHC-033/Men&#x27;s-Adidas-Pine-Tree-Polo">Men&#x27;s Adidas Pine Tree Polo</a></h2>
+
+                <p>&lt;b&gt;&lt;a href=&quot;/images/S-RHC-033.PDF&quot; target=&quot;_blank&quot;&gt;&lt;Font color=blue&gt;Size Chart&lt;/font&gt;&lt;/a&gt;&lt;/b&gt;&#xD;&#xA;&lt;BR&gt;&lt;BR&gt;&#xD;&#xA;&#xD;&#xA;&lt;li&gt;5 oz./yd&#xB2;, 88/12 recycled polyester/elastane&#xD;&#xA;&lt;li&gt;Moisture-management properties&#xD;&#xA;&lt;li&gt;Self-collar&#xD;&#xA;&lt;li&gt;Three-button placket&#xD;&#xA;&lt;li&gt;Open hem sleeve&#xD;&#xA;&lt;li&gt;Contrast adidas logo on right sleeve&#xD;&#xA;&#xD;&#xA;&lt;BR&gt;&lt;BR&gt;</p>
+                                        <span class="h5 price-current">$81.00</span>
+        </div>
+
+    </div>
+
+</div>
+            </div>
+            <div class="col-md-4">
+                
+<div class="product">
+
+    <div class="row">
+
+        <div class="col-1">
+            <a class="product-figure" href="/Products/ProductDetails/S-RHC-032/Men&#x27;s-OGIO-Regain-Polo">
+                    <img src="/Products/GetImage/677210" alt="..." class="img-responsive">
+            </a>
+
+        </div>
+
+        <div class="col-2">
+
+            <h2><a href="/Products/ProductDetails/S-RHC-032/Men&#x27;s-OGIO-Regain-Polo">Men&#x27;s OGIO Regain Polo</a></h2>
+
+                <p>&lt;b&gt;&lt;a href=&quot;/images/S-RHC-032.PDF&quot; target=&quot;_blank&quot;&gt;&lt;Font color=blue&gt;Size Chart&lt;/font&gt;&lt;/a&gt;&lt;/b&gt;&#xD;&#xA;&lt;BR&gt;&lt;BR&gt;&#xD;&#xA;&#xD;&#xA;&lt;li&gt;5-ounce, 88/12 recycled poly/recycled spandex with stay-cool wicking technology;&#xD;&#xA;&lt;li&gt;White is 5.3-ounce for increased coverage&#xD;&#xA;&lt;li&gt;Carbon footprint neutralized through Carbonfree&#xAE; certification&#xD;&#xA;&lt;li&gt;UPF rating of 50&#xD;&#xA;&lt;li&gt;OGIO heat transfer label for tag-free comfort&#xD;&#xA;&lt;li&gt;Flat knit collar&#xD;&#xA;&lt;li&gt;Recycled, embossed OGIO neck tape includes 80% recycled content&#xD;&#xA;&lt;li&gt;2-button placket&#xD;&#xA;&lt;li&gt;Dyed-to-match, matte-finish buttons include 20% recycled content&#xD;&#xA;&lt;li&gt;Forward shoulders&#xD;&#xA;&lt;li&gt;Embroidered dyed-to-match O crafted with recycled thread at left sleeve&#xD;&#xA;&lt;li&gt;Side vents&#xD;&#xA;&#xD;&#xA;&lt;BR&gt;&lt;BR&gt;</p>
+                                        <span class="h5 price-current">$44.00</span>
+        </div>
+
+    </div>
+
+</div>
+            </div>
+            <div class="col-md-4">
+                
+<div class="product">
+
+    <div class="row">
+
+        <div class="col-1">
+            <a class="product-figure" href="/Products/ProductDetails/S-RHC-031/Men&#x27;s-TravisMathew-Coto-Performance-Polo">
+                    <img src="/Products/GetImage/677208" alt="..." class="img-responsive">
+            </a>
+
+        </div>
+
+        <div class="col-2">
+
+            <h2><a href="/Products/ProductDetails/S-RHC-031/Men&#x27;s-TravisMathew-Coto-Performance-Polo">Men&#x27;s TravisMathew Coto Performance Polo</a></h2>
+
+                <p>&lt;b&gt;&lt;a href=&quot;/images/S-RHC-031.PDF&quot; target=&quot;_blank&quot;&gt;&lt;Font color=blue&gt;Size Chart&lt;/font&gt;&lt;/a&gt;&lt;/b&gt;&#xD;&#xA;&lt;BR&gt;&lt;BR&gt;&#xD;&#xA;&#xD;&#xA;&lt;li&gt;4.1-ounce, 100% polyester&#xD;&#xA;&lt;li&gt;Self-fabric collar&#xD;&#xA;&lt;li&gt;Three-button placket with dyed-to-match buttons&#xD;&#xA;&lt;li&gt;TM logo printed at center back neck &#xD;&#xA;&lt;li&gt;TM logo woven label at left sleeve&#xD;&#xA;&lt;li&gt;Open hem sleeves&#xD;&#xA;&#xD;&#xA;&lt;BR&gt;&lt;BR&gt;</p>
+                                        <span class="h5 price-current">$88.00</span>
+        </div>
+
+    </div>
+
+</div>
+            </div>
+            <div class="col-md-4">
+                
+<div class="product">
+
+    <div class="row">
+
+        <div class="col-1">
+            <a class="product-figure" href="/Products/ProductDetails/S-RHC-029/MercerMettle-Stretch-Jersey-Long-Sleeve-Shirt">
+                    <img src="/Products/GetImage/677204" alt="..." class="img-responsive">
+            </a>
+
+        </div>
+
+        <div class="col-2">
+
+            <h2><a href="/Products/ProductDetails/S-RHC-029/MercerMettle-Stretch-Jersey-Long-Sleeve-Shirt">Mercer&#x2B;Mettle Stretch Jersey Long Sleeve Shirt</a></h2>
+
+                <p>&lt;b&gt;&lt;a href=&quot;/images/S-RHC-029.PDF&quot; target=&quot;_blank&quot;&gt;&lt;Font color=blue&gt;Size Chart&lt;/font&gt;&lt;/a&gt;&lt;/b&gt;&#xD;&#xA;&lt;BR&gt;&lt;BR&gt;&#xD;&#xA;&#xD;&#xA;&lt;li&gt;Button-down collar with collar stand&#xD;&#xA;&lt;li&gt;Rimmed buttons with a satin finish&#xD;&#xA;&lt;li&gt;Adjustable mitered cuffs&#xD;&#xA;&lt;li&gt;Curved shirt tail hem&#xD;&#xA;&#xD;&#xA;&lt;BR&gt;&lt;BR&gt;</p>
+                                        <span class="h5 price-current">$48.00</span>
+        </div>
+
+    </div>
+
+</div>
+            </div>
+            <div class="col-md-4">
+                
+<div class="product">
+
+    <div class="row">
+
+        <div class="col-1">
+            <a class="product-figure" href="/Products/ProductDetails/S-RHC-042/Dickies-Industrial-Short-Sleeve-Work-Shirt">
+                    <img src="/Products/GetImage/684499" alt="..." class="img-responsive">
+            </a>
+
+        </div>
+
+        <div class="col-2">
+
+            <h2><a href="/Products/ProductDetails/S-RHC-042/Dickies-Industrial-Short-Sleeve-Work-Shirt">Dickies Industrial Short Sleeve Work Shirt</a></h2>
+
+                <p>&lt;b&gt;&lt;a href=&quot;/images/S-RHC-042.PDF&quot; target=&quot;_blank&quot;&gt;&lt;Font color=blue&gt;Size Chart&lt;/font&gt;&lt;/a&gt;&lt;/b&gt;&#xD;&#xA;&#xD;&#xA;&lt;BR&gt;&lt;BR&gt;&#xD;&#xA;&lt;li&gt; 4.25 oz./yd&#xB2;, 65/35 polyester/cotton permanent press poplin&#xD;&#xA;&lt;li&gt; Wrinkle resistant&#xD;&#xA;&lt;li&gt; Two-piece convertible collar with sewn in stays&#xD;&#xA;&lt;li&gt; Hex chest pocket with pencil stall</p>
+                                        <span class="h5 price-current">$44.00</span>
+        </div>
+
+    </div>
+
+</div>
+            </div>
+            <div class="col-md-4">
+                
+<div class="product">
+
+    <div class="row">
+
+        <div class="col-1">
+            <a class="product-figure" href="/Products/ProductDetails/S-RHC-023/Men&#x27;s-Carhartt-Gilliam-Jacket">
+                    <img src="/Products/GetImage/676525" alt="..." class="img-responsive">
+            </a>
+
+        </div>
+
+        <div class="col-2">
+
+            <h2><a href="/Products/ProductDetails/S-RHC-023/Men&#x27;s-Carhartt-Gilliam-Jacket">Men&#x27;s Carhartt Gilliam Jacket</a></h2>
+
+                <p>&lt;b&gt;&lt;a href=&quot;/images/S-RHC-023.PDF&quot; target=&quot;_blank&quot;&gt;&lt;Font color=blue&gt;Size Chart&lt;/font&gt;&lt;/a&gt;&lt;/b&gt;&#xD;&#xA;&#xD;&#xA;&lt;BR&gt;&lt;BR&gt;&#xD;&#xA;Lightweight, yet warm, this jacket is amazingly durable and dependably water repellent. &#xD;&#xA;&#xD;&#xA;&lt;li&gt; 1.75-ounce, 100% nylon Cordura&#xAE; shell&#xD;&#xA;&lt;li&gt; Rain Defender&#xAE; durable water repellent&#xD;&#xA;&lt;li&gt; Wind Fighter&#xAE; technology tames wind&#xD;&#xA;&lt;li&gt; Nylon lining quilted to 100-gram polyester insulation&#xD;&#xA;&lt;li&gt; Reverse coil center front zipper&#xD;&#xA;&lt;li&gt; Zip-through cadet collar&#xD;&#xA;&lt;li&gt; Left chest map pocket with reverse coil zipper&#xD;&#xA;&lt;li&gt; Two hand pockets with hidden snap closures&#xD;&#xA;&lt;li&gt; Two interior pockets: one zippered, one hook and loop closure&#xD;&#xA;&lt;li&gt; Hook and loop adjustable cuffs&#xD;&#xA;&lt;li&gt; Drawcord adjustable hem&#xD;&#xA;&lt;li&gt; Carhartt-strong, triple-stitched main seams&#xD;&#xA;&lt;li&gt; Carhartt label sewn on chest pocket</p>
+                                        <span class="h5 price-current">$104.50</span>
+        </div>
+
+    </div>
+
+</div>
+            </div>
+            <div class="col-md-4">
+                
+<div class="product">
+
+    <div class="row">
+
+        <div class="col-1">
+            <a class="product-figure" href="/Products/ProductDetails/S-RHC-044/Carhartt-Midweight-Hooded-Sweatshirt">
+                    <img src="/Products/GetImage/693850" alt="..." class="img-responsive">
+            </a>
+
+        </div>
+
+        <div class="col-2">
+
+            <h2><a href="/Products/ProductDetails/S-RHC-044/Carhartt-Midweight-Hooded-Sweatshirt">Carhartt Midweight Hooded Sweatshirt</a></h2>
+
+                <p>&lt;b&gt;&lt;a href=&quot;/images/S-RHC-044.PDF&quot; target=&quot;_blank&quot;&gt;&lt;Font color=blue&gt;Size Chart&lt;/font&gt;&lt;/a&gt;&lt;/b&gt;&#xD;&#xA;&#xD;&#xA;&lt;BR&gt;&lt;BR&gt;&#xD;&#xA;Sometimes Mother Nature can&#x2019;t make up her mind. This sweatshirt works perfectly as a layer or by itself, allowing you to adapt with the weather.&#xD;&#xA;&lt;li&gt; 10.5-ounce, 50/50 cotton/poly blend or 59/41 cotton/poly blend&#xD;&#xA;&lt;li&gt; Attached three-piece hood with drawcord closure&#xD;&#xA;&lt;li&gt; Front hand warmer pocket &#xD;&#xA;&lt;li&gt; Stretchable, spandex-reinforced, rib knit cuffs and waistband&#xD;&#xA;&lt;li&gt; Carhartt-strong, triple-stitched main seams&#xD;&#xA;&lt;li&gt; Carhartt label sewn on hand warmer pocket&#xD;&#xA;&lt;li&gt; Loose fit</p>
+                                        <span class="h5 price-current">$78.00</span>
+        </div>
+
+    </div>
+
+</div>
+            </div>
+            <div class="col-md-4">
+                
+<div class="product">
+
+    <div class="row">
+
+        <div class="col-1">
+            <a class="product-figure" href="/Products/ProductDetails/S-RHC-043/New-Era-French-Terry-Crew">
+                    <img src="/Products/GetImage/681634" alt="..." class="img-responsive">
+            </a>
+
+        </div>
+
+        <div class="col-2">
+
+            <h2><a href="/Products/ProductDetails/S-RHC-043/New-Era-French-Terry-Crew">New Era French Terry Crew</a></h2>
+
+                <p>&lt;b&gt;&lt;a href=&quot;/images/S-RHC-043.PDF&quot; target=&quot;_blank&quot;&gt;&lt;Font color=blue&gt;Size Chart&lt;/font&gt;&lt;/a&gt;&lt;/b&gt;&#xD;&#xA;&#xD;&#xA;&lt;BR&gt;&lt;BR&gt;&#xD;&#xA;This sueded, cotton-rich sweatshirt looks and feels like a reliable classic.  &#xD;&#xA;&#xD;&#xA; &lt;li&gt; 9.4-ounce, 52/48 cotton/poly sueded French terry&#xD;&#xA; &lt;li&gt; Coverstitched seams&#xD;&#xA; &lt;li&gt; Woven New Era patch label&#xD;&#xA; &lt;li&gt; Rib knit V inset at neck&#xD;&#xA; &lt;li&gt; Rolled-forward shoulders&#xD;&#xA; &lt;li&gt; Rib knit side panels&#xD;&#xA; &lt;li&gt; Embroidered New Era flag logo on left sleeve&#xD;&#xA; &lt;li&gt; Rib knit cuffs and hem&#xD;&#xA; &lt;li&gt; Woven New Era badge at hem</p>
+                                        <span class="h5 price-current">$50.00</span>
+        </div>
+
+    </div>
+
+</div>
+            </div>
+            <div class="col-md-4">
+                
+<div class="product">
+
+    <div class="row">
+
+        <div class="col-1">
+            <a class="product-figure" href="/Products/ProductDetails/S-RHC-017/Men&#x27;s-TravisMathew-Surfside-Full!2DZip-Jacket">
+                    <img src="/Products/GetImage/676480" alt="..." class="img-responsive">
+            </a>
+
+        </div>
+
+        <div class="col-2">
+
+            <h2><a href="/Products/ProductDetails/S-RHC-017/Men&#x27;s-TravisMathew-Surfside-Full!2DZip-Jacket">Men&#x27;s TravisMathew Surfside Full-Zip Jacket</a></h2>
+
+                <p>&lt;b&gt;&lt;a href=&quot;/images/S-RHC-017.PDF&quot; target=&quot;_blank&quot;&gt;&lt;Font color=blue&gt;Size Chart&lt;/font&gt;&lt;/a&gt;&lt;/b&gt;&#xD;&#xA;&#xD;&#xA;&lt;BR&gt;&lt;BR&gt;&#xD;&#xA;You&#x2019;ll have no trouble finding perfect vacation style in this crisp, classic full-zip. Designed with 4-way stretch for ultimate comfort, this durable jacket is versatile enough for work and play and is easy to throw on without missing a beat. &#xD;&#xA;&lt;li&gt; 4.7-ounce, 88/12 polyester/spandex &#xD;&#xA;&lt;li&gt; Zip-through collar&#xD;&#xA;&lt;li&gt; Embroidered TravisMathew logo on left chest&#xD;&#xA;&lt;li&gt; Reverse coil center front zipper with kissing welt&#xD;&#xA;&lt;li&gt; Open hand pockets&#xD;&#xA;&lt;li&gt; Open cuffs</p>
+                                        <span class="h5 price-current">$119.00</span>
+        </div>
+
+    </div>
+
+</div>
+            </div>
+            <div class="col-md-4">
+                
+<div class="product">
+
+    <div class="row">
+
+        <div class="col-1">
+            <a class="product-figure" href="/Products/ProductDetails/S-RHC-046/Unisex-Clique-Stockholm-Full-Zip-Hoodie">
+                    <img src="/Products/GetImage/693917" alt="..." class="img-responsive">
+            </a>
+
+        </div>
+
+        <div class="col-2">
+
+            <h2><a href="/Products/ProductDetails/S-RHC-046/Unisex-Clique-Stockholm-Full-Zip-Hoodie">Unisex Clique Stockholm Full Zip Hoodie</a></h2>
+
+                <p>&lt;b&gt;&lt;a href=&quot;/images/S-RHC-046.JPG&quot; target=&quot;_blank&quot;&gt;&lt;Font color=blue&gt;Size Chart&lt;/font&gt;&lt;/a&gt;&lt;/b&gt;&#xD;&#xA;&lt;BR&gt;&lt;BR&gt;&#xD;&#xA;&lt;b&gt;&lt;a href=&quot;/images/S-RHC-046-2.JPG&quot; target=&quot;_blank&quot;&gt;&lt;Font color=blue&gt;How to Measure&lt;/font&gt;&lt;/a&gt;&lt;/b&gt;&#xD;&#xA;&#xD;&#xA;&lt;BR&gt;&lt;BR&gt;&#xD;&#xA;The Clique Unisex Stockholm Full Zip Hoodie is your modern, everyday essential hooded sweatshirt. Designed with an ethical, OEKO-TEX Certified soft &amp; stabilized polyester cotton, anti-pill fleece blend for unparalleled value and product safety confidence. Clique essentials features no exterior branding so you can always count on Clique as an approachable uniform, spirit or sportswear solution designed to exceed expectations.&#xD;&#xA;&lt;li&gt; OEKO-TEX STANDARD 100 Certified Preshrunk&#xD;&#xA;&lt;li&gt; 65% Polyester / 35% Cotton&#xD;&#xA;&lt;li&gt; Unisex modern style&#xD;&#xA;&lt;li&gt; 280 gsm fleece&#xD;&#xA;&lt;li&gt; Anti-pill finish&#xD;&#xA;&lt;li&gt; Flat lace drawstring with burnished metal grommets&#xD;&#xA;&lt;li&gt; Front pocket with phone strap and grommets for headphone cord&#xD;&#xA;&lt;li&gt; Twill neck tape and tear away label&#xD;&#xA;&lt;li&gt; 1x1 Stretch rib at sleeve and hem for comfort&#xD;&#xA;&lt;li&gt; Genuine YKK METALUXE&#xAE; zipper is anti-static and anti-scratch&#xD;&#xA;&lt;li&gt; Prewashed fabric soft and stabilized for easy wash and wear&#xD;&#xA;&lt;li&gt; Machine wash</p>
+                                        <span class="h5 price-current">$35.00</span>
+        </div>
+
+    </div>
+
+</div>
+            </div>
+            <div class="col-md-4">
+                
+<div class="product">
+
+    <div class="row">
+
+        <div class="col-1">
+            <a class="product-figure" href="/Products/ProductDetails/S-RHC-022/Enhanced-MA!2D1-Flight-Jacket">
+                    <img src="/Products/GetImage/681609" alt="..." class="img-responsive">
+            </a>
+
+        </div>
+
+        <div class="col-2">
+
+            <h2><a href="/Products/ProductDetails/S-RHC-022/Enhanced-MA!2D1-Flight-Jacket">Enhanced MA-1 Flight Jacket</a></h2>
+
+                <p>&lt;b&gt;&lt;a href=&quot;/images/S-RHC-022.PNG&quot; target=&quot;_blank&quot;&gt;&lt;Font color=blue&gt;Size Chart&lt;/font&gt;&lt;/a&gt;&lt;/b&gt;&#xD;&#xA;&#xD;&#xA;&lt;BR&gt;&lt;BR&gt;&#xD;&#xA;Elevate your style with Rothco&#x27;s Enhanced Nylon MA-1 Flight Jacket. Featuring a fully reversible rescue orange nylon lining and enhanced nylon outer shell, this bomber jacket offers maximum protection. Zippered utility and pen pockets on the left arm provide easy access, while front slash pockets inside and outside the jacket add convenience. The zippered front closure with a classic MA-1 pull tab and storm flap enhances the classic look.&#xD;&#xA;&lt;li&gt; Maximum Protection: Enhanced nylon outer shell for optimal weather resistance and durability.&#xD;&#xA;&lt;li&gt; Reversible Orange Lining: Fully reversible rescue orange nylon lining for added versatility.&#xD;&#xA;&lt;li&gt; Convenient Storage: Zippered utility and pen pockets on the left arm for easy access to essentials.&#xD;&#xA;&lt;li&gt; Dual Front Pockets: Two front slash pockets inside and outside the jacket for added convenience.&#xD;&#xA;&lt;li&gt; Classic MA-1 Style: Zippered front closure with MA-1 pull tab and storm flap for a timeless look.</p>
+                                        <span class="h5 price-current">$82.00</span>
+        </div>
+
+    </div>
+
+</div>
+            </div>
+            <div class="col-md-4">
+                
+<div class="product">
+
+    <div class="row">
+
+        <div class="col-1">
+            <a class="product-figure" href="/Products/ProductDetails/S-RHC-025/Men&#x27;s-Carhartt-Storm-Defender-Shoreline-Jacket">
+                    <img src="/Products/GetImage/676529" alt="..." class="img-responsive">
+            </a>
+
+        </div>
+
+        <div class="col-2">
+
+            <h2><a href="/Products/ProductDetails/S-RHC-025/Men&#x27;s-Carhartt-Storm-Defender-Shoreline-Jacket">Men&#x27;s Carhartt Storm Defender Shoreline Jacket</a></h2>
+
+                <p>&lt;b&gt;&lt;a href=&quot;/images/S-RHC-025.PDF&quot; target=&quot;_blank&quot;&gt;&lt;Font color=blue&gt;Size Chart&lt;/font&gt;&lt;/a&gt;&lt;/b&gt;&#xD;&#xA;&#xD;&#xA;&lt;BR&gt;&lt;BR&gt;&#xD;&#xA;Our best-selling Shoreline Jacket has been updated&#x2014;but it still includes Storm Defender&#xAE; waterproof, breathable technology to stop water from getting in and allow sweat to get out.&#xD;&#xA;&#xD;&#xA;&lt;li&gt; 7.3-ounce, 100% nylon oxford shell&#xD;&#xA;&lt;li&gt; Storm Defender&#xAE; waterproof, breathable technology&#xD;&#xA;&lt;li&gt; Wind Fighter&#xAE; technology tames wind&#xD;&#xA;&lt;li&gt; 10K/10K waterproof/breathable protection rating&#xD;&#xA;&lt;li&gt; Fully taped waterproof seams&#xD;&#xA;&lt;li&gt; Polyester mesh lining in body for breathability&#xD;&#xA;&lt;li&gt; Taffeta lining in sleeves and hood for easy on/off&#xD;&#xA;&lt;li&gt; Adjustable, removable roll-away hood&#xD;&#xA;&lt;li&gt; Full-zip front with inner and outer storm flaps to keep water out&#xD;&#xA;&lt;li&gt; Two interior pockets with hook and loop closures&#xD;&#xA;&lt;li&gt; Left chest pocket with secure waterproof zipper and storm flap&#xD;&#xA;&lt;li&gt; Two lower front pockets with zippered closures and storm flaps&#xD;&#xA;&lt;li&gt; Adjustable cuffs with hook and loop closures and inner sleeve storm cuffs&#xD;&#xA;&lt;li&gt; Adjustable drop tail hem&#xD;&#xA;&lt;li&gt; Carhartt-strong, triple-stitched main seams&#xD;&#xA;&lt;li&gt; Carhartt label sewn on chest pocket&#xD;&#xA;&lt;li&gt; Loose fit</p>
+                                        <span class="h5 price-current">$185.00</span>
+        </div>
+
+    </div>
+
+</div>
+            </div>
+            <div class="col-md-4">
+                
+<div class="product">
+
+    <div class="row">
+
+        <div class="col-1">
+            <a class="product-figure" href="/Products/ProductDetails/S-RHC-018/Men&#x27;s-The-North-Face-Ridgewall-Soft-Shell-Vest">
+                    <img src="/Products/GetImage/676482" alt="..." class="img-responsive">
+            </a>
+
+        </div>
+
+        <div class="col-2">
+
+            <h2><a href="/Products/ProductDetails/S-RHC-018/Men&#x27;s-The-North-Face-Ridgewall-Soft-Shell-Vest">Men&#x27;s The North Face Ridgewall Soft Shell Vest</a></h2>
+
+                <p>&lt;b&gt;&lt;a href=&quot;/images/S-RHC-018.PDF&quot; target=&quot;_blank&quot;&gt;&lt;Font color=blue&gt;Size Chart&lt;/font&gt;&lt;/a&gt;&lt;/b&gt;&#xD;&#xA;&#xD;&#xA;&lt;BR&gt;&lt;BR&gt;&#xD;&#xA;Cover your core without restricting mobility in this abrasion- and wind-resistant vest that has a warm, technical gridded fleece interior for additional comfort. &#xD;&#xA;&#xD;&#xA;&lt;li&gt; 306 g/m2 WindWall&#x2122;&#x2014;100% recycled post-consumer polyester with non-PFC durable water-repellent (DWR) finish&#xD;&#xA;&lt;li&gt; Highly wind-resistant with wind permeability at less than 10 CFM (0 CFM is 100% windproof)&#xD;&#xA;&lt;li&gt; Brushed micro-gridded fleece interior&#xD;&#xA;&lt;li&gt; Non-PFC durable water-repellent (DWR) finish&#xD;&#xA;&lt;li&gt; Reverse-coil center front zipper and hand pockets&#xD;&#xA;&lt;li&gt; Interior hem cinch-cord&#xD;&#xA;&lt;li&gt; Embroidered The North Face logo on left hem and right back shoulder</p>
+                                        <span class="h5 price-current">$125.00</span>
+        </div>
+
+    </div>
+
+</div>
+            </div>
+            <div class="col-md-4">
+                
+<div class="product">
+
+    <div class="row">
+
+        <div class="col-1">
+            <a class="product-figure" href="/Products/ProductDetails/M-RHC-001/Propper-CWU-27!2FP-Nomex-Flight-Suit">
+                    <img src="/Products/GetImage/678569" alt="..." class="img-responsive">
+            </a>
+
+        </div>
+
+        <div class="col-2">
+
+            <h2><a href="/Products/ProductDetails/M-RHC-001/Propper-CWU-27!2FP-Nomex-Flight-Suit">Propper CWU 27/P Nomex Flight Suit</a></h2>
+
+                <p>&lt;b&gt;&lt;a href=&quot;/images/M-RHC-001.PNG&quot; target=&quot;_blank&quot;&gt;&lt;Font color=blue&gt;Size Chart&lt;/font&gt;&lt;/a&gt;&lt;/b&gt;&#xD;&#xA;&lt;BR&gt;&lt;BR&gt;&#xD;&#xA;&lt;li&gt;92% meta-aramid / 5% para-aramid / 3% conductive fibers&#xD;&#xA;&lt;li&gt;Sewn to Mil-Spec FNS/PD 96-17 (MIL-C-83141A)&#xD;&#xA;&lt;li&gt;Same design as those worn by all U.S. flight crews&#xD;&#xA;&lt;li&gt;Two-way front zipper with pull&#xD;&#xA;&lt;li&gt;Adjustable waist with hook-and-loop fastener&#xD;&#xA;&lt;li&gt;Flame-resistant material&#xD;&#xA;&lt;li&gt;Gusseted, bi-swing back&#xD;&#xA;&lt;li&gt;Felled seams&#xD;&#xA;&lt;li&gt;Zippered leg openings&#xD;&#xA;&lt;li&gt;Two thigh pockets with zipper closures&#xD;&#xA;&lt;li&gt;Two zippered shin pockets&#xD;&#xA;&lt;li&gt;Knife pocket located on the left inseam&#xD;&#xA;&lt;li&gt;Covered pen pocket/zippered pocket on the left sleeve&#xD;&#xA;&lt;li&gt;Unhemmed&#xD;&#xA;&lt;BR&gt;&lt;BR&gt;&#xD;&#xA;&#xD;&#xA;This item is produced on demand.</p>
+                                <span class="h5 colors-available">2 Colors Available</span>
+                            <span class="h5 price-current">$325.00</span>
+        </div>
+
+    </div>
+
+</div>
+            </div>
+
+</div>
+
+
+
+
+    </div>
+
+    <div id="layoutFooterWrap">
+        <div class="container">
+    <div class="row">
+        <div class="col-md-2">
+
+
+        </div>
+        <div class="col-md-8 text-center">
+            <ul class="list-unstyled list-inline footer-nav">
+                <li><a href="/Content/CustomerService">Customer Service</a></li>
+                <li><a href="/Content/CustomOrders">Custom Orders</a></li>
+                <li><a href="/Content/Returns">Returns</a></li>
+                <li><a href="/Content/Shipping">Shipping</a></li>
+                <li><a href="/Content/PrivacyPolicy">Privacy Policy</a></li>
+                <li><a href="/Content/SiteTerms">Site Terms</a></li>
+
+            </ul>
+
+        </div>
+        <div class="col-md-2 col-xs-12 text-center">
+            <strong>
+                Connect With Us
+            </strong>
+            <ul class="list-unstyled list-inline">
+            </ul>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12 text-center underline-top">
+            <p>
+                &copy;2026 Robinson Helicopter Company Store - Powered by <a href="https://www.cogginspromo.com" target="_blank">Coggins Promo</a>
+            </p>
+        </div>
+    </div>
+</div>
+    </div>
+
+
+
+    
+
+    <script type="text/javascript">
+    $(function () {
+        $('.product').matchHeight();
+    });
+
+    $("#sort").change(function () {
+        var sortVal = $("#sort").val();
+        var url = "/Products/ProductGrid/mnsapparel?Sort=9999";
+        url = url.replace("9999", sortVal);
+        $(location).attr('href', url);
+    });
+
+    function ProductChangeImage(image, url) {
+        image.src = url;
+    }
+    </script>
+
+
+</body>
+</html>
+
+<script>
+  function handleDropdownDisplay() {
+    var dropdowns = document.querySelectorAll('.dropdown, .dropdown-toggle');
+
+    function displayDropdownMenu() {
+      var dropdownMenu = this.querySelector('.dropdown-menu');
+      if (dropdownMenu && !isMobile()) {
+        dropdownMenu.style.display = 'block';
+        this.setAttribute('aria-expanded', 'true');
+      }
+    }
+
+    function hideDropdownMenu() {
+      var dropdownMenu = this.querySelector('.dropdown-menu');
+      if (dropdownMenu) {
+        dropdownMenu.style.display = 'none';
+        this.setAttribute('aria-expanded', 'false');
+      }
+    }
+
+    function isMobile() {
+      return window.innerWidth <= 768; // Adjust the breakpoint to your desired mobile width
+    }
+
+    function updateEventListeners() {
+      if (isMobile()) {
+        dropdowns.forEach(function (dropdown) {
+          dropdown.removeEventListener('mouseover', displayDropdownMenu);
+          dropdown.removeEventListener('mouseout', hideDropdownMenu);
+          dropdown.removeEventListener('focus', displayDropdownMenu);
+          dropdown.removeEventListener('blur', hideDropdownMenu);
+          dropdown.removeAttribute('aria-expanded'); // Remove aria-expanded attribute for mobile view
+        });
+      } else {
+        dropdowns.forEach(function (dropdown) {
+          dropdown.addEventListener('mouseover', displayDropdownMenu);
+          dropdown.addEventListener('mouseout', hideDropdownMenu);
+          dropdown.addEventListener('focus', displayDropdownMenu);
+          dropdown.addEventListener('blur', hideDropdownMenu);
+          dropdown.setAttribute('aria-expanded', 'false'); // Add aria-expanded attribute for desktop view
+        });
+      }
+    }
+
+    // Initial setup
+    updateEventListeners();
+
+    // Event listener for screen size changes
+    window.addEventListener('resize', function () {
+      updateEventListeners();
+    });
+  }
+
+  handleDropdownDisplay();
+</script>

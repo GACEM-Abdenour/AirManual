@@ -1,0 +1,348 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+    <title>EASA Safety Publications Tool</title>
+	<meta name="description" content="EASA Airworthiness Directives Publishing Tool">
+    <meta name="keywords" content="Safety Publication,Safety Publications,AD,ADs,EASA,European Union Aviation Safety Agency,Agence Européenne de la Sécurité Aérienne">
+    <meta name="robots" content="All">
+    <meta name="rating" content="General">
+    <meta name="resource-type" content="document">
+    <meta http-equiv="Content-type" content="text/html; charset=utf-8">
+    <meta http-equiv="Content-Script-Type" content="text/javascript">
+    <meta http-equiv="Content-Style-Type" content="text/css">
+    <meta name="revisit-after" content="7 days">
+    <meta name="robots" content="index,follow">
+    <meta name="DC.Publisher" content="easa.eu">
+
+    <link rel="shortcut icon" type="image/x-icon" href="https://ad.easa.europa.eu/static/img/favicon.ico">
+
+    <link rel="stylesheet" type="text/css" href="https://ad.easa.europa.eu/static/css/ext/css/ext-all.css">
+
+    <link rel="stylesheet" type="text/css" href="https://ad.easa.europa.eu/static/css/default/easa_adtool.css">
+    <link rel="stylesheet" type="text/css" href="https://ad.easa.europa.eu/static/css/default/tree.css">
+    <link rel="stylesheet" type="text/css" href="https://ad.easa.europa.eu/static/css/default/resultset_paging.css">
+    <link rel="stylesheet" type="text/css" href="https://ad.easa.europa.eu/static/css/default/resultset_detail.css">
+    <link rel="stylesheet" type="text/css" href="https://ad.easa.europa.eu/static/css/notices.css?v=2">
+
+
+
+<style type="text/css">
+#divMain { background:transparent; }
+#disclaimer { margin: 24px 32px; }
+#disclaimer h2, #disclaimer p { margin-bottom: 8px; }
+#disclaimer h2 { margin-top: 16px; }
+#disclaimer ul li { list-style-type: square;  margin: 5px 50px; }
+#disclaimer a { color: #005dff; }
+#ZN-main-central {margin: 0px; padding: 16px 0pt 0pt;}
+
+</style>
+
+
+<!-- IE toolbar overflow bug hack [start] -->
+<!--[if IE]>
+<style type="text/css">
+.td_toolbar {
+    text-align: left;
+    vertical-align: top;
+    background: url(/static/css/ext/images/default/toolbar/bg.gif) #d0def0 repeat-x;
+    border-bottom: 1px solid #a9bfd3;
+    height: 26px;
+}
+.div_toolbar {
+    overflow: hidden;
+    width: 100px;
+}
+</style>
+<![endif]-->
+<!-- IE toolbar overflow bug hack [end] -->
+
+
+<script type="text/javascript" src="https://ad.easa.europa.eu/static/js/custom/general.js"></script>
+
+</head>
+
+<body>
+
+<!-- header [start] -->
+<div id="divHeader">
+    <table id="tblHeader" border="0" cellpadding="0" cellspacing="0">
+        <tr class="trHeader">
+            <td  class="header_logo">
+                <div class="easa-logo">
+                </div>
+            </td>
+            <td class="header_expand">
+                <span class="header_info">You are <strong>not</strong> logged in</span>
+            </td>
+            <td class="header_right">
+                <div class="header_right_info">&nbsp;
+                    <span class="header_text_two">Safety Publications Tool</span>
+                    <!--<span class="header_text_two">AD</span>-->
+                    <!--<span class="header_text_three">easa.europa.eu</span>
+                    <span class="header_text_four">information hub</span>-->
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td class="td_toolbar" colspan="3"><div id="header_toolbar" class="div_toolbar"></div></td>
+        </tr>
+    </table>
+</div>
+<!-- header [end] -->
+
+<div class="div_footer_shadow1">
+    <div class="div_footer_shadow2">
+        <div id="divMain">
+            <!-- content [start] -->
+            <div id="ZN-main">
+                <form id="frmMain" name="frmMain" action="https://ad.easa.europa.eu/search/" onSubmit="return doQuery(this);" method="post" style="margin:0px;"><div id="disclaimer">
+    <h2>
+        Disclaimer, Terms of Use and Information on EASA's responsibilities with regard to the Safety Publications application, including the (advanced) search function
+    </h2>
+
+    <p>
+        EASA (“the Agency”) has developed the Safety Publications application as a service to enhance the aviation industry's receipt of European Safety Publications. Use of the Safety Publications application is based on the following terms:
+    </p>
+
+    <ul>
+        <li>the Agency has no control over and assumes no responsibility for links to external sites;</li>
+        <li>in the case of email notifications, the Agency has no control over and assumes no responsibility for external e-mail systems;</li>
+        <li>use of the (advanced) search function does not guarantee that the returned search results always give a complete listing of the uploaded (EASA or foreign) Safety Publications which are applicable for a particular aircraft, engine or propeller, when requesting a search by entering a keyword (or filter) by Product Type [Model or Variant] Designation, (S)TC holder or (E)TSO Article/Equipment Holder. Only the review of each and any possibly relevant AD for a particular aircraft and the hereon installed engine(s), propeller(s) and equipment, can determine which ADs are applicable to ensure the continuing airworthiness of that particular product.</li>
+    </ul>
+
+    <p>
+        The Agency aims to minimise disruption caused by technical errors. However, some data or information on the EASA Safety Publications (SP) Tool may have been created or structured in files or formats which are not error-free, so the Agency cannot guarantee that this service will not be interrupted or otherwise affected by such problems. The Agency accepts no responsibility with regard to such problems incurred as a result of using the EASA SP Tool or any linked external site.
+    </p>
+
+    This disclaimer is not intended to limit the liability of the Agency in contravention of any requirements laid down in applicable national law nor to exclude its liability for matters which may not be excluded under that law.
+
+    <h2>Information on EASA's responsibilities with regard to Airworthiness Directives (ADs)</h2>
+
+    <p>
+        According to Regulation (EU) 2018/1139 of the European Parliament and of the Council of 4 July 2018 since 28 September 2003, the Agency exercises on behalf of the EU Member States their functions and tasks as State of Design, Manufacture and Registry regarding design approval for products, parts and appliances under their safety oversight.
+    </p>
+
+    In that context the Agency shall issue or adopt ADs to ensure the continuing airworthiness of such products, parts and appliances.
+    <p>
+        <br>
+        Dissemination of ADs to aircraft operators and owners is not a responsibility of EASA.<br><br>
+
+        For products, parts and appliances, for which the Agency is not the Primary Certifying Authority, its policy is to adopt automatically the ADs issued by the non-EU State of Design, unless the Agency adopts a different Decision (Decision N° 2019/018/ED of the Executive Director of the Agency of 03 June 2019).
+
+    <!--<i>A list of Foreign ADs can be found at the following link: <a href="http://www.easa.europa.eu/home/ad_non_eu.html" onkeypress="window.open(this.href); return false;" onclick="window.open(this.href); return false;">http://www.easa.europa.eu/home/ad_non_eu.html</a>.</i>-->
+    </p>
+
+    <p>
+    <!--<i>[<strong>Note</strong>: such list is not necessarily comprehensive, complete, accurate or up to date and is published for courtesy only.]</i>-->
+    The EASA SP Tool contains all ADs issued or approved by EASA since 28 September 2003 and many State of Design ADs issued by European NAAs before that date. Most Foreign State of Design ADs adopted by EASA since 28 September 2003 are already in the EASA SP Tool and those still missing are successively uploaded.
+    </p>
+
+    <p>
+    <!--The EASA Airworthiness Directives application contains only the ADs having an EASA approval number.
+    All the ADs issued by the NAAs prior to 28-Sep-2003 are not yet included and should be retrieved from the <strong>NAA websites</strong>.-->
+    <i>Applicable (Foreign or European NAA) State of Design ADs which are not (yet) in the EASA Safety Publications Tool can be retrieved from the websites of the respective Authorities, see “Useful links” published on the Agency’s Airworthiness Directives website.</i>
+    </p>
+
+    <h2>Copyright Notice</h2>
+
+    <p>© European Union, 2025</p>
+
+    <p>
+        Reproduction is authorised, provided the source is acknowledged, save where otherwise stated. Where prior permission must be obtained for the reproduction or use of textual and multimedia information (sounds, images, software, etc.), such permission shall cancel the above-mentioned general permission and shall clearly indicate any restriction on use.
+    </p>
+</div>                    <div class="spacer"></div>
+                </form>
+            </div>
+            <!-- content [end] -->
+        </div>
+    </div>
+</div>
+
+<!-- footer [start] -->
+<div class="div_footer_shadow1" id="divFooter">
+    
+    <div class="div_footer_shadow2">
+        <div class="div_footer">
+            <table border="0" cellpadding="0" cellspacing="0" class="tbl_footer">
+            <tr>
+                <td style="text-align:left; padding-left:4px;">
+                    For help on using this tool, please refer to <a href="https://ad.easa.europa.eu/help/index.html" onkeypress="window.open(this.href); return false;" onclick="window.open(this.href); return false;">the help section</a><br>
+                    For any inquiry regarding ADs, please contact
+                    <a href="#" onclick="location.href='amliotA:sDe@sa.aueorape.u'.replace(/(.)(.)/g, '$2$1'); return false;">the EASA AD team</a>
+                    <br>
+                    To report any bug, broken link or problem with this application, please contact the
+                    <a href="#" onclick="location.href='amliota:sde@sa.aueorape.u'.replace(/(.)(.)/g, '$2$1'); return false;">webmaster</a>
+                </td>
+                <td style="font-size:1px; padding-left:4px;">
+                    <img src="https://ad.easa.europa.eu/static/img/valid-html401-blue-16px.gif" alt="Valid HTML 4.01 Strict" height="16" width="45">
+                </td>
+                <td style="text-align:right; padding-left:4px;">
+                    <a href="https://ad.easa.europa.eu/disclaimer">Disclaimer &amp; copyright notice</a> - 2024 &#169; <a onkeypress="window.open(this.href); return false;" onclick="window.open(this.href); return false;" href="http://www.easa.europa.eu">www.easa.europa.eu</a>
+                </td>
+            </tr>
+            </table>
+        </div>
+    </div>
+</div>
+<!-- footer [end] -->
+
+
+<script type="text/javascript" src="https://ad.easa.europa.eu/static/js/custom/fct_search.js"></script>
+<script type="text/javascript" src="https://ad.easa.europa.eu/static/js/custom/util.js"></script>
+<script type="text/javascript" src="https://ad.easa.europa.eu/static/js/external/yui-utilities.js"></script>
+<script type="text/javascript" src="https://ad.easa.europa.eu/static/js/external/ext-yui-adapter.js"></script>
+<script type="text/javascript" src="https://ad.easa.europa.eu/static/js/external/ext-all.js"></script>
+
+
+
+
+
+
+<!-- top menu [start] -->
+<script type="text/javascript">
+
+Ext.onReady(function()
+{
+    var thisScope = this;
+    Ext.QuickTips.init();
+
+    var menuExportCSV = new Ext.menu.Menu({
+        });
+    
+    var menuExport = new Ext.menu.Menu({
+        });
+
+    var tb = new Ext.Toolbar({
+        renderTo: 'header_toolbar'
+    });
+
+
+    tb.add(
+
+        {
+            cls     :   'x-btn-text',
+                text    :   'AD Home Page',
+                tooltip :   'See information about Safety Publications<br> on the EASA website',
+                handler :   function onUserGuide(btn) {
+            var winRelated = window.open('https://www.easa.europa.eu/en/domains/aircraft-products/airworthiness-directives-ad', 'winUserGuide');
+            if(winRelated && winRelated.focus)
+                winRelated.focus();
+            }
+        },
+        '-',
+        {
+            cls     :   'x-btn-text',
+            text    :   'MCAI',
+            tooltip :   'Show all available Mandatory Continuing Airworthiness Information',
+                        handler :   function onHome(btn) {
+                            location.href = 'https://ad.easa.europa.eu/';
+                        }
+            },
+                        '-',
+        {
+            cls     :   'x-btn-text',
+            text    :   'SIB',
+            tooltip :   'Show all available Safety Information',
+                     handler :   function onSibDistinct(btn) {
+                            location.href = 'https://ad.easa.europa.eu/sib-docs/page-1';
+                        }
+
+
+        },
+    '-',
+
+        {
+    cls     :   'x-btn-text',
+        text    :   'SD',
+    tooltip :   'Show all available Safety Directives',
+        handler :   function onODDistinct(btn) {
+    location.href = 'https://ad.easa.europa.eu/sd-docs/page-1';
+    }
+
+    },
+        '-',
+        {
+            cls     :   'x-btn-text',
+            text    :   'Advanced search',
+            tooltip :   'Perform a detailed query based on multiple criteria',
+             handler :   function onSearch(btn) {
+                            location.href = 'https://ad.easa.europa.eu/search/advanced';
+                        }
+
+        },
+        '-',
+        {
+            cls     :   'x-btn-text',
+            text    :   'AD Biweekly reports',
+            tooltip :   'Access AD biweekly reports of previously published Mandatory Continuing Airworthiness Information',
+            handler :   function onBiweekly(btn) {
+                            location.href = '/biweekly';
+                        }
+        },
+        '-',
+        {
+            cls     :   'x-btn-text bmenu',
+            text    :   'Export list as...',
+            tooltip :   'Export the current list of publications to a CSV, PDF or XML file',
+            menu    :   menuExport
+        },
+        '-',
+        {
+            cls     :   'x-btn-text',
+            text    :   'User guide',
+            tooltip :   'Read the user guide for this application',
+            handler :   function onUserGuide(btn) {
+                            var winUserGuide = window.open('/help/index.html', 'winUserGuide');
+                            if(winUserGuide && winUserGuide.focus)
+                                winUserGuide.focus();
+                        }
+        },
+        '-',
+        {
+            cls     :   'x-btn-text',
+            text    :   'AD FAQ',
+            handler :   function onAdFaq(btn) {
+                            window.open('https://www.easa.europa.eu/the-agency/faqs/airworthiness-directives-ads', '_blank');
+                        }
+        },
+        '-',
+        {
+            cls     :   'x-btn-text',
+            text    :   'AMOC FAQ',
+            handler :   function onAmFaq(btn) {
+                            window.open('https://www.easa.europa.eu/the-agency/faqs/alternative-method-compliance-amoc-airworthiness-directive-ad', '_blank');
+                        }
+        },
+        '-'
+    );
+
+    tb.addButton(
+        {
+            cls     :   'x-btn-text',
+            text    :   'Register',
+            tooltip :   'Click here to register if you are a new user',
+            handler :   function onUserRegister(btn) {
+                            location.href = '/redirect.php?url=' + encodeURIComponent('https://hub.easa.europa.eu/security/?app=awd&act=register');
+                        }
+        }
+    );
+    tb.addSeparator();
+    tb.addButton(
+        {
+            cls     :   'x-btn-text',
+            text    :   'Login',
+            tooltip :   'Click here to login.<br>You need to be logged in to save multiple filters and receive notifications',
+            handler :   function onUserLogin(btn) {
+                            location.href = '/redirect.php?url=' + encodeURIComponent('https://hub.easa.europa.eu/security/?act=login&app=awd');
+                        }
+        }
+    );
+    
+    if(isDefined('onAfterLoad'))
+        onAfterLoad();
+});
+</script>
+<!-- top menu [end] -->
+
+</body>
+</html>

@@ -1,0 +1,1829 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0,user-scalable=0"/>
+    <title>ProductDetails - Robinson Helicopter Company Store</title>
+
+    <script type="text/javascript">
+	
+    var appInsights=window.appInsights||function(a){
+        function b(a){c[a]=function(){var b=arguments;c.queue.push(function(){c[a].apply(c,b)})}}var c={config:a},d=document,e=window;setTimeout(function(){var b=d.createElement("script");b.src=a.url||"https://az416426.vo.msecnd.net/scripts/a/ai.0.js",d.getElementsByTagName("script")[0].parentNode.appendChild(b)});try{c.cookie=d.cookie}catch(a){}c.queue=[];for(var f=["Event","Exception","Metric","PageView","Trace","Dependency"];f.length;)b("track"+f.pop());if(b("setAuthenticatedUserContext"),b("clearAuthenticatedUserContext"),b("startTrackEvent"),b("stopTrackEvent"),b("startTrackPage"),b("stopTrackPage"),b("flush"),!a.disableExceptionTracking){f="onerror",b("_"+f);var g=e[f];e[f]=function(a,b,d,e,h){var i=g&&g(a,b,d,e,h);return!0!==i&&c["_"+f](a,b,d,e,h),i}}return c
+    }({
+        instrumentationKey: '93bab1a4-43d2-461b-ad58-fee2bd8724b5'
+    });
+
+    window.appInsights=appInsights,appInsights.queue&&0===appInsights.queue.length&&appInsights.trackPageView();
+	
+    </script>
+
+    
+
+
+    <link rel="stylesheet" title="Coggins" href="/css/theme-coggins.css" />
+    <link href="https://kendo.cdn.telerik.com/2020.3.915/styles/kendo.common-material.min.css" rel="stylesheet" type="text/css" />
+    <link href="https://kendo.cdn.telerik.com/2020.3.915/styles/kendo.mobile.all.min.css" rel="stylesheet" type="text/css" />
+    <link href="https://kendo.cdn.telerik.com/2020.3.915/styles/kendo.material.min.css" rel="stylesheet" type="text/css" />
+    <!-- Scrollbar Custom CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.min.css">
+
+    <script src="https://kendo.cdn.telerik.com/2020.3.915/js/jquery.min.js"></script>
+    <script src="https://kendo.cdn.telerik.com/2020.3.915/js/jszip.min.js"></script>
+    <script src="/lib/bootstrap/dist/js/bootstrap.js"></script>
+    <script src="https://kendo.cdn.telerik.com/2020.3.915/js/kendo.all.min.js"></script>
+    <script src="https://kendo.cdn.telerik.com/2020.3.915/js/kendo.aspnetmvc.min.js"></script>
+
+    <script src="/js/achilles.js?v=JgGkPnwCAfgRHOxJO3vHWfKcRv_iHY2oqSZoqLFr_CM"></script>
+    <script src="/js/site.js?v=WCW_3M3La-pY9S4q7fLVDrQiLWMzcashBdBXfuQJuFo"></script>
+    <!-- Popper.JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js" integrity="sha384-cs/chFZiN24E4KMATLdqdvsezGxaGsi4hLGOzlXwp5UZB1LY//20VyM2taTB4QvJ" crossorigin="anonymous"></script>
+    <!-- jQuery Custom Scroller CDN -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.concat.min.js"></script>
+    <script src="/lib/jquery-validation/dist/jquery.creditCardValidator.js"></script>
+    <!-- jQuery matchHeight-->
+    <script src="/lib/matchHeight/dist/jquery.matchHeight-min.js"></script>
+
+
+
+
+</head>
+<body>
+    
+<style type="text/css">
+    .bd-example-modal-lg .modal-dialog {
+        display: table;
+        position: relative;
+        margin: 0 auto;
+        top: calc(50% - 24px);
+    }
+
+    .bd-example-modal-lg .modal-dialog .modal-content {
+        background-color: transparent;
+        border: none;
+    }
+</style>
+
+<div id="modalLoader" class="modal fade bd-example-modal-lg" data-backdrop="static" data-keyboard="false" tabindex="-1">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content" style="width: 48px">
+            <span class="fa fa-spinner fa-spin fa-3x"></span>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    function isLoading(value) {
+        var $modal = $("#modalLoader");
+        if (value == true)
+            $modal.modal("show");
+        else
+            $modal.modal("hide");
+    }
+</script>
+    <div class="shipping-banner">
+        <p class="shipping-text">
+            <a target="_blank" href="https://www.robinsonheli.com/">Visit RobinsonHeli.com</a>
+            </p>
+
+
+    </div>
+
+    <div id="layoutHeaderWrap" class="hidden-xs">
+        <div class="container">
+
+    <div class="row">
+
+        <div class="col-md-6">
+
+            <a class="logo-site" style="background: url(/images/logo-main.svg ) no-repeat;" href="/">Robinson Helicopter Company Store</a>
+
+        </div>
+
+
+            <div class="col-md-6">                
+                <ul class="nav navbar-nav navbar-right navbar-user">
+    <li>
+        <div id="fancySearch">
+            <div class="box">
+                <form action="/Products/Search" method="post">
+                    <div class="container-2">
+                        <input type="text" id="search" name="searchText" placeholder="Search..." onchange="submit();" autocomplete="off" />
+                        <span class="icon"><i class="fa fa-search"></i></span>
+
+                    </div>
+                <input name="__RequestVerificationToken" type="hidden" value="CfDJ8F6p6RENyOlOouyPoSPZxlKGjxk-y8k4rGii3dMJpmlx5LESnhUPscGSC7fJguh5lyxjo7igRWl4fC9EYSIOLddnEtiY169jvUznqSo56FXnju3f-04g0RjHgHyMSB3A8PpGaXUHFxNWWAGnJ-maHZM" /></form>
+            </div>
+
+        </div>
+    </li>
+
+
+        <li>
+    <a href="/Account/Login">
+        <div class="hidden-xs">
+            <span class="glyphicon glyphicon-user"></span> Login
+        </div>
+        <div class="visible-xs">
+            <div class="col-xs-12"><span class="glyphicon glyphicon-user"></span> Login</div>
+        </div>
+    </a>
+</li>
+    <li>
+        <a href="/Account/Login">
+            <div class="hidden-xs">
+                <span class="glyphicon glyphicon-heart"></span> My Wishlist
+            </div>
+            <div class="visible-xs">
+                <div class="col-xs-12"><span class="glyphicon glyphicon-heart"></span> My Wishlist</div>
+            </div>
+        </a>
+    </li>
+
+    <li class="dropdown cart-preview">
+        
+<a class="dropdown-toggle hidden-xs" href="/ShoppingCart/Cart">
+    <span class="glyphicon glyphicon-shopping-cart"></span> My Cart: <span class="badge label-success item-count">0</span>
+</a>
+<a class="button-mobile hidden-lg hidden-md hidden-sm" role="button" href="/ShoppingCart/Cart">
+        <span class="glyphicon glyphicon-shopping-cart"></span><span class="badge label-success item-count">0</span>
+</a>
+
+<ul id="cartToggle" class="dropdown-menu">
+    <li class="shopping-cart-popup">
+        <div class="shopping-cart-header">
+            <span class="shopping-cart-total">
+                Subtotal: <strong>$0.00</strong>
+            </span>
+        </div>
+        <div class="items-container">
+            <ul class="list-unstyled shopping-cart-items">
+
+            </ul>
+        </div>
+        <div>
+        </div>
+    </li>
+</ul>
+    </li>
+</ul>
+
+
+
+            </div>
+
+    </div>
+
+</div>
+    </div>
+
+    <nav id="sidebar" class="hidden-sm hidden-md hidden-lg">
+        
+<div class="sidebar-header">
+    <div class="row">
+        <div class="col-xs-12 dismiss-bar">
+            <div id="dismiss" >
+                <i class="fa light fa-times fa-2x" tabindex="0"></i>
+            </div>
+        </div>
+        <div class="col-xs-12 sign-in">
+            <ul class="nav navbar-nav navbar-right navbar-user">
+                    <li>
+    <a href="/Account/Login">
+        <div class="hidden-xs">
+            <span class="glyphicon glyphicon-user"></span> Login
+        </div>
+        <div class="visible-xs">
+            <div class="col-xs-12"><span class="glyphicon glyphicon-user"></span> Login</div>
+        </div>
+    </a>
+</li>
+    <li>
+        <a href="/Account/Login">
+            <div class="hidden-xs">
+                <span class="glyphicon glyphicon-heart"></span> My Wishlist
+            </div>
+            <div class="visible-xs">
+                <div class="col-xs-12"><span class="glyphicon glyphicon-heart"></span> My Wishlist</div>
+            </div>
+        </a>
+    </li>
+
+            </ul>
+        </div>
+
+    </div>
+</div>
+<ul class="nav navbar-nav  mr-auto">
+
+    <li class="dropdown">
+        <!-- <a asp-area="" asp-controller="Products" asp-action="ProductGrid" asp-route-id="Apparel" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">-->
+        <a  class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+            <div class="col-xs-10">
+                Apparel
+            </div>
+            <div class="col-xs-2 arrow-dropdown">
+                <i class="fa fa-angle-down"></i>
+            </div>
+        </a>
+        <ul class="dropdown-menu">
+                    <li class="sub-category">
+                        <a href="/Products/ProductGrid/mnsapparel">Men&#x27;s</a>
+                    </li>
+                    <li class="sub-category">
+                        <a href="/Products/ProductGrid/wmnsappare">Women&#x27;s</a>
+                    </li>
+        </ul>
+    </li>
+            <li>
+                <a href="/Products/ProductGrid/headwear">
+                    <div class="col-xs-12">
+                        Headwear
+                    </div>
+                </a>    
+            </li>
+            <li>
+                <a href="/Products/ProductGrid/bags">
+                    <div class="col-xs-12">
+                        Bags
+                    </div>
+                </a>    
+            </li>
+            <li>
+                <a href="/Products/ProductGrid/accessory">
+                    <div class="col-xs-12">
+                        Accessories
+                    </div>
+                </a>    
+            </li>
+            <li>
+                <a href="/Products/ProductGrid/drinkware">
+                    <div class="col-xs-12">
+                        Drinkware
+                    </div>
+                </a>    
+            </li>
+            <li>
+                <a href="/Products/ProductGrid/youth">
+                    <div class="col-xs-12">
+                        Youth
+                    </div>
+                </a>    
+            </li>
+
+</ul>
+<script>
+    $('.dropdown-toggle').click(function () {
+        $(this).find('i').toggleClass('fa fa-angle-down').toggleClass('fa fa-angle-up');
+    });
+
+</script>
+    </nav>
+
+    <div class="overlay"></div>
+
+    <div id="layoutNavMainWrap" data-spy="affix" data-offset-top="110">
+
+        
+
+
+<nav class="navbar navbar-default navbar-expand-lg">
+    <div class="container">
+        <div class="navbar-header sticky">
+            <div class="row" style="margin-left: -15px !important; margin-right: -15px !important;">
+                <div class="col-xs-2">
+                    <button type="button" class="navbar-toggle" id="sidebarCollapse">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="fa fa-align-justify fa-2x"></span>
+                    </button>
+                </div>
+                <div class="col-xs-2  hidden-sm hidden-md hidden-lg navbar-toggle text-center">
+                    <a href="#" data-toggle="modal" data-target="#myModal" class="clickable"><span class="fa fa-search fa-2x"></span></a>
+                </div>
+                <div class="col-xs-2  hidden-sm hidden-md hidden-lg  navbar-toggle text-center">
+                    <a href="/Account/Settings"><span class="fa fa-user-circle-o fa-2x"></span></a>
+                </div>
+                    <div class="col-xs-2  hidden-sm hidden-md hidden-lg  navbar-toggle text-center">
+                        
+<a class="hidden-lg hidden-md hidden-sm" role="button" href="/Account/WishList">
+    <span class="fa fa-heart fa-2x"></span></a>
+<a class="hidden-xs" role="button" aria-haspopup="true" aria-expanded="false" href="/Account/WishList">
+    <span class="glyphicon glyphicon-heart"></span> My Wishlist </a>
+                    </div>
+                <div class="col-xs-2 hidden-sm hidden-md hidden-lg navbar-toggle text-center header-cart">
+                    
+<a class="dropdown-toggle hidden-xs" href="/ShoppingCart/Cart">
+    <span class="glyphicon glyphicon-shopping-cart"></span> My Cart: <span class="badge label-success item-count">0</span>
+</a>
+<a class="button-mobile hidden-lg hidden-md hidden-sm" role="button" href="/ShoppingCart/Cart">
+        <span class="glyphicon glyphicon-shopping-cart"></span><span class="badge label-success item-count">0</span>
+</a>
+
+<ul id="cartToggle" class="dropdown-menu">
+    <li class="shopping-cart-popup">
+        <div class="shopping-cart-header">
+            <span class="shopping-cart-total">
+                Subtotal: <strong>$0.00</strong>
+            </span>
+        </div>
+        <div class="items-container">
+            <ul class="list-unstyled shopping-cart-items">
+
+            </ul>
+        </div>
+        <div>
+        </div>
+    </li>
+</ul>
+                </div>
+            </div>
+        </div>
+
+        <div id="navbar" class="navbar-collapse collapse">
+
+            <ul class="nav navbar-nav  mr-auto">
+
+                        <li class="dropdown">
+
+                            <a href="/Products/ProductGrid/Apparel">Apparel <span class="caret"></span></a>
+                            
+<ul class="dropdown-menu">
+            <li class="sub-category">
+                <!--<a asp-area="" asp-controller="Products" asp-action="ProductGrid" asp-route-parentcategory="Apparel" asp-route-category="mnsapparel">-->
+                <a href="/Products/ProductGrid/Apparel/Men&#x27;s" class="selected" title="Apparel">
+                    Men&#x27;s
+                    <div class="icon">
+                    </div>
+                </a>
+
+            </li>
+            <li class="sub-category">
+                <!--<a asp-area="" asp-controller="Products" asp-action="ProductGrid" asp-route-parentcategory="Apparel" asp-route-category="wmnsappare">-->
+                <a href="/Products/ProductGrid/Apparel/Women&#x27;s" class="selected" title="Apparel">
+                    Women&#x27;s
+                    <div class="icon">
+                    </div>
+                </a>
+
+            </li>
+</ul>
+                        </li>
+                            <li><a class="selected" href="/Products/ProductGrid/headwear">Headwear </a></li>
+                            <li><a class="selected" href="/Products/ProductGrid/bags">Bags </a></li>
+                            <li><a class="selected" href="/Products/ProductGrid/accessory">Accessories </a></li>
+                            <li><a class="selected" href="/Products/ProductGrid/drinkware">Drinkware </a></li>
+                            <li><a class="selected" href="/Products/ProductGrid/youth">Youth </a></li>
+
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<script>
+
+    $(function () {
+        var wishlist = true ;
+
+        if (wishlist == false) {
+            console.log("false")
+            //$(".sticky .col-xs-2").css("width", "20%");
+        };
+
+    });
+
+</script>
+
+<!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel"><span class="icon"><i class="fa fa-search"></i></span> Submit</h4>
+            </div>
+            <form action="/Products/Search" method="post">
+                <div class="modal-body">
+
+                    <input type="text" class="form-control" id="searchModal" name="searchText" placeholder="Search..." onchange="submit();" autocomplete="off" />
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-success" data-dismiss="modal">Submit</button>
+                </div>
+            <input name="__RequestVerificationToken" type="hidden" value="CfDJ8F6p6RENyOlOouyPoSPZxlKGjxk-y8k4rGii3dMJpmlx5LESnhUPscGSC7fJguh5lyxjo7igRWl4fC9EYSIOLddnEtiY169jvUznqSo56FXnju3f-04g0RjHgHyMSB3A8PpGaXUHFxNWWAGnJ-maHZM" /></form>
+        </div>
+    </div>
+</div>
+
+    </div>
+
+    <div id="layoutBodyWrap">
+        <div class="shipping-banner-two">
+            <p class="shipping-text">
+                <a target="_blank" href="https://www.robinsonheli.com/">Visit RobinsonHeli.com</a>
+            </p>
+
+        </div>
+        
+<div id="productDetails" class="container">
+
+    <div class="row">
+
+        <div class="col-md-12">
+            
+
+<ul class="breadcrumb">
+    <li><a href="/">Home</a></li>
+       
+        <li><a href="/Products/ProductGrid//Headwear">Headwear</a></li>
+            <li class="active">Imperial Edelweiss Cuffed Beanie</li>
+
+</ul>
+
+
+        </div>
+
+    </div>
+
+    <div class="row">
+
+        <div id="productInfoWrap">
+
+            <div class="col-md-6">
+
+                
+
+<div id="imageCarousel">
+
+    <div id="carousel-generic" class="carousel slide" data-ride="false">
+
+
+        <!-- Wrapper for slides -->
+        <div class="carousel-inner" role="listbox">
+                <div class="swap-image-2 item active" data-slide-number="0" id=676464>
+                    <img src="/Products/GetImage/676464" class="clicked-image" alt="...">
+                </div>
+                <div class="swap-image-2 item  " data-slide-number="1" id=676466>
+                    <img src="/Products/GetImage/676466" class="clicked-image" alt="...">
+                </div>
+                <div class="swap-image-2 item  " data-slide-number="2" id=676468>
+                    <img src="/Products/GetImage/676468" class="clicked-image" alt="...">
+                </div>
+        </div>
+
+        <div class="controls">
+        </div>
+
+
+    </div>
+
+</div>
+
+<script>
+    //function to enlarge product image when clicking on it
+    let clickedImages = document.querySelectorAll(".clicked-image")
+    clickedImages.forEach((image) => {
+        image.addEventListener("click", (e) => {
+            //getting our image from the image that was clicked
+            let newImage = e.target.src;
+            //creating our container to hold the image container and the image itself
+            let outerDiv = document.createElement("div");
+            outerDiv.classList.add("view-image")
+            //filling our element with the image container and the image itself
+            outerDiv.innerHTML = `
+                <div class="inner-div">  
+                    <span class="glyphicon glyphicon-remove-circle exit-image-btn"></span>
+                    <div class="img-magnifier-container">
+                        <img src=${newImage} class="img-responsive p-image">
+                    </div>
+                </div>
+            `
+            //adding our new element to the document
+            document.querySelector("#layoutBodyWrap").appendChild(outerDiv)
+
+
+            //function to magnify our image when user hovers over it
+            function magnify(imgCLASS, zoom) {
+                let img, glass, w, h, bw;
+                img = document.querySelector(imgCLASS);
+                //create magnifier glass:
+                glass = document.createElement("DIV");
+                glass.setAttribute("class", "img-magnifier-glass");
+                //insert magnifier glass:
+                img.parentElement.insertBefore(glass, img);
+                //set background properties for the magnifier glass:
+                glass.style.backgroundImage = `url("${img.src}")`;
+                glass.style.backgroundRepeat = "no-repeat";
+                glass.style.backgroundSize = `${img.width * zoom}px ${img.height * zoom}px`;
+                bw = 3;
+                w = glass.offsetWidth / 2;
+                h = glass.offsetHeight / 2;
+                //execute a function when someone moves the magnifier glass over the image:
+                glass.addEventListener("mousemove", moveMagnifier);
+                img.addEventListener("mousemove", moveMagnifier);
+                //and also for touch screens:
+                glass.addEventListener("touchmove", moveMagnifier);
+                img.addEventListener("touchmove", moveMagnifier);
+                function moveMagnifier(e) {
+                    let pos, x, y;
+                    //prevent any other actions that may occur when moving over the image
+                    e.preventDefault();
+                    //get the cursor's x and y positions:
+                    pos = getCursorPos(e);
+                    x = pos.x;
+                    y = pos.y;
+                    //prevent the magnifier glass from being positioned outside the image:
+                    if (x > img.width - (w / zoom)) { x = img.width - (w / zoom); }
+                    if (x < w / zoom) { x = w / zoom; }
+                    if (y > img.height - (h / zoom)) { y = img.height - (h / zoom); }
+                    if (y < h / zoom) { y = h / zoom; }
+                    //set the position of the magnifier glass:
+                    glass.style.left = `${x - w}px`;
+                    glass.style.top =`${y - h}px`;
+                    //display what the magnifier glass "sees":
+                    glass.style.backgroundPosition = "-" + ((x * zoom) - w + bw) + "px -" + ((y * zoom) - h + bw) + "px";
+                }
+                function getCursorPos(e) {
+                    var a, x = 0, y = 0;
+                    e = e || window.event;
+                    //get the x and y positions of the image:
+                    a = img.getBoundingClientRect();
+                    //calculate the cursor's x and y coordinates, relative to the image:
+                    x = e.pageX - a.left;
+                    y = e.pageY - a.top;
+                    //consider any page scrolling:
+                    x = x - window.pageXOffset;
+                    y = y - window.pageYOffset;
+                    return { x: x, y: y };
+                }
+            }
+            //calling our magnify function with the parameters of image, and magnification
+            magnify(".p-image", 2);
+            //-----------------
+
+                if (document.querySelector(".view-image")) {
+                    const exitViewImg = (e) => {
+                        if (e.target.classList.contains("view-image") || e.target.classList.contains("exit-image-btn")) {
+                            document.querySelector(".view-image").parentNode.removeChild(document.querySelector(".view-image"))
+                        }
+                    }
+                    let outImg = document.querySelector(".view-image");
+                    let exitGlyph = document.querySelector(".exit-image-btn");
+                    outImg.addEventListener("click", exitViewImg)
+                    exitGlyph.addEventListener("click", exitViewImg)
+                }
+            
+
+        })
+    })
+</script>
+
+            </div>
+
+            <form method="post" action="/Products/ProductDetails">
+                <div class="col-md-6">
+                    
+
+
+
+
+<input type="hidden" id="ProductNumber" name="ProductNumber" value="S-RHC-011" />
+<input type="hidden" id="DisplayName" name="DisplayName" value="Imperial Edelweiss Cuffed Beanie" />
+<input type="hidden" data-val="true" data-val-number="The field Price must be a number." data-val-required="The Price field is required." id="Price" name="Price" value="39.00" />
+<input type="hidden" id="ImageId" name="ImageId" value="676464" />
+
+
+
+
+                    <h1>Imperial Edelweiss Cuffed Beanie</h1>
+                    <div class="h4 product-number">S-RHC-011</div>
+                        <span class="h2 price-current">$39.00</span>
+
+                    <p><li> 10/50/20/20 cashmere/Merino wool/nylon/Tencel
+<li> Ribbed knit
+<li> 8" with 3" cuff
+<li> Imperial rubber patch</p>
+
+                        <div id="Dimensions" >
+                            <style type="text/css">
+    label.btn.active {
+        outline: 5px auto -webkit-focus-ring-color;
+        outline-offset: -2px;
+    }
+</style>
+
+
+<input class="hidden-points" type="hidden" value="0.01" />
+
+
+
+    <div id="dimensionOne">
+            <h5><strong>Color</strong><span id="DimensionOneSelection"></span></h5>
+        <input id="DimOneMatrixName" name="DimensionOneName" type="hidden" value="Color" />
+        <div class="btn-group" data-toggle="buttons">
+
+                <label class="btn btn-sm btn-default">
+                        <input class="dimensions dimensionWithImg dimOneVerify" type="radio" autocomplete="off" value="Sand" AdditionalPrice="0.00" id="DimensionOneSelected" name="DimensionOneSelected">
+                        <img class="color-buttons" src="/Products/GetImage/676467" height="70" width="70">
+                </label>
+                <label class="btn btn-sm btn-default">
+                        <input class="dimensions dimensionWithImg dimOneVerify" type="radio" autocomplete="off" value="Shadow" AdditionalPrice="0.00" id="DimensionOneSelected" name="DimensionOneSelected">
+                        <img class="color-buttons" src="/Products/GetImage/676469" height="70" width="70">
+                </label>
+        </div>
+
+    </div>
+
+
+
+    <input type="hidden" value="-" id="DimensionTwoSelected" name="DimensionTwoSelected" />
+
+<input type="hidden" id="inpPointsEnabled" value="False" />
+<input type="hidden" id="inpShowMoney" value="True" />
+
+<input data-val="true" data-val-required="The CurrentActiveDimensionCount field is required." id="CurrentActiveDimensionCount" name="CurrentActiveDimensionCount" type="hidden" value="1" />
+<input id="Price" name="Price" type="hidden" value="39.00" />
+
+
+    <hidden id=" --Sand" class="data" dimOne="Sand" dimOneLabel="Sand" dimTwo="-" dimTwoLabel="-" dimThree="" dimThreeLabel="" ImageId="676466" CompositeSpecificImageId="0" CompositeSpecificImageIndex="0" ImageIndex="1" Quantity="34" BackOrders="BackOrders" />
+    <hidden id=" --Shadow" class="data" dimOne="Shadow" dimOneLabel="Shadow" dimTwo="-" dimTwoLabel="-" dimThree="" dimThreeLabel="" ImageId="676468" CompositeSpecificImageId="0" CompositeSpecificImageIndex="0" ImageIndex="2" Quantity="33" BackOrders="BackOrders" />
+
+<script>
+    $(".btn:has(img)").css({ 'margin': '11px 15px 0 0', 'background-color': '#fff', 'border-color': '#4C4C4C', 'height': 'auto' });
+
+    $(".btn:has(img)").hover(function () {
+        $(this).css('border-color', '#4C4C4C');
+    }, function () {
+        $(this).css('border-color', '#4C4C4C');
+    });
+
+    $(".btn:has(img)").click(function () {
+        $(this).css('border-color', '#000');
+    }, function () {
+        $(this).css('border-color', '#000');
+    });
+
+
+
+
+    $(".dimensions").change(function () {
+
+        var dimensionOne = $("input[type=radio][name=DimensionOneSelected]:checked").val();
+        var dimensionOneHasImage = $("input[type=radio][name=DimensionOneSelected]").hasClass("dimensionWithImg");
+        var dimensionOneAddtionalPrice = $("input[type=radio][name=DimensionOneSelected]:checked").attr("AdditionalPrice");
+
+        var dimensionTwo = $("input[type=radio][name=DimensionTwoSelected]:checked").val();
+        var dimensionTwoHasImage = $("input[type=radio][name=DimensionTwoSelected]").hasClass("dimensionWithImg");
+        var dimensionTwoAddtionalPrice = $("input[type=radio][name=DimensionTwoSelected]:checked").attr("AdditionalPrice");
+
+        var dimensionThree = $("input[type=radio][name=DimensionThreeSelected]:checked").val();
+        var dimensionThreeHasImage = $("input[type=radio][name=DimensionThreeSelected]").hasClass("dimensionWithImg");
+        var dimensionThreeAddtionalPrice = $("input[type=radio][name=DimensionThreeSelected]:checked").attr("AdditionalPrice");
+
+        var defaultPrice = parseFloat($("#Price").val(), 10);
+        var currentActiveDimensionCount = parseInt($("#CurrentActiveDimensionCount").val(), 10);
+
+        var pointsEnabled = false;
+        var showMoneyEnabled = false;
+        var inpPoints = $("#inpPointsEnabled").val();
+        var inpShowMoney = $("#inpShowMoney").val();
+        console.log(inpShowMoney)
+        if (inpPoints === "True") {
+            pointsEnabled = true;
+        }
+        
+        if (inpShowMoney === "True") {
+            showMoneyEnabled = true;
+        }
+        ///Being dimension availablity verification
+
+
+
+
+
+        var validFirstDimValues = '|';
+        var validSecondDimValues = '|';
+        var validThirdDimValues = '|';
+
+        var firstitems = $('.data').filter('[dimOne=' + dimensionOne + ']')//first dim for this item
+        var secondItems = $('.data').filter('[dimTwo=' + dimensionTwo + ']')//second dim for this item
+        var thirdItems = $('.data').filter('[dimThree=' + dimensionThree + ']')//third dim for this item
+
+        if (firstitems.length > 0) {//they selected first dimension, filter second and third accordingly
+            //determine if we have two other dimensions
+            firstitems.each(function () {
+                validSecondDimValues = validSecondDimValues.concat($(this).attr("dimTwo")) + '|';
+                validThirdDimValues = validThirdDimValues.concat($(this).attr("dimThree")) + '|';
+
+            });
+            if (validSecondDimValues === '|' && validThirdDimValues === '|') {
+                // One dimension item no filtering required
+
+            }
+            else if (validThirdDimValues === '|') {
+                // Only a two dimension item
+                //only a second dimension
+                var secondDimInputs = $('.dimTwoVerify');
+                secondDimInputs.each(function () {
+                    //$(this).parent().parent().hide();
+                    if (validSecondDimValues.indexOf(('|' + $(this).val() + '|')) >= 0) {
+                        if ($(this).hasClass("dimensionWithImg")) {
+
+                            $(this).parent().show();
+                        }
+                        else {
+                            $(this).parent().parent().show();
+                        }
+                    }
+                    else {
+                        if ($(this).hasClass("dimensionWithImg")) {
+
+                            $(this).parent().hide();
+                        }
+                        else {
+                            $(this).parent().parent().hide();
+                        }
+                    }
+
+                });
+            }
+            else {
+                // we have all three dimensions
+                var secondDimInputs = $('.dimTwoVerify');
+                secondDimInputs.each(function () {
+
+                    //$(this).parent().parent().hide();
+                    if (validSecondDimValues.indexOf(('|' + $(this).val() + '|')) >= 0) {
+                        if ($(this).hasClass("dimensionWithImg")) {
+
+                            $(this).parent().show();
+                        }
+                        else {
+                            $(this).parent().parent().show();
+                        }
+                    }
+                    else {
+                        if ($(this).hasClass("dimensionWithImg")) {
+
+                            $(this).parent().hide();
+                        }
+                        else {
+                            $(this).parent().parent().hide();
+                        }
+                    }
+
+                });
+                if (secondItems.length > 0) {
+                    validThirdDimValues = '|';//reset this
+                    var secondItems = firstitems.filter('[dimTwo=' + dimensionTwo + ']')
+                    secondItems.each(function () {
+
+                        validThirdDimValues = validThirdDimValues.concat($(this).attr("dimThree")) + '|';
+                    });
+                    var ThirdDimInputs = $('.dimThreeVerify');
+                    ThirdDimInputs.each(function () {
+                        //$(this).parent().parent().hide();
+                        if (validThirdDimValues.indexOf(('|' + $(this).val() + '|')) >= 0) {
+                            $(this).parent().parent().show();
+                        }
+                        else {
+                            $(this).parent().parent().hide();
+                        }
+
+                    });
+                }
+            }
+
+        }
+        else if (secondItems.length > 0) {
+            //must be a first dimension, but do we have a third
+            secondItems.each(function () {
+                validFirstDimValues = validFirstDimValues.concat($(this).attr("dimOne")) + '|';
+                validThirdDimValues = validThirdDimValues.concat($(this).attr("dimThree")) + '|';
+
+            });
+            if (validThirdDimValues === '|') {
+                // Only a two dimension item
+                //only a second dimension
+                var firstDimInputs = $('.dimOneVerify');
+                firstDimInputs.each(function () {
+                    //$(this).parent().parent().hide();
+                    if (validFirstDimValues.indexOf(('|' + $(this).val() + '|')) >= 0) {
+                        if ($(this).hasClass("dimensionWithImg")) {
+
+                            $(this).parent().show();
+                        }
+                        else {
+                            $(this).parent().parent().show();
+                        }
+                    }
+                    else {
+                        if ($(this).hasClass("dimensionWithImg")) {
+
+                            $(this).parent().hide();
+                        }
+                        else {
+                            $(this).parent().parent().hide();
+                        }
+                    }
+
+                });
+            }
+            else {
+                //must be three dimensions
+
+                if (thirdItems.length > 0) {//third dim selected already add it to filtering
+                    validFirstDimValues = '|';//reset this
+
+                    var secondItems = secondItems.filter('[dimThree=' + dimensionThree + ']')
+                    secondItems.each(function () {
+
+                        validFirstDimValues = validFirstDimValues.concat($(this).attr("dimOne")) + '|';
+                    });
+
+                    var FirstDimInputs = $('.dimOneVerify');
+                    FirstDimInputs.each(function () {
+                        //$(this).parent().parent().hide();
+                        if (validFirstDimValues.indexOf(('|' + $(this).val() + '|')) >= 0) {
+                            if ($(this).hasClass("dimensionWithImg")) {
+
+                                $(this).parent().show();
+                            }
+                            else {
+                                $(this).parent().parent().show();
+                            }
+                        }
+                        else {
+                            if ($(this).hasClass("dimensionWithImg")) {
+
+                                $(this).parent().hide();
+                            }
+                            else {
+                                $(this).parent().parent().hide();
+                            }
+                        }
+
+                    });
+                }
+                else {
+
+                    var firstDimInputs = $('.dimOneVerify');
+                    firstDimInputs.each(function () {
+                        //$(this).parent().parent().hide();
+                        if (validFirstDimValues.indexOf(('|' + $(this).val() + '|')) >= 0) {
+                            if ($(this).hasClass("dimensionWithImg")) {
+
+                                $(this).parent().show();
+                            }
+                            else {
+                                $(this).parent().parent().show();
+                            }
+                        }
+                        else {
+                            if ($(this).hasClass("dimensionWithImg")) {
+
+                                $(this).parent().hide();
+                            }
+                            else {
+                                $(this).parent().parent().hide();
+                            }
+                        }
+
+                    });
+                    var ThirdDimInputs = $('.dimThreeVerify');
+                    ThirdDimInputs.each(function () {
+                        //$(this).parent().parent().hide();
+                        if (validThirdDimValues.indexOf(('|' + $(this).val() + '|')) >= 0) {
+                            $(this).parent().parent().show();
+                        }
+                        else {
+                            $(this).parent().parent().hide();
+                        }
+
+                    });
+                }
+            }
+
+        }
+        else if (thirdItems.length > 0) {
+
+            thirdItems.each(function () {
+                validFirstDimValues = validFirstDimValues.concat($(this).attr("dimOne")) + '|';
+                validSecondDimValues = validSecondDimValues.concat($(this).attr("dimTwo")) + '|';
+
+            });
+
+            // obviously there are two other dimensions
+            var firstDimInputs = $('.dimOneVerify');
+            firstDimInputs.each(function () {
+                //$(this).parent().parent().hide();
+                if (validFirstDimValues.indexOf(('|' + $(this).val() + '|')) >= 0) {
+                    if ($(this).hasClass("dimensionWithImg")) {
+
+                        $(this).parent().show();
+                    }
+                    else {
+                        $(this).parent().parent().show();
+                    }
+                }
+                else {
+                    if ($(this).hasClass("dimensionWithImg")) {
+
+                        $(this).parent().hide();
+                    }
+                    else {
+                        $(this).parent().parent().hide();
+                    }
+                }
+
+            });
+            var secondDimInputs = $('.dimTwoVerify');
+            secondDimInputs.each(function () {
+
+                //$(this).parent().parent().hide();
+                if (validSecondDimValues.indexOf(('|' + $(this).val() + '|')) >= 0) {
+                    if ($(this).hasClass("dimensionWithImg")) {
+
+                        $(this).parent().show();
+                    }
+                    else {
+                        $(this).parent().parent().show();
+                    }
+                }
+                else {
+                    if ($(this).hasClass("dimensionWithImg")) {
+
+                        $(this).parent().hide();
+                    }
+                    else {
+                        $(this).parent().parent().hide();
+                    }
+                }
+
+            });
+
+        }
+
+
+
+        //End Dimension availability verification
+
+
+
+        var currentQty = 0;
+        var currentCount = 0;
+        var priceToAdd = 0.00;
+        var demOnePriceToAdd = 0.00;
+        var demTwoPriceToAdd = 0.00;
+        var demThreePriceToAdd = 0.00;
+        var backOrders = false;
+
+
+
+        if (dimensionOne != null) {
+            currentCount++;
+        }
+        var BreakException = {}; //To break out of the each function.
+        var compositeImageSet = false;
+        var dimTwoMatch = false;
+        var dimThreeMatch = false;
+        try {
+            $("[dimOne=" + dimensionOne + "]").each(function () {
+                var dimone = $(this).attr("dimOne");
+                var dimOneLabel = $(this).attr("dimOneLabel");
+                var dimtwo = $(this).attr("dimTwo");
+                var dimTwoLabel = $(this).attr("dimTwoLabel");
+                var dimthree = $(this).attr("dimThree");
+                var dimThreeLabel = $(this).attr("dimThreeLabel");
+                var quantity = $(this).attr("Quantity");
+                var compositeImage = $(this).attr("CompositeSpecificImageId");
+                var compositeImageIndex = $(this).attr("CompositeSpecificImageIndex");
+
+                backOrders = $(this).attr("BackOrders");
+
+
+
+
+                if (dimensionOneAddtionalPrice != "0.00") {
+                    $("#DimensionOneSelection").html(" " + dimOneLabel + "  (" + dimensionOneAddtionalPrice + ")");
+                    demOnePriceToAdd = parseFloat(dimensionOneAddtionalPrice);
+                }
+                else {
+
+                    $("#DimensionOneSelection").html(" " + dimOneLabel);
+                }
+
+                if (dimensionTwo != null && dimtwo == dimensionTwo) {
+
+
+
+                    if (dimTwoMatch == false) {
+                        currentCount++;
+                        dimTwoMatch = true;
+                    }
+
+                    if (dimensionTwoAddtionalPrice != "0.00") {
+                        $("#DimensionTwoSelection").html(" " + dimTwoLabel + "  (" + dimensionTwoAddtionalPrice + ")");
+                        demTwoPriceToAdd = parseFloat(dimensionTwoAddtionalPrice);
+                    }
+                    else {
+
+                        $("#DimensionTwoSelection").html(" " + dimTwoLabel);
+                    }
+
+                    if (dimensionThree != null && dimthree == dimensionThree) {
+                        if (dimThreeMatch == false) {
+                            dimThreeMatch = true;
+                            currentCount++;
+                        }
+
+
+                        if (dimensionThreeAddtionalPrice != "0.00") {
+                            $("#DimensionThreeSelection").html(" " + dimThreeLabel + "  (" + dimensionThreeAddtionalPrice + ")");
+                            demThreePriceToAdd = parseFloat(dimensionThreeAddtionalPrice);
+                        }
+                        else {
+
+                            $("#DimensionThreeSelection").html(" " + dimThreeLabel);
+                        }
+                    }
+
+                }
+
+                //Check to see if all active dimensions where matched
+                if (currentActiveDimensionCount == currentCount) {
+
+                    if (compositeImage != "0") {
+                        $(".carousel").carousel('cycle');
+                        $("#carousel-generic").carousel(parseInt(compositeImageIndex));
+                        compositeImageSet = true;
+
+                    }
+                    currentQty = quantity;
+                    throw BreakException;
+                }
+
+            });
+        }
+        catch (e) {
+            if (e !== BreakException) throw e; //trapping the for loop break
+        }
+
+        if (dimensionOneHasImage && (compositeImageSet == false)) {
+            var imageIndex = $("[dimOne=" + dimensionOne + "]").attr("ImageIndex")
+            var intImage = parseInt(imageIndex)
+
+            if (isNaN(intImage) == false) {
+
+                $("#carousel-generic").carousel(intImage);
+            }
+        }
+
+        if (dimensionTwoHasImage && (compositeImageSet == false)) {
+            var imageIndex = $("[dimTwo=" + dimensionTwo + "]").attr("ImageIndex")
+
+            var intImage = parseInt(imageIndex)
+
+            if (isNaN(intImage) == false) {
+
+                $("#carousel-generic").carousel(intImage);
+            }
+        }
+
+        if (dimensionThreeHasImage && (compositeImageSet == false)) {
+            var imageIndex = $("[dimThree=" + dimensionThree + "]").attr("ImageIndex")
+            var intImage = parseInt(imageIndex)
+
+            if (isNaN(intImage) == false) {
+
+                $("#carousel-generic").carousel(intImage);
+            }
+        }
+
+        $('.carousel').carousel('pause')
+
+        if (currentCount == currentActiveDimensionCount) { //Only update when all dimension have been selected.
+            if (currentQty <= 0) {
+                $(".out-stock").removeClass("hidden");
+                $(".in-stock").addClass("hidden")
+            }
+            else {
+                $(".out-stock").addClass("hidden");
+                $(".in-stock").removeClass("hidden");
+                $(".in-stock-count").text(currentQty);
+                if (backOrders) {
+                    $("#MaxQuantity").val(99999);
+                }
+                else {
+                    $("#MaxQuantity").val(currentQty);
+                }
+
+                $('#Quantity').val(parseInt($("#StepQuantity").val(), 10));
+            }
+
+            
+                // Get element with the class "hidden-points"
+                const hiddenPointsElement = document.querySelector('.hidden-points');
+
+                // Extracting the value attribute content
+                const valueAttribute = hiddenPointsElement.getAttribute('value');
+
+                // Converting the number to numeric values
+                const pointsBase = parseFloat(valueAttribute);
+
+
+            priceToAdd += demOnePriceToAdd;
+            priceToAdd += demTwoPriceToAdd;
+            priceToAdd += demThreePriceToAdd;
+
+            if (priceToAdd > 0) {
+                var newPrice = defaultPrice + priceToAdd;
+
+                if (pointsEnabled && showMoneyEnabled) {
+                    $(".price-current").html("$" + newPrice.toFixed(2) + " or " + (newPrice.toFixed(2) / pointsBase).toFixed(0) + " Points");
+                }
+                else if (pointsEnabled){
+                        console.log(defaultPrice.toFixed(2), pointsBase)
+                    $(".price-current").html((newPrice.toFixed(2) / pointsBase).toFixed(0) + " Points");
+                } 
+                else {
+                    $(".price-current").html("$" + newPrice.toFixed(2));
+                }
+
+                $(".QuantityPricingGroup").each(function () {
+                    var groupPrice = $(this).attr("defaultPrice");
+                    var groupNewPrice = parseFloat(groupPrice) + parseFloat(priceToAdd);
+                    $(this).html("$" + groupNewPrice.toFixed(2));
+                });
+            }
+            else {
+                if (pointsEnabled && showMoneyEnabled) {
+                    $(".price-current").html("$" + defaultPrice.toFixed(2) + " or " + (defaultPrice.toFixed(2) / pointsBase).toFixed(0) + " Points");
+                }
+                else if (pointsEnabled){
+                    console.log(defaultPrice.toFixed(2), pointsBase)
+                    $(".price-current").html((defaultPrice.toFixed(2) / pointsBase).toFixed(0) + " Points");
+                }
+                else {
+                    $(".price-current").html("$" + defaultPrice.toFixed(2));
+                }
+
+                $(".QuantityPricingGroup").each(function () {
+                    var groupPrice = parseFloat($(this).attr("defaultPrice"));
+
+                    $(this).html("$" + groupPrice.toFixed(2));
+                });
+            }
+            var dimOneMatrixName = $('#DimOneMatrixName').val();
+            var dimTwoMatrixName = $('#DimTwoMatrixName').val();
+            $('#subscribeDimOneName').val(dimOneMatrixName)
+            $('#subscribeDimTwoName').val(dimTwoMatrixName)
+            $('#subscribeDimOneValue').val(dimensionOne);
+            $('#subscribeDimTwoValue').val(dimensionTwo);
+
+            $('.carousel').carousel('pause');
+        }
+    });
+
+
+
+
+</script>
+
+
+                        </div>
+                        <div id="OrderByBulk" hidden>
+                            
+<div name="bulkSelector">
+
+
+    <div id="bulkSelector" class="">
+
+        <div class="panel panel-default">
+
+            <table class="table table-condensed">
+                <thead style="overflow: hidden; display: table-header-group;" class="no-border">
+                    <tr class="style_cart_table_headers">
+                                                    <th class="text-center no-border">
+ Sand
+                            </th>
+                            <th class="text-center no-border">
+ Shadow
+                            </th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                                            <tr id="" class=" dimBulkRow" data-toggle="tooltip" title="" data-placement="auto left">
+
+                                <td class="no-border mixCell">
+                                        <input size="2" id="BulkRow0_Column0" name="BulkSelectionQuantities[0].Quantites[0].Quantity" type="number" pattern="[0-9]*" min="0" max="999" inputmode="numeric" class="form-control dimSizeVerify" value="0">
+                                        <span>34 In-Stock</span>
+
+
+                                    <input type="hidden" name="BulkSelectionQuantities[0].Quantites[0].DimensionYValue" class="dimThreeBulkReadonly" value="Sand" />
+                                    <input type="hidden" name="BulkSelectionQuantities[0].Quantites[0].DimensionYCode" value="SAND" />
+                                    <input type="hidden" name="BulkSelectionQuantities[0].Quantites[0].DimensionYName" value="Sand" />
+                                    <input type="hidden" name="BulkSelectionQuantities[0].Quantites[0].AdditionalPrice" value="$0.00" />
+                                    <input type="hidden" name="BulkSelectionQuantities[0].DimensionXValue" class="dimThreeBulkVerify" value="" />
+                                    <input type="hidden" name="BulkSelectionQuantities[0].DimensionXCode" />
+                                    <input type="hidden" name="BulkSelectionQuantities[0].DimensionXName" value="" />
+                                    <input type="hidden" name="BulkSelectionQuantities[0].DimensionXImageId" value="0" />
+                                </td>
+                                <td class="no-border mixCell">
+                                        <input size="2" id="BulkRow0_Column1" name="BulkSelectionQuantities[0].Quantites[1].Quantity" type="number" pattern="[0-9]*" min="0" max="999" inputmode="numeric" class="form-control dimSizeVerify" value="0">
+                                        <span>33 In-Stock</span>
+
+
+                                    <input type="hidden" name="BulkSelectionQuantities[0].Quantites[1].DimensionYValue" class="dimThreeBulkReadonly" value="Shadow" />
+                                    <input type="hidden" name="BulkSelectionQuantities[0].Quantites[1].DimensionYCode" value="SHAD" />
+                                    <input type="hidden" name="BulkSelectionQuantities[0].Quantites[1].DimensionYName" value="Shadow" />
+                                    <input type="hidden" name="BulkSelectionQuantities[0].Quantites[1].AdditionalPrice" value="$0.00" />
+                                    <input type="hidden" name="BulkSelectionQuantities[0].DimensionXValue" class="dimThreeBulkVerify" value="" />
+                                    <input type="hidden" name="BulkSelectionQuantities[0].DimensionXCode" />
+                                    <input type="hidden" name="BulkSelectionQuantities[0].DimensionXName" value="" />
+                                    <input type="hidden" name="BulkSelectionQuantities[0].DimensionXImageId" value="0" />
+                                </td>
+                        </tr>
+
+                </tbody>
+
+            </table>
+            <h5 class="text-center">
+ <strong> Enter quantities below. <br> Each selction must have min qty 1</strong>            </h5>
+        </div>
+    </div>
+
+</div>
+
+<script type="text/javascript">
+
+    // Bulk Selector
+    var counter = 0;
+    var zeroPrice = 0.00;
+    var dimOneFilter;
+    function ChangeOfDimensionSelection(control) {
+
+        var checkedValue = $(control).filter(":checked").val();
+
+        if (checkedValue == null) {
+            var uncheckedValue = $(control).val()
+            $("#" + uncheckedValue).addClass("hidden");
+            counter--;
+            if (counter == 0) {
+                $("#bulkSelector").addClass("hidden");
+            }
+        }
+        else {
+            $("#" + checkedValue).removeClass("hidden");
+            $("#bulkSelector").removeClass("hidden");
+            counter++;
+
+            FilterControls(checkedValue);
+
+        }
+
+
+    }
+    function FilterControls(checkedValue) {
+
+        //filter sizes to readonly if not viable
+        var dimensionOne = $("input[type=radio][name=BulkSelectionOne]:checked").attr("DimVerifyValue");//Get first selected dim
+        var firstitems = $('.data').filter('[dimOne=' + dimensionOne + ']')
+        var validThirdDimValues = '|';
+
+        var processItems = false;
+        firstitems.each(function () {
+
+            processItems = true;
+        });
+        if (processItems) {
+            var secondItems = firstitems.filter('[dimTwo=' + checkedValue + ']')
+            secondItems.each(function () {
+
+                validThirdDimValues = validThirdDimValues.concat($(this).attr("dimThree")) + '|';
+            });
+
+            if (validThirdDimValues !== '|') {
+                var dimThreeItems = $('.dimThreeBulkVerify').filter(function () { return this.value === checkedValue }).closest('.dimBulkRow').find('.dimThreeBulkReadonly');
+                dimThreeItems.each(function () {
+
+                    var itemToCheck = $(this).closest('.dimThreeBulkReadonly');
+
+                    itemToCheck.each(function () {
+                        if (validThirdDimValues.indexOf(('|' + $(this).val() + '|')) >= 0) {
+
+                            $(this).closest('.mixCell').find('.dimSizeVerify').show();
+                        }
+                        else {
+
+                            $(this).closest('.mixCell').find('.dimSizeVerify').hide();
+                        }
+                    });
+
+                });
+            }
+        }
+        else {
+
+            var firstitems = $('.data').filter('[dimOne=' + checkedValue + ']')
+            var validSecondDimValues = '|';
+
+            var processItems = false;
+            firstitems.each(function () {
+
+                validSecondDimValues = validSecondDimValues.concat($(this).attr("dimTwo")) + '|';
+            });
+
+            if (validSecondDimValues !== '|') {
+                var dimThreeItems = $('.dimThreeBulkVerify').filter(function () { return this.value === checkedValue }).closest('.dimBulkRow').find('.dimThreeBulkReadonly');
+                dimThreeItems.each(function () {
+
+                    var itemToCheck = $(this).closest('.dimThreeBulkReadonly');
+
+                    itemToCheck.each(function () {
+                        if (validSecondDimValues.indexOf(('|' + $(this).val() + '|')) >= 0) {
+
+                            $(this).closest('.mixCell').find('.dimSizeVerify').show();
+                        }
+                        else {
+
+                            $(this).closest('.mixCell').find('.dimSizeVerify').hide();
+                        }
+                    });
+
+                });
+            }
+        }
+
+
+    }
+
+    function DimensionTitleChange(control) {
+
+        var value = $(control).val();
+        var dimensionOne = $("input[type=radio][name=BulkSelectionOne]:checked").attr("DimVerifyValue");
+        var firstitems = $('.data').filter('[dimOne=' + dimensionOne + ']')//first dim for this item
+        var dimLabel = '';
+        firstitems.each(function () {
+            dimLabel = $(this).attr("dimOneLabel");
+        });
+        $("#dimensionTitle").html(" " + dimLabel);
+
+
+
+    }
+
+    $(".dimOneBulkVerify").change(function () {
+
+        var dimensionOne = $("input[type=radio][name=BulkSelectionOne]:checked").attr("DimVerifyValue");
+        dimOneFilter = dimensionOne;
+
+
+        var validFirstDimValues = '|';
+        var validSecondDimValues = '|';
+        var validThirdDimValues = '|';
+        var firstitems = $('.data').filter('[dimOne=' + dimensionOne + ']')//first dim for this item
+        firstitems.each(function () {
+            validSecondDimValues = validSecondDimValues.concat($(this).attr("dimTwo")) + '|';
+            validThirdDimValues = validThirdDimValues.concat($(this).attr("dimThree")) + '|';
+        });
+
+
+
+        if (validSecondDimValues === '|' && validThirdDimValues === '|') {
+            // One dimension item
+
+        }
+        else if (validThirdDimValues === '|') {
+
+            //only a second dimension
+            var secondDimInputs = $('.dimTwoBulkVerify');
+            secondDimInputs.each(function () {
+                //$(this).parent().parent().hide();
+                if (validSecondDimValues.indexOf(('|' + $(this).attr("DimVerifyValue") + '|')) >= 0) {
+
+                    $(this).parent().show();
+
+
+                }
+                else {
+                    $(this).parent().hide();
+                    $(this).prop("checked", false);
+
+                }
+
+            });
+        }
+        else {
+            //we have a second and third dimension
+
+            var secondDimInputs = $('.dimTwoBulkVerify');
+            var thirdHideItem = '|';
+            secondDimInputs.each(function () {
+                //$(this).parent().parent().hide();
+                if (validSecondDimValues.indexOf(('|' + $(this).attr("DimVerifyValue") + '|')) >= 0) {
+
+                    $(this).parent().show();
+
+                }
+                else {
+
+                    $(this).parent().hide();
+                    $(this).prop("checked", false);
+                    thirdHideItem = thirdHideItem + $(this).attr("DimVerifyValue") + "|";
+                }
+
+            });
+            var thirdDimInputs = $('.dimThreeBulkVerify');
+            thirdDimInputs.each(function () {
+
+                if (thirdHideItem.indexOf("|" + $(this).val() + "|") >= 0) {
+
+                    $(this).parent().parent().removeClass("hidden");
+                    $(this).parent().parent().addClass("hidden");
+                }
+
+            });
+
+
+        }
+        var secondDimFiltering = $('.dimTwoBulkVerify');
+        secondDimFiltering.each(function () {
+            FilterControls($(this).val());
+        });
+
+    });
+
+    $('[data-toggle="tooltip"]').tooltip();
+
+    $('.swap-image').mouseenter(function () {
+        if ($('.custom-check', this).attr('id') !== $('.swap-image-2').attr('id')) {
+            var id = $('.custom-check', this).attr('id');
+            $('.swap-image-2').removeClass('active');
+            $('.swap-image-2#' + id).addClass('active');
+        }
+    });
+
+    $('.dimBulkRow').mouseenter(function () {
+        $('.form-control.dimSizeVerify', this).css('box-shadow', '0 0 0 1px #777');
+        if ($('.swap-image-1', this).attr('id') !== $('.swap-image-2').attr('id')) {
+            var id = $('.swap-image-1', this).attr('id');
+            if (id != null) {
+                $('.swap-image-2').removeClass('active');
+                $('.swap-image-2#' + id).addClass('active');
+            }
+        }
+    });
+
+    $('.dimBulkRow').mouseleave(function () {
+        $('.form-control.dimSizeVerify', this).css('box-shadow', 'none');
+    });
+
+</script>
+
+
+
+                        </div>
+
+
+
+                    
+
+                        <div class="col-xs-12 display-inline">
+                            <div id="wrapQuantity" >
+                                
+<div class="left-zero right-zero col-lg-3 col-md-3 col-sm-3 col-xs-5">
+    <span id="quantitySelector">
+
+        <span class="input-group">
+            <span class="input-group-addon btn-minus" onclick="QuantitySubtract()"><span class="glyphicon glyphicon-minus"></span></span>
+            <input type="text" class="form-control" aria-label="Quantity" onchange="CheckQuantity()" maxlength="5" data-val="true" data-val-required="The Quantity field is required." id="Quantity" name="Quantity" value="1">
+            <span class="input-group-addon btn-plus" onclick="QuantityAdd()"><span class="glyphicon glyphicon-plus"></span></span>
+        </span>
+    </span>
+
+        <input type="hidden" id="MinQuantity" value="1" />
+</div>
+
+
+
+    <input type="hidden" id="MaxQuantity" value="99999" />
+<input type="hidden" id="StepQuantity" value="1" />
+
+
+
+<script>
+    //QUANTITY
+    function QuantitySubtract() {
+        var currentVal = parseInt($('#Quantity').val(), 10);
+        var min = parseInt($("#MinQuantity").val(), 10);
+        var step = parseInt($("#StepQuantity").val(), 10);
+
+        var newVal = currentVal - step;
+
+        if (newVal < min) { newVal = min; }
+
+        $('#Quantity').val(newVal);
+    }
+
+    function QuantityAdd() {
+        var currentVal = parseInt($('#Quantity').val(), 10);
+        var max = parseInt($("#MaxQuantity").val(), 10);
+        var step = parseInt($("#StepQuantity").val(), 10);
+
+        var newVal = currentVal + step;
+
+        if (newVal > max) { newVal = max; }
+
+        $('#Quantity').val(newVal);
+    }
+
+    function CheckQuantity() {
+        var currentVal = parseInt($('#Quantity').val(), 10);
+        var max = parseInt($("#MaxQuantity").val(), 10);
+        var min = parseInt($("#MinQuantity").val(), 10);
+        var step = parseInt($("#StepQuantity").val(), 10);
+
+        if (currentVal > max) { currentVal = max; }
+        if (currentVal < min) { currentVal = min; }
+
+        $('#Quantity').val(currentVal);
+    }
+
+
+        //END QUANTITY
+</script>
+
+
+                                
+
+
+
+    <div class="left-zero right-zero col-lg-7 col-md-7 col-sm-7 col-xs-5 product-buttons pd-btn">
+        <button type="submit" class="large btn btn-primary btn-md a2c-btn" name="cartType" value="cart">
+            <span class="glyphicon glyphicon-shopping-cart"></span> Add to Cart
+        </button>
+        <button type="submit" class="small btn btn-primary btn-md">
+            <span class="glyphicon glyphicon-shopping-cart"></span>
+        </button>
+    </div>
+    <div class="right-zero col-lg-1 col-md-2 col-sm-2 col-xs-2 product-buttons">
+        <button type="submit" class="btn btn-default btn-md wlist" name="cartType" value="wishlist">
+            <span class="glyphicon glyphicon-heart"></span>
+        </button>
+    </div>
+
+                            </div>
+                            <div id="wrapQuantityWithBulk" hidden>
+                                
+
+
+
+    <div class="left-zero right-zero col-lg-7 col-md-7 col-sm-7 col-xs-5 product-buttons pd-btn">
+        <button type="submit" class="large btn btn-primary btn-md a2c-btn" name="cartType" value="cart">
+            <span class="glyphicon glyphicon-shopping-cart"></span> Add to Cart
+        </button>
+        <button type="submit" class="small btn btn-primary btn-md">
+            <span class="glyphicon glyphicon-shopping-cart"></span>
+        </button>
+    </div>
+    <div class="right-zero col-lg-1 col-md-2 col-sm-2 col-xs-2 product-buttons">
+        <button type="submit" class="btn btn-default btn-md wlist" name="cartType" value="wishlist">
+            <span class="glyphicon glyphicon-heart"></span>
+        </button>
+    </div>
+
+                            </div>
+                        </div>
+                        <div>
+                                
+<span class="in-stock hidden">
+    <span class="glyphicon glyphicon-ok"></span> <span class="in-stock-count">1</span> In Stock
+</span>
+        <span class="out-stock hidden">
+            <span class="glyphicon glyphicon-remove-sign"></span> Out Of Stock
+            <span class="accepting-backorders">Accepting Backorders</span>
+            <br />
+            <span class="accepting-backorders backorders-modal">
+                <a href="#" data-toggle="modal" data-target="#stockModal" class="clickable">+ Sign up for back in-stock email notifications</a>
+            </span>
+            <span class="accepting-backorders backorders-success">
+                We will email you when this item is back in stock. Thank you!
+            </span>
+        </span>
+    <!-- Modal -->
+    <div class="modal fade" id="stockModal" tabindex="-1" role="dialog" aria-labelledby="stockModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel">Back In-Stock Notification</h4>
+                </div>
+
+                <div class="modal-body">
+                    <input id="subscribeProduct" name="ProductNumber" type="hidden" value="S-RHC-011" />
+
+                    <input data-val="true" data-val-required="The Id field is required." id="Id" name="Id" type="hidden" value="0" />
+                    <input type="hidden" id="subscribeDimOneName" />
+                    <input type="hidden" id="subscribeDimOneValue" />
+                    <input type="hidden" id="subscribeDimTwoName" />
+                    <input type="hidden" id="subscribeDimTwoValue" />
+                    Email: <input type="text" value="" class="form-control" id="subscribeEmail" placeholder="Email Address..." autocomplete="off" name="InStockSubcribeEmail" />
+                </div>
+                    <div class="modal-footer">
+                        <button type="submit" onclick="submitInStockModal()" class="btn btn-success" data-dismiss="modal">Submit</button>
+                    </div>
+               
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript">
+        $(document).ready()
+        {
+            $(".backorders-success").hide();
+        }
+
+        function submitInStockModal() {
+            
+
+
+                $.ajax({
+                    type: "POST",
+                    dataType: "JSON",
+                    url: "/Products/InStockEmailReminder",
+                    data: {
+                        email: $("#subscribeEmail").val(),
+                        productNumber: $("#subscribeProduct").val(),
+                        dimOneName: $("#subscribeDimOneName").val(),
+                        dimOneValue: $("#subscribeDimOneValue").val(),
+                        DimTwoName: $("#subscribeDimTwoName").val(),
+                        DimTwoValue: $("#subscribeDimTwoValue").val()
+                    },
+                    success: function (result) {
+                        
+                    }
+
+                });
+            $(".backorders-modal").hide();
+            $(".backorders-success").show();
+            
+
+        }
+    </script>
+
+
+
+
+
+                        </div>
+
+
+                </div>
+            <input name="__RequestVerificationToken" type="hidden" value="CfDJ8F6p6RENyOlOouyPoSPZxlKGjxk-y8k4rGii3dMJpmlx5LESnhUPscGSC7fJguh5lyxjo7igRWl4fC9EYSIOLddnEtiY169jvUznqSo56FXnju3f-04g0RjHgHyMSB3A8PpGaXUHFxNWWAGnJ-maHZM" /></form>
+        </div>
+
+    </div>
+
+
+
+
+</div>
+
+
+
+    </div>
+
+    <div id="layoutFooterWrap">
+        <div class="container">
+    <div class="row">
+        <div class="col-md-2">
+
+
+        </div>
+        <div class="col-md-8 text-center">
+            <ul class="list-unstyled list-inline footer-nav">
+                <li><a href="/Content/CustomerService">Customer Service</a></li>
+                <li><a href="/Content/CustomOrders">Custom Orders</a></li>
+                <li><a href="/Content/Returns">Returns</a></li>
+                <li><a href="/Content/Shipping">Shipping</a></li>
+                <li><a href="/Content/PrivacyPolicy">Privacy Policy</a></li>
+                <li><a href="/Content/SiteTerms">Site Terms</a></li>
+
+            </ul>
+
+        </div>
+        <div class="col-md-2 col-xs-12 text-center">
+            <strong>
+                Connect With Us
+            </strong>
+            <ul class="list-unstyled list-inline">
+            </ul>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12 text-center underline-top">
+            <p>
+                &copy;2026 Robinson Helicopter Company Store - Powered by <a href="https://www.cogginspromo.com" target="_blank">Coggins Promo</a>
+            </p>
+        </div>
+    </div>
+</div>
+    </div>
+
+
+
+    
+
+    <script>
+        $(document).ready(function () {
+        const $menu = $('#cartToggle');
+
+        if (false) {
+            $('#cartToggle').show();
+            $(document).mouseup(function (e) {
+                if (!$menu.is(e.target) // if the target of the click isn't the container...
+                    && $menu.has(e.target).length === 0) // ... nor a descendant of the container
+                {
+                    $menu.hide();
+                    $(".cart-preview").hover(
+                        function () { $('#cartToggle').show() },
+                        function () { $('#cartToggle').hide() }
+                    )
+                }
+            });
+        }
+
+        if (39.00 != 39.00) {
+            $(".price-current").css({ "color": "#EA2C32" });
+        }
+
+        $('.carousel').carousel('pause')
+        $('.PurchaseOrderModule').click(function (e) {
+            e.preventDefault();
+            var module = document.getElementById('MoreInventoryComingSoon');
+            module.hidden = !module.hidden;
+        });
+        });
+    </script>
+
+</body>
+</html>
+
+<script>
+  function handleDropdownDisplay() {
+    var dropdowns = document.querySelectorAll('.dropdown, .dropdown-toggle');
+
+    function displayDropdownMenu() {
+      var dropdownMenu = this.querySelector('.dropdown-menu');
+      if (dropdownMenu && !isMobile()) {
+        dropdownMenu.style.display = 'block';
+        this.setAttribute('aria-expanded', 'true');
+      }
+    }
+
+    function hideDropdownMenu() {
+      var dropdownMenu = this.querySelector('.dropdown-menu');
+      if (dropdownMenu) {
+        dropdownMenu.style.display = 'none';
+        this.setAttribute('aria-expanded', 'false');
+      }
+    }
+
+    function isMobile() {
+      return window.innerWidth <= 768; // Adjust the breakpoint to your desired mobile width
+    }
+
+    function updateEventListeners() {
+      if (isMobile()) {
+        dropdowns.forEach(function (dropdown) {
+          dropdown.removeEventListener('mouseover', displayDropdownMenu);
+          dropdown.removeEventListener('mouseout', hideDropdownMenu);
+          dropdown.removeEventListener('focus', displayDropdownMenu);
+          dropdown.removeEventListener('blur', hideDropdownMenu);
+          dropdown.removeAttribute('aria-expanded'); // Remove aria-expanded attribute for mobile view
+        });
+      } else {
+        dropdowns.forEach(function (dropdown) {
+          dropdown.addEventListener('mouseover', displayDropdownMenu);
+          dropdown.addEventListener('mouseout', hideDropdownMenu);
+          dropdown.addEventListener('focus', displayDropdownMenu);
+          dropdown.addEventListener('blur', hideDropdownMenu);
+          dropdown.setAttribute('aria-expanded', 'false'); // Add aria-expanded attribute for desktop view
+        });
+      }
+    }
+
+    // Initial setup
+    updateEventListeners();
+
+    // Event listener for screen size changes
+    window.addEventListener('resize', function () {
+      updateEventListeners();
+    });
+  }
+
+  handleDropdownDisplay();
+</script>
