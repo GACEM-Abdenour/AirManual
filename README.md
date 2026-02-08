@@ -1,6 +1,6 @@
 # ✈️ Aircraft Maintenance Documentation Assistant
 
-RAG-based assistant for aircraft maintenance: technical manuals (PDF/HTML), part numbers, regulations, and cross-references. Uses **OpenAI** (GPT-4o, embeddings), **Qdrant** (vector store), **Unstructured** (parsing), and **Streamlit** (UI).
+RAG-based assistant for aircraft maintenance: technical manuals (PDF/HTML), part numbers, regulations, and cross-references. Uses **OpenAI** (GPT-4o, embeddings), **Qdrant** (vector store), **Unstructured** (parsing), and **Streamlit** (UI with Logbook page).
 
 ---
 
@@ -34,21 +34,51 @@ QDRANT_API_KEY=...
 ## Run Locally
 
 ```bash
-# Install dependencies
 pip install -r requirements.txt
-
-# (Optional) Ingest documents into the index (skip if using Qdrant Cloud with existing data)
-python src/ingest.py
-
-# Start the app
 streamlit run app.py
 ```
 
-Open the URL shown in the terminal (e.g. `http://localhost:8501`).
+Open the URL shown (e.g. `http://localhost:10000`). The app includes a **Logbook** page in the sidebar.
 
 ---
 
-## Deployment (Recommended: Streamlit Community Cloud)
+## Deploy on Render (Docker)
+
+Render keeps your app deployable 24/7. Unlike Streamlit Community Cloud, you control the instance; paid plans stay **always on** (no spin-down after inactivity).
+
+### Steps
+
+1. **Push your code** to GitHub (ensure `.env` is in `.gitignore` — never commit secrets).
+
+2. **Go to [Render Dashboard](https://dashboard.render.com)** → **New +** → **Web Service**.
+
+3. **Connect** your GitHub account and select the `aircraft` repo (and the branch you use, e.g. `main`).
+
+4. **Configure the service:**
+   - **Name:** e.g. `aircraft-maintenance`
+   - **Region:** choose one close to you or your users
+   - **Runtime:** **Docker** (Render will use the repo’s `Dockerfile`)
+   - **Instance type:** Free for testing; **Starter ($7/mo)** if you want the app to stay on and not sleep after inactivity
+
+5. **Environment variables** (same as your `.env`; add under **Environment**):
+   - `OPENAI_API_KEY`
+   - `UNSTRUCTURED_API_KEY`
+   - `UNSTRUCTURED_API_URL`
+   - `QDRANT_URL`
+   - `QDRANT_API_KEY`
+
+6. Click **Create Web Service**. Render will build the image and run `streamlit run app.py` on the port it provides. When the build finishes, your app URL will look like `https://aircraft-maintenance.onrender.com`.
+
+### Free tier vs always-on
+
+- **Free:** The service may **spin down** after ~15 minutes of no traffic. The next visit can take 30–60 seconds to wake it up.
+- **Starter ($7/mo):** Instance stays **always on**; no spin-down, so the app responds immediately.
+
+Optional: on the free tier you can use an external **uptime cron** (e.g. cron-job.org or UptimeRobot) to ping your Render URL every 10–14 minutes to reduce how often it sleeps (Render allows this).
+
+---
+
+## Deployment (Streamlit Community Cloud)
 
 1. **Push the repo** to GitHub (omit `.env`; use `.gitignore`).
 2. Go to [share.streamlit.io](https://share.streamlit.io) and sign in with GitHub.

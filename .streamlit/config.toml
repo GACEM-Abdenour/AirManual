@@ -1,0 +1,20 @@
+# Aircraft Maintenance Assistant — readable, high-contrast theme
+[theme]
+base = "light"
+# Primary: teal that meets contrast on white (buttons, links)
+primaryColor = "#0d7377"
+# Backgrounds: pure white and very light tint for contrast
+backgroundColor = "#ffffff"
+secondaryBackgroundColor = "#f8fafc"
+# Main text: dark for strong readability (WCAG AA)
+textColor = "#1e293b"
+font = "sans serif"
+
+[server]
+headless = true
+port = 10000
+enableCORS = false
+enableXsrfProtection = true
+
+[browser]
+gatherUsageStats = false

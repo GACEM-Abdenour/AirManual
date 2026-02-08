@@ -8,7 +8,56 @@ st.set_page_config(
     page_title="Aircraft Maintenance Assistant",
     page_icon="✈️",
     layout="wide",
-    initial_sidebar_state="collapsed",
+    initial_sidebar_state="expanded",
+)
+
+# Custom CSS: high-contrast, readable text; appealing but calm colors
+st.markdown(
+    """
+    <style>
+    /* Contrast-safe palette: dark text on light backgrounds */
+    :root {
+        --text: #1e293b;
+        --text-secondary: #475569;
+        --accent: #0d7377;
+        --accent-bg: #f0fdfa;
+        --surface: #f8fafc;
+        --border: #e2e8f0;
+    }
+    /* Chat blocks: clear text, comfortable line length */
+    [data-testid="stChatMessage"] {
+        background: var(--surface) !important;
+        border-radius: 8px;
+        border-left: 4px solid var(--accent) !important;
+        padding: 1rem 1.25rem !important;
+        margin: 0.75rem 0 !important;
+        box-shadow: none !important;
+    }
+    [data-testid="stChatMessage"] .stMarkdown {
+        color: var(--text) !important;
+        font-size: 1rem !important;
+        line-height: 1.6 !important;
+        letter-spacing: 0.01em;
+    }
+    [data-testid="stChatMessage"] [data-testid="stChatMessageAvatar"] {
+        display: none;
+    }
+    /* Main area: readable width and spacing */
+    .main .block-container { padding-top: 1.5rem; max-width: 52rem; }
+    h1 { color: var(--text) !important; font-weight: 600 !important; letter-spacing: -0.02em; }
+    .stCaption { color: var(--text-secondary) !important; font-size: 0.9375rem !important; }
+    /* Sidebar: clear labels and notices */
+    [data-testid="stSidebar"] .stMarkdown { color: var(--text) !important; }
+    [data-testid="stSidebar"] .stAlert {
+        border-radius: 8px;
+        border-left: 4px solid var(--accent);
+        background: var(--accent-bg) !important;
+    }
+    /* Expanders and sources: legible meta text */
+    [data-testid="stExpander"] .stMarkdown { color: var(--text) !important; line-height: 1.55 !important; }
+    </style>
+    """,
+    unsafe_allow_html=True,
 )
 
 # Initialize session state
@@ -25,25 +74,19 @@ def main():
         st.error(f"Configuration error: {e}")
         st.info("Please check your .env file and ensure all API keys are set.")
         return
-    
-    # Title and description
-    st.title("✈️ Aircraft Maintenance Documentation Assistant")
-    st.markdown(
-        """
-        Ask questions about aircraft maintenance procedures, parts, regulations, and technical documentation.
-        The assistant will provide detailed answers with source citations.
-        """
-    )
-    
-    # Sidebar — simple, client-facing
+
+    # Title and short description
+    st.title("Aircraft Maintenance Documentation")
+    st.caption("Procedures, parts, regulations, and technical documentation — with source citations.")
+
+    # Sidebar: how to use, options, and notices
     with st.sidebar:
         st.header("How to use")
         st.markdown(
-            """
-            Ask anything about maintenance procedures, part numbers, regulations, or technical specs.  
-            Answers include **source citations** so you can check the manuals.
-            """
+            "Ask about maintenance procedures, part numbers, regulations, or technical specs. "
+            "Answers include **source citations** so you can check the manuals."
         )
+        st.divider()
         st.header("Options")
         use_deep_search = st.checkbox(
             "Use Agentic mode",
@@ -51,14 +94,20 @@ def main():
             help="Remembers context, breaks down complex questions, may ask for clarification.",
         )
         if use_deep_search:
-            st.caption("🔮 *Agentic mode is experimental — we’re testing smarter, context-aware answers.*")
-    
-    # Display chat history
+            st.caption("Futuristic idea — we’re testing smarter, context-aware answers. Preview only.")
+
+        st.divider()
+        st.header("Notices")
+        st.info(
+            "**Logbook** (see page in sidebar) is **preview only** — not fully working. "
+            "Use it to try the interface; do not rely on it for real compliance or record-keeping."
+        )
+        st.caption("Agentic mode above is also a preview / futuristic feature.")
+
+    # Display conversation: flat, document-style
     for message in st.session_state.messages:
         with st.chat_message(message["role"]):
             st.markdown(message["content"])
-            
-            # Display sources if available
             if message["role"] == "assistant" and "sources" in message:
                 with st.expander("View Sources", expanded=False):
                     if message["sources"]:
@@ -71,28 +120,20 @@ def main():
                             )
                     else:
                         st.info("No sources available for this response.")
-    
-    # Chat input
+
+    # Input
     if prompt := st.chat_input("Ask a question about aircraft maintenance..."):
-        # Add user message to chat history
         st.session_state.messages.append({"role": "user", "content": prompt})
-        
-        # Display user message
         with st.chat_message("user"):
             st.markdown(prompt)
-        
-        # Get assistant response
+
         with st.chat_message("assistant"):
             with st.spinner("Searching documentation and generating answer..."):
                 try:
                     response_text, source_nodes = ask_assistant(
                         prompt, use_chat_mode=use_deep_search
                     )
-                    
-                    # Display response
                     st.markdown(response_text)
-                    
-                    # Display sources in expander
                     with st.expander("View Sources", expanded=False):
                         if source_nodes:
                             for i, source in enumerate(source_nodes, 1):
@@ -102,24 +143,19 @@ def main():
                                     f"- **Page:** {source.get('page_number', 'Unknown')}\n"
                                     f"- **Type:** {source.get('element_type', 'Unknown')}"
                                 )
-                                if source.get('score') is not None:
+                                if source.get("score") is not None:
                                     st.caption(f"Relevance score: {source['score']:.4f}")
                         else:
                             st.info("No sources available for this response.")
-                    
-                    # Add assistant message to chat history
                     st.session_state.messages.append({
                         "role": "assistant",
                         "content": response_text,
                         "sources": source_nodes,
                     })
-                    
                 except Exception as e:
                     error_message = f"Error: {str(e)}"
                     st.error(error_message)
                     st.info("Please ensure the index has been created. Run 'python src/ingest.py' first.")
-                    
-                    # Add error message to chat history
                     st.session_state.messages.append({
                         "role": "assistant",
                         "content": error_message,

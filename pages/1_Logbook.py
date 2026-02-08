@@ -11,6 +11,19 @@ st.set_page_config(
     layout="wide",
 )
 
+# Match main app: high-contrast, readable
+st.markdown(
+    """
+    <style>
+    :root { --text: #1e293b; --accent: #0d7377; --accent-bg: #f0fdfa; --surface: #f8fafc; }
+    [data-testid="stChatMessage"] { background: var(--surface) !important; border-radius: 8px; border-left: 4px solid var(--accent) !important; }
+    [data-testid="stChatMessage"] .stMarkdown { color: var(--text) !important; line-height: 1.6 !important; }
+    [data-testid="stSidebar"] .stAlert { border-radius: 8px; border-left: 4px solid var(--accent); background: var(--accent-bg) !important; }
+    </style>
+    """,
+    unsafe_allow_html=True,
+)
+
 # Preview notice in sidebar (next to Logbook in nav)
 with st.sidebar:
     st.caption("📝 Logbook")

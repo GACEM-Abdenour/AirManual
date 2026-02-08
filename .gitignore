@@ -18,12 +18,16 @@ build/
 .vscode/
 .cursor/
 
-# Data and runtime (optional: commit ingest_state.json if you want to track state)
+# Data and runtime
 assets/
 qdrant_db/
 *.snapshot
 data/parsed/
+data/ingest_state.json
 data/ingest_state_backup.json
+
+# Unused (Streamlit-only app)
+frontend/
 
 # Migration checkpoint (local only)
 migration_checkpoint.json

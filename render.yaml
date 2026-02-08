@@ -1,0 +1,11 @@
+# Render Blueprint: one-click deploy for Aircraft Maintenance Assistant
+# After connecting the repo, add Environment variables in the Dashboard (see README).
+
+services:
+  - type: web
+    name: aircraft-maintenance
+    runtime: docker
+    dockerfilePath: ./Dockerfile
+    # Render sets PORT (default 10000); Dockerfile uses it.
+    # For always-on (no spin-down): use a paid plan (Starter $7/mo) or see README for free-tier options.
+    plan: free
