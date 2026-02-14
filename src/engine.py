@@ -9,6 +9,7 @@ from llama_index.core.retrievers import BaseRetriever
 from llama_index.llms.openai import OpenAI
 from llama_index.core.prompts import PromptTemplate, ChatPromptTemplate
 from llama_index.core.memory import ChatMemoryBuffer
+from llama_index.core.settings import Settings
 from src.config import Config
 from src.index_store import get_index, get_retriever
 
@@ -17,6 +18,22 @@ REGULATION_SIMILARITY_THRESHOLD = 0.7
 REGULATION_KNOWLEDGE_FALLBACK = (
     "I don't have enough knowledge to reply to this, maybe try to decompose your question."
 )
+
+# Deep Research: trigger when top retrieval score is below this (0–1).
+DEEP_RESEARCH_CONFIDENCE_THRESHOLD = 0.70
+
+# System prompt used when synthesizing from expanded retrieval (low-confidence path).
+DEEP_RESEARCH_SYSTEM_PROMPT = """You are in Deep Research Mode. The direct answer was not found in the first pass.
+Use the provided chunks to infer a helpful answer. Connect disparate data points (e.g., use Fuel Capacity + Burn Rate to calculate Flight Time).
+Explain your reasoning step-by-step.
+Structure your response as follows:
+
+**Direct Answer:** (Best effort based on inference from the chunks.)
+
+**Reasoning:** "I calculated this based on..." or "I inferred this because the manual states..."
+
+**Related Data:** "While the exact X wasn't found, here is Y and Z which are relevant." Cite sources (e.g., IAW AMM 24-30-00).
+Always cite your sources. Do not make up values not present in the chunks."""
 
 # System prompt for the Expert Aviation Technician (used by query engine and regulation path)
 SYSTEM_PROMPT = """You are an Expert Aviation Maintenance Technician with comprehensive knowledge of aircraft maintenance procedures, technical manuals, Illustrated Parts Catalogs (IPC), regulations, and all aviation documentation.
@@ -59,15 +76,98 @@ CRITICAL RULES:
 Remember: You are the expert technician who has memorized every manual and regulation. Provide answers as if you have that level of knowledge, but always cite your sources. When you see cross-references, actively search for them to provide complete answers."""
 
 # System prompt for the Agentic Technician (decomposition, context, clarification)
-AGENT_SYSTEM_PROMPT = """You are an advanced Aviation Maintenance AI with access to aircraft manuals and regulations.
+AGENT_SYSTEM_PROMPT = """
+You are AeroMind, a Senior Lead Aircraft Maintenance Engineer.
+Your role is to assist mechanics by finding accurate information in the Aircraft Maintenance Manuals (AMM) and Parts Catalogs (IPC).
+YOUR BEHAVIORAL PROTOCOLS:
+Safety First (The "Fatal" Rule):
 
-Capabilities:
-- **Context Awareness**: If the user says "it", "that", or "the part", refer to the previous conversation. Remember what component or procedure was discussed.
-- **Decomposition**: If the user asks a complex question (e.g., "Compare A and B", "Check the pump and the landing gear"), break it down. Search for A, then search for B, then synthesize the answer.
-- **Clarification**: If the user's query is vague (e.g., "How do I fix it?" without prior context, or "Is it broken?"), DO NOT search blindly. Instead, ask the user to clarify what component they are referring to.
-- **Citations**: Always cite the manual name and page from the tool output. Format: [Document Name, Page X]
+If the manual contains a WARNING (risk of death/injury) or CAUTION (risk of damage), you must state this first in your response, in BOLD RED.
 
-Use the aviation_manuals_tool for any technical lookup. Never guess or hallucinate—only answer from tool results."""
+Example: "⚠️ WARNING: ENSURE HYDRAULIC POWER IS OFF BEFORE PROCEEDING."
+
+Hold the Handbook (Data Completeness):
+
+CRITICAL: When providing a Procedure, use ALL steps from the manual. DO NOT SUMMARIZE. Missing a step is a safety violation.
+
+Part Number Precision:
+
+Always cite Part Numbers (P/N) when available.
+
+Format: Fuel Pump (P/N 65-1234).
+
+Clarify & Verify:
+
+If the question is vague, ask: "Which system? Left or Right?" before answering.
+
+Citation:
+
+ALWAYS cite your source (e.g., "IAW AMM 24-30-00").
+
+Partial Data & Inference (The "Helpful Engineer" Rule):
+* **NEVER** say "The information is not provided" if you have related data in the context chunks.
+* **Scenario A (Related Data):** If the user asks for "Flight Time" and you only find "Fuel Capacity" and "Burn Rate", **REPORT** those values and explain they determine flight time.
+* **Scenario B (Contextual Mention):** If you find a mention like *"Perform endurance test for 3 hours"*, **REPORT** it: *"The manual mentions an endurance test of 3 hours (Ref: [Source]), which suggests a capability of at least this duration."*
+* **Goal:** Provide the *closest available data* rather than a blank refusal.
+
+VISUAL & FORMATTING STANDARDS (CRITICAL):
+You must structure your response using Markdown Headers with Icons and Bullet Points. Do not output walls of text.
+
+Use this structure:
+
+1. For Specific Data (Torques, Limits, Part Numbers):
+
+Use the format:
+
+📉 Specifications
+Item Name: [Value]
+
+Limit: [Value]
+
+Source: [Citation]
+
+2. For Procedures:
+
+Use the format:
+
+🛠️ Maintenance Procedure ([AMM Reference])
+1. [Step 1 Details]
+
+2. [Step 2 Details]...
+
+3. For General Explanations:
+
+Break it down into:
+
+📋 Context
+[Brief explanation]
+
+### 🔍 Key Factors
+* **Factor 1:** [Explanation]
+* **Factor 2:** [Explanation]
+4. Text Emphasis:
+
+Always BOLD important values (e.g., 150 in-lbs, Shell Grease 22, P/N 123-456). """
+
+
+def _is_factual_lookup_question(question: str) -> bool:
+    """Classification heuristic for the Deterministic Fallback Layer.
+
+    Detects factual/technical queries (torque, limits, fuel, procedures, etc.) where
+    we cannot tolerate false negatives: the mechanic must get official manual data
+    and citations. Used to trigger high-priority retrieval when the Agent has not
+    invoked the RAG tool (see ask_assistant fallback).
+    """
+    if not question or len(question.strip()) < 5:
+        return False
+    q = question.lower().strip()
+    triggers = [
+        "how much", "how long", "how many", "what is the", "what are the",
+        "fuel", "endurance", "flight time", "range", "capacity",
+        "torque", "inspection", "interval", "procedure", "removal", "install",
+        "r44", "r22", "robinson", "weight", "limit", "specification",
+    ]
+    return any(t in q for t in triggers)
 
 
 def detect_part_number(question: str) -> Optional[str]:
@@ -131,8 +231,8 @@ class _FixedNodesRetriever(BaseRetriever):
 
 
 def create_agent(
-    similarity_top_k: int = 10,
-    temperature: float = 0.1,
+    similarity_top_k: int = 20,
+    temperature: float = 0.3,
 ):
     """Create an OpenAIAgent (FunctionAgent) with QueryEngineTool for decomposition and context.
     
@@ -151,11 +251,13 @@ def create_agent(
     from llama_index.core.agent.workflow import FunctionAgent
     from llama_index.core.tools import QueryEngineTool
     
+    _cb = getattr(Settings, "callback_manager", None)
     llm = OpenAI(
         model="gpt-4o",
         api_key=Config.OPENAI_API_KEY,
         temperature=temperature,
         timeout=120.0,
+        callback_manager=_cb,
     )
     
     index = get_index()
@@ -181,9 +283,11 @@ def create_agent(
         query_engine=query_engine,
         name="aviation_manuals_tool",
         description=(
-            "Useful for looking up technical procedures, part numbers, and maintenance "
-            "intervals in the Aircraft Manuals and Regulations. Always use this for "
-            "technical questions about maintenance, parts, inspections, or compliance."
+            "Use this tool to look up technical information from the Aircraft Maintenance Manuals (AMM), "
+            "POH, or Parts Catalogs. Use it for: fuel capacity, endurance/flight time, part numbers, "
+            "torque values, removal/installation procedures, inspection intervals, limits, weights, or compliance. "
+            "Call it immediately for clear factual questions (e.g. 'how much time can I fly with the R44?'). "
+            "Do NOT use for greetings or small talk; do NOT use for vague questions that need clarification first."
         ),
     )
     
@@ -191,13 +295,13 @@ def create_agent(
         tools=[aviation_tool],
         llm=llm,
         system_prompt=AGENT_SYSTEM_PROMPT,
-        memory=ChatMemoryBuffer.from_defaults(token_limit=4000),
+        memory=ChatMemoryBuffer.from_defaults(token_limit=8000),
     )
     return agent
 
 
 def create_chat_engine(
-    similarity_top_k: int = 10,
+    similarity_top_k: int = 20,
     temperature: float = 0.1,  # Low temperature for factual accuracy
 ) -> ContextChatEngine:
     """Create a ChatEngine with context mode (legacy fallback).
@@ -228,7 +332,7 @@ def create_chat_engine(
 
 
 def create_query_engine(
-    similarity_top_k: int = 10,
+    similarity_top_k: int = 20,
     temperature: float = 0.1,  # Low temperature for factual accuracy
 ) -> RetrieverQueryEngine:
     """Create a QueryEngine with the configured LLM and retriever.
@@ -246,11 +350,13 @@ def create_query_engine(
     if not Config.OPENAI_API_KEY:
         raise ValueError("OPENAI_API_KEY is required for the query engine")
     
-    # Initialize LLM
+    # Initialize LLM (use global callback manager for token/cost tracking if set)
+    _cb = getattr(Settings, "callback_manager", None)
     llm = OpenAI(
         model="gpt-4o",
         api_key=Config.OPENAI_API_KEY,
         temperature=temperature,
+        callback_manager=_cb,
     )
     
     # Get the index
@@ -295,7 +401,7 @@ _chat_engine: Optional[ContextChatEngine] = None
 _query_engine: Optional[RetrieverQueryEngine] = None
 
 
-def get_agent(similarity_top_k: int = 10, force_reload: bool = False):
+def get_agent(similarity_top_k: int = 20, force_reload: bool = False):
     """Get or create the global FunctionAgent (agentic technician)."""
     global _agent
     if _agent is None or force_reload:
@@ -304,7 +410,7 @@ def get_agent(similarity_top_k: int = 10, force_reload: bool = False):
 
 
 def get_chat_engine(
-    similarity_top_k: int = 10,
+    similarity_top_k: int = 20,
     force_reload: bool = False,
 ):
     """Get or create the agent (agentic mode). Alias for get_agent for backward compatibility."""
@@ -312,7 +418,7 @@ def get_chat_engine(
 
 
 def get_query_engine(
-    similarity_top_k: int = 10,
+    similarity_top_k: int = 20,
     force_reload: bool = False,
 ) -> RetrieverQueryEngine:
     """Get or create the global query engine instance.
@@ -351,9 +457,101 @@ def extract_source_info(node: NodeWithScore) -> Dict[str, Any]:
     }
 
 
+def _get_node_id(n: NodeWithScore) -> str:
+    """Stable id for deduping (node_id or hash of content)."""
+    if hasattr(n, "node") and n.node is not None:
+        if hasattr(n.node, "node_id") and n.node.node_id:
+            return str(n.node.node_id)
+        if hasattr(n.node, "get_content"):
+            return str(hash(n.node.get_content()[:500]))
+    return str(id(n))
+
+
+def _generate_query_variations(question: str, llm: Any) -> List[str]:
+    """Use LLM to generate 3 alternative phrasings for wider retrieval."""
+    prompt = (
+        "Generate exactly 3 alternative phrasings of this question for searching "
+        "aviation maintenance manuals. Use synonyms, technical terms (e.g. AMM, POH, endurance, fuel capacity), "
+        "or broader scope. Output one question per line, no numbering. Question:\n\n"
+        f"{question}"
+    )
+    try:
+        resp = llm.complete(prompt)
+        text = str(resp).strip() if hasattr(resp, "__str__") else (getattr(resp, "text", "") or "")
+        lines = [ln.strip() for ln in text.splitlines() if ln.strip()][:3]
+        return lines if lines else [question]
+    except Exception:
+        return [question]
+
+
+def _run_deep_research(question: str, similarity_top_k: int) -> Tuple[str, List[Dict[str, Any]]]:
+    """
+    Deep Research Mode: expand retrieval (2x top_k) and run 3 query variations,
+    then synthesize with a pedagogical prompt (Direct Answer, Reasoning, Related Data).
+    """
+    if not Config.OPENAI_API_KEY:
+        return (
+            "Deep research is unavailable (no API key). Please rephrase your question.",
+            [],
+        )
+    _cb = getattr(Settings, "callback_manager", None)
+    llm = OpenAI(
+        model="gpt-4o",
+        api_key=Config.OPENAI_API_KEY,
+        temperature=0.3,
+        timeout=120.0,
+        callback_manager=_cb,
+    )
+    expanded_k = min(2 * similarity_top_k, 60)
+    retriever_double = get_retriever(similarity_top_k=expanded_k)
+    retriever_single = get_retriever(similarity_top_k=similarity_top_k)
+    # Original question with doubled scope
+    nodes_original = retriever_double.retrieve(question)
+    seen_ids: set = set()
+    all_nodes: List[NodeWithScore] = []
+    for n in nodes_original:
+        nid = _get_node_id(n)
+        if nid not in seen_ids:
+            seen_ids.add(nid)
+            all_nodes.append(n)
+    # 3 query variations
+    variations = _generate_query_variations(question, llm)
+    for var in variations:
+        for n in retriever_single.retrieve(var):
+            nid = _get_node_id(n)
+            if nid not in seen_ids:
+                seen_ids.add(nid)
+                all_nodes.append(n)
+    if not all_nodes:
+        return (
+            "No additional documentation could be found. Try rephrasing or specifying the manual/section.",
+            [],
+        )
+    context_str = "\n\n---\n\n".join(
+        n.get_content() if hasattr(n, "get_content") else (n.node.get_content() if hasattr(n, "node") and n.node else str(n))
+        for n in all_nodes
+    )
+    synthesis_prompt = (
+        f"{DEEP_RESEARCH_SYSTEM_PROMPT}\n\n"
+        "Context from the documentation:\n"
+        "---------------------\n"
+        f"{context_str}\n"
+        "---------------------\n"
+        f"User question: {question}\n\n"
+        "Provide your structured response (Direct Answer, Reasoning, Related Data) below."
+    )
+    try:
+        response = llm.complete(synthesis_prompt)
+        response_text = str(response).strip() if hasattr(response, "__str__") else (getattr(response, "text", "") or "")
+    except Exception as e:
+        response_text = f"Deep research synthesis failed: {e}. Here are the raw source excerpts for manual review."
+    source_nodes = [extract_source_info(n) for n in all_nodes]
+    return response_text, source_nodes
+
+
 def ask_assistant(
     question: str,
-    similarity_top_k: int = 10,
+    similarity_top_k: int = 20,
     use_chat_mode: bool = True,  # Use chat mode for agentic cross-reference following
 ) -> Tuple[str, List[Dict[str, Any]]]:
     """Ask a question to the aircraft maintenance assistant.
@@ -385,7 +583,8 @@ def ask_assistant(
         if not high_nodes:
             return REGULATION_KNOWLEDGE_FALLBACK, []
         fixed_retriever = _FixedNodesRetriever(high_nodes)
-        llm = OpenAI(model="gpt-4o", api_key=Config.OPENAI_API_KEY, temperature=0.1)
+        _cb = getattr(Settings, "callback_manager", None)
+        llm = OpenAI(model="gpt-4o", api_key=Config.OPENAI_API_KEY, temperature=0.1, callback_manager=_cb)
         qa_prompt = PromptTemplate(
             f"{SYSTEM_PROMPT}\n\n"
             "Context information from the documentation is below.\n"
@@ -448,6 +647,17 @@ def ask_assistant(
                 for node in raw.source_nodes:
                     if hasattr(node, "node") and hasattr(node, "score"):
                         source_nodes.append(extract_source_info(node))
+
+        # Deterministic Fallback Layer (safety-critical): The Agent uses probabilistic
+        # reasoning to decide when to use tools; we cannot tolerate false negatives
+        # (missing a manual lookup). If the Agent did not invoke the RAG tool for a
+        # factual query, trigger high-priority retrieval and override with cited data.
+        if not source_nodes and _is_factual_lookup_question(question):
+            query_engine = get_query_engine(similarity_top_k=similarity_top_k)
+            response: Response = query_engine.query(question)
+            response_text = str(response)
+            if hasattr(response, "source_nodes") and response.source_nodes:
+                source_nodes = [extract_source_info(node) for node in response.source_nodes]
     else:
         # Fallback to query engine
         query_engine = get_query_engine(similarity_top_k=similarity_top_k)
@@ -460,7 +670,13 @@ def ask_assistant(
             for node in response.source_nodes:
                 source_info = extract_source_info(node)
                 source_nodes.append(source_info)
-    
+
+    # Deep Research: if top retrieval score is low, expand search and reformulate queries.
+    scores = [s.get("score") for s in source_nodes if s.get("score") is not None]
+    top_score = max(scores, default=1.0)
+    if scores and top_score < DEEP_RESEARCH_CONFIDENCE_THRESHOLD:
+        response_text, source_nodes = _run_deep_research(question, similarity_top_k)
+
     return response_text, source_nodes
 
 

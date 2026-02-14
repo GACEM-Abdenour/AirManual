@@ -20,6 +20,12 @@ class Config:
     # Use remote for large collections (Qdrant warns local mode >20k points).
     QDRANT_URL: str = os.getenv("QDRANT_URL", "").strip()
     QDRANT_API_KEY: str = os.getenv("QDRANT_API_KEY", "").strip()
+
+    # Persistent OpenAI usage log (tokens + cost). Default: data/usage.json.
+    # On Render, set to a path on a persistent disk if you want totals to survive deploys.
+    USAGE_FILE: str = os.getenv("USAGE_FILE", "").strip() or os.path.join(
+        os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "data", "usage.json"
+    )
     
     @classmethod
     def validate(cls) -> None:

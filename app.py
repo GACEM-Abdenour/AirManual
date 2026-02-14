@@ -1,7 +1,11 @@
 """Streamlit app for Aircraft Maintenance Documentation Assistant."""
 import streamlit as st
-from src.engine import ask_assistant
+from llama_index.core.callbacks import CallbackManager
+from llama_index.core.settings import Settings
+
 from src.config import Config
+from src.engine import ask_assistant
+from src.usage_tracker import OpenAITokenCountingHandler, get_usage, reset_usage
 
 # Page configuration
 st.set_page_config(
@@ -63,6 +67,14 @@ st.markdown(
 # Initialize session state
 if "messages" not in st.session_state:
     st.session_state.messages = []
+if "usage" not in st.session_state:
+    st.session_state.usage = {
+        "prompt_tokens": 0,
+        "completion_tokens": 0,
+        "total_tokens": 0,
+        "request_count": 0,
+        "estimated_cost_usd": 0.0,
+    }
 
 
 def main():
@@ -74,6 +86,11 @@ def main():
         st.error(f"Configuration error: {e}")
         st.info("Please check your .env file and ensure all API keys are set.")
         return
+
+    # Wire OpenAI token/cost tracking once (so engine LLMs use it)
+    if "callback_manager_set" not in st.session_state:
+        Settings.callback_manager = CallbackManager(handlers=[OpenAITokenCountingHandler()])
+        st.session_state.callback_manager_set = True
 
     # Title and short description
     st.title("Aircraft Maintenance Documentation")
@@ -95,6 +112,18 @@ def main():
         )
         if use_deep_search:
             st.caption("Futuristic idea — we’re testing smarter, context-aware answers. Preview only.")
+
+        st.divider()
+        st.header("OpenAI usage")
+        u = get_usage()
+        st.session_state.usage = u
+        st.metric("Estimated cost (total)", f"${u['estimated_cost_usd']:.4f}")
+        st.caption(f"Requests: {u['request_count']} · Tokens: {u['total_tokens']:,} (in: {u['prompt_tokens']:,}, out: {u['completion_tokens']:,})")
+        st.caption("Saved to file — persists across restarts (local & Render).")
+        if st.button("Reset usage", help="Reset saved total to zero (file will be overwritten)"):
+            reset_usage()
+            st.session_state.usage = get_usage()
+            st.rerun()
 
         st.divider()
         st.header("Notices")
@@ -133,6 +162,7 @@ def main():
                     response_text, source_nodes = ask_assistant(
                         prompt, use_chat_mode=use_deep_search
                     )
+                    st.session_state.usage = get_usage()
                     st.markdown(response_text)
                     with st.expander("View Sources", expanded=False):
                         if source_nodes:

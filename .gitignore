@@ -25,6 +25,7 @@ qdrant_db/
 data/parsed/
 data/ingest_state.json
 data/ingest_state_backup.json
+data/usage.json
 
 # Unused (Streamlit-only app)
 frontend/
