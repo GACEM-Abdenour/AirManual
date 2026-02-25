@@ -197,9 +197,10 @@ def detect_part_number(question: str) -> Optional[str]:
 
 
 def detect_regulation_question(question: str) -> bool:
-    """Detect if the question is about regulations (CARs, standards, legal, compliance).
+    """Detect if the question is about regulations (CARs, standards, legal, regulatory compliance).
     
     When True, we enforce a higher similarity threshold and fallback if no high-scoring chunks exist.
+    Note: "compliance" alone (e.g., "compliance status") is NOT a regulation question - it's maintenance compliance.
     """
     import re
     q = (question or "").lower().strip()
@@ -210,7 +211,8 @@ def detect_regulation_question(question: str) -> bool:
         r"\badvisory\b",
         r"\btransport\s+canada\b",
         r"\blegal\b",
-        r"\bcompliance\b",
+        r"\bregulatory\s+compliance\b",  # More specific - not just "compliance"
+        r"\bcompliance\s+with\s+regulation(s)?\b",
         r"\bsor[-/]?\d",  # SOR/96-433
         r"\bsubpart\s+\d",
         r"\bact(s)?\b.*aviation",
@@ -486,8 +488,9 @@ def _generate_query_variations(question: str, llm: Any) -> List[str]:
 
 def _run_deep_research(question: str, similarity_top_k: int) -> Tuple[str, List[Dict[str, Any]]]:
     """
-    Deep Research Mode: expand retrieval (2x top_k) and run 3 query variations,
+    Deep Research Mode: expand retrieval (1.5x top_k, cap 30) and run 2 query variations,
     then synthesize with a pedagogical prompt (Direct Answer, Reasoning, Related Data).
+    Context is capped at 40k chars (~10k tokens) to avoid TPM/context-window limits.
     """
     if not Config.OPENAI_API_KEY:
         return (
@@ -502,10 +505,10 @@ def _run_deep_research(question: str, similarity_top_k: int) -> Tuple[str, List[
         timeout=120.0,
         callback_manager=_cb,
     )
-    expanded_k = min(2 * similarity_top_k, 60)
+    expanded_k = min(int(1.5 * similarity_top_k), 30)
     retriever_double = get_retriever(similarity_top_k=expanded_k)
     retriever_single = get_retriever(similarity_top_k=similarity_top_k)
-    # Original question with doubled scope
+    # Original question with expanded scope (capped at 30 chunks)
     nodes_original = retriever_double.retrieve(question)
     seen_ids: set = set()
     all_nodes: List[NodeWithScore] = []
@@ -514,8 +517,8 @@ def _run_deep_research(question: str, similarity_top_k: int) -> Tuple[str, List[
         if nid not in seen_ids:
             seen_ids.add(nid)
             all_nodes.append(n)
-    # 3 query variations
-    variations = _generate_query_variations(question, llm)
+    # 2 query variations (reduced from 3 to lower context + burst load)
+    variations = _generate_query_variations(question, llm)[:2]
     for var in variations:
         for n in retriever_single.retrieve(var):
             nid = _get_node_id(n)
@@ -527,10 +530,23 @@ def _run_deep_research(question: str, similarity_top_k: int) -> Tuple[str, List[
             "No additional documentation could be found. Try rephrasing or specifying the manual/section.",
             [],
         )
-    context_str = "\n\n---\n\n".join(
-        n.get_content() if hasattr(n, "get_content") else (n.node.get_content() if hasattr(n, "node") and n.node else str(n))
-        for n in all_nodes
-    )
+    
+    # Truncate context to stay under context window + TPM (approx 10k tokens)
+    MAX_CHARS = 40000
+    context_parts = []
+    current_len = 0
+    for n in all_nodes:
+        text = n.get_content() if hasattr(n, "get_content") else (
+            n.node.get_content() if hasattr(n, "node") and n.node else str(n)
+        )
+        if current_len + len(text) > MAX_CHARS:
+            break
+        context_parts.append(text)
+        current_len += len(text)
+    context_str = "\n\n---\n\n".join(context_parts)
+    if len(all_nodes) > len(context_parts):
+        context_str = f"(Context truncated: {len(context_parts)} of {len(all_nodes)} nodes)\n\n" + context_str
+    
     synthesis_prompt = (
         f"{DEEP_RESEARCH_SYSTEM_PROMPT}\n\n"
         "Context from the documentation:\n"
@@ -553,6 +569,7 @@ def ask_assistant(
     question: str,
     similarity_top_k: int = 20,
     use_chat_mode: bool = True,  # Use chat mode for agentic cross-reference following
+    skip_regulation_check: bool = False,  # Skip regulation path for logbook/maintenance queries
 ) -> Tuple[str, List[Dict[str, Any]]]:
     """Ask a question to the aircraft maintenance assistant.
     
@@ -572,7 +589,8 @@ def ask_assistant(
         - source_nodes: List of dictionaries with source information (file_name, page_number, etc.)
     """
     # Regulation questions: enforce 70% similarity threshold; fallback if no high-scoring chunks
-    if detect_regulation_question(question):
+    # Skip this check for logbook/maintenance queries (they use "compliance" but aren't about regulations)
+    if not skip_regulation_check and detect_regulation_question(question):
         index = get_index()
         base_retriever = index.as_retriever(similarity_top_k=15)
         nodes = base_retriever.retrieve(question)

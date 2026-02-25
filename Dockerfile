@@ -14,4 +14,5 @@ COPY data/ data/
 
 EXPOSE 10000
 ENV PORT=10000
-CMD ["sh", "-c", "streamlit run app.py --server.address=0.0.0.0 --server.port=${PORT}"]
+#CMD ["sh", "-c", "streamlit run app.py --server.address=0.0.0.0 --server.port=${PORT}"]
+CMD uvicorn api:app --host 0.0.0.0 --port $PORT
