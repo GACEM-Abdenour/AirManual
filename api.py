@@ -25,7 +25,7 @@ from pydantic import BaseModel, Field
 from dotenv import load_dotenv
 load_dotenv()
 
-from src.engine import ask_assistant
+from src.engine import ask_assistant, reply_to_small_talk
 
 # -----------------------------------------------------------------------------
 # 1. Strict Data Models (Pydantic) — prevents malformed data reaching the game
@@ -173,6 +173,19 @@ _CONTEXTUAL_AWARENESS = """
 If the user asks "what is this?", "how do I fix this?", "how much does this weigh?", or similar, the request includes a selected_part (the part they clicked in 3D). Use that value as the targetName in your game command (e.g. camera.focus or model.highlight). Use the part ID exactly as provided.
 """
 
+# Persona & small-talk: game API copilot. Instructs LLM to handle greetings without RAG and to pivot to maintenance.
+_GAME_API_PERSONA_AND_SMALL_TALK = """
+You are a welcoming, slightly silly, but highly skilled aviation mechanic AI assistant (a copilot for aircraft maintenance).
+
+If the user input is ONLY a greeting or small talk (e.g. "hi", "hello", "how are you", "hey", "what's up"):
+- Do NOT search the technical manuals. Do NOT hallucinate an answer about helicopter parts or procedures.
+- Acknowledge playfully in one short sentence, then seamlessly pivot back to aircraft maintenance (e.g. invite them to ask about a part or procedure).
+- Do NOT output a GAME_CMD line. Do NOT output Sources or citations.
+Example: "Hey there! My circuits are running on all cylinders today. Speaking of cylinders, do we need to tear down an engine today, or are you just dropping by to say hi?"
+
+For actual maintenance questions, use the manuals and follow the other rules below.
+"""
+
 # Zero-hallucination / "miss" rule: when the exact procedure or data is NOT in the retrieved context, do not give generic advice or filler.
 _ZERO_FILLER_ON_MISS = """
 CRITICAL — When the answer is not in the provided documentation:
@@ -182,10 +195,36 @@ CRITICAL — When the answer is not in the provided documentation:
 """
 
 
+def _is_small_talk(question: str) -> bool:
+    """True if the message looks like a greeting or casual chitchat (no RAG needed)."""
+    if not question or len(question.strip()) > 80:
+        return False
+    q = question.lower().strip()
+    greetings = (
+        "hi", "hello", "hey", "howdy", "hiya", "yo", "sup", "what's up", "whats up",
+        "how are you", "how're you", "how do you do", "good morning", "good afternoon",
+        "good evening", "greetings", "hi there", "hello there", "hey there",
+    )
+    if q in greetings or q.rstrip("?!.") in greetings:
+        return True
+    if q.startswith(("hi ", "hey ", "hello ")) and len(q.split()) <= 4:
+        return True
+    return False
+
+
 def _inject_selected_part(question: str, selected_part: Optional[str]) -> str:
     if not selected_part or not selected_part.strip():
         return question
     return f"The user is asking about part {selected_part.strip()}: {question}"
+
+
+def _strip_sources_block(text: str) -> str:
+    """Remove any '📚 Sources:' or 'Sources:' citation block so text_reply is conversational only."""
+    if "📚 Sources:" in text:
+        text = text.split("📚 Sources:")[0]
+    if "\nSources:" in text:
+        text = text.split("\nSources:")[0]
+    return text.strip()
 
 
 def _parse_game_command_from_reply(text: str) -> tuple[str, Optional[dict]]:
@@ -241,7 +280,13 @@ def api_chat(
     - **game_command**: When the answer involves locating a part, showing an assembly, or opening a manual, the LLM may return a spec-compliant command (camera.focus, model.highlight, model.explode, scene.switch, manual.open).
     """
     question = _inject_selected_part(body.question, body.selected_part)
+    # Small-talk bypass: no RAG, no game command, persona-only reply.
+    if _is_small_talk(body.question):
+        text_reply = reply_to_small_talk(body.question)
+        return GameResponse(text_reply=text_reply, sources=[], game_command=None)
+
     prompt_parts = [
+        _GAME_API_PERSONA_AND_SMALL_TALK.strip(),
         _ZERO_FILLER_ON_MISS.strip(),
         _GAME_COMMAND_RULEBOOK.strip(),
         _CONTEXTUAL_AWARENESS.strip(),
@@ -263,6 +308,8 @@ def api_chat(
 
     # Parse optional game command and clean reply
     text_reply, game_command = _parse_game_command_from_reply(response_text)
+    # Strip citation block so text_reply never contains "📚 Sources:" or "Sources:" block
+    text_reply = _strip_sources_block(text_reply)
     # Strip LLM "null command" lines so the UI never shows robot logic (e.g. "GAME_CMD: None")
     for suffix in ("GAME_CMD: None", "GAME_CMD: none", "GAME_CMD: null", "GAME_CMD: N/A"):
         text_reply = text_reply.replace(suffix, "").strip()

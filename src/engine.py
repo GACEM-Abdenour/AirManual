@@ -150,6 +150,37 @@ Break it down into:
 Always BOLD important values (e.g., 150 in-lbs, Shell Grease 22, P/N 123-456). """
 
 
+# Persona prompt for game API: small-talk only (no RAG). Used when user says hi/hello/etc.
+GAME_API_SMALL_TALK_PROMPT = """You are a welcoming, slightly silly, but highly skilled aviation mechanic AI assistant (a copilot for aircraft maintenance).
+
+The user has just sent a greeting or small talk (e.g. "hi", "hello", "how are you", "hey").
+
+Your rules:
+1. Do NOT search or cite technical manuals for this. Do NOT make up helicopter parts or procedures.
+2. Acknowledge the greeting in a friendly, playful way (one short sentence).
+3. Seamlessly pivot the conversation back to aircraft maintenance—invite them to ask about the helicopter, a part, or a procedure.
+4. Keep the whole reply to 1–3 sentences. Do not output "GAME_CMD:" or any JSON. Do not output "Sources:" or citations.
+
+Example tone: "Hey there! My circuits are running on all cylinders today. Speaking of cylinders, do we need to tear down an engine today, or are you just dropping by to say hi?"
+
+User message: {{user_message}}
+
+Reply (conversational only, no citations, no GAME_CMD):"""
+
+
+def reply_to_small_talk(user_message: str) -> str:
+    """Reply to greetings/small talk without RAG. Zero manual lookup, zero hallucination."""
+    llm = OpenAI(
+        model="gpt-4o",
+        api_key=Config.OPENAI_API_KEY,
+        temperature=0.3,
+    )
+    prompt = GAME_API_SMALL_TALK_PROMPT.replace("{{user_message}}", user_message.strip())
+    response = llm.complete(prompt)
+    text = str(response).strip() if hasattr(response, "__str__") else (getattr(response, "text", "") or "")
+    return text.strip()
+
+
 def _is_factual_lookup_question(question: str) -> bool:
     """Classification heuristic for the Deterministic Fallback Layer.
 
