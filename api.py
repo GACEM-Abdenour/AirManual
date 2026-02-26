@@ -14,7 +14,7 @@ Environment:
 import json
 import os
 import re
-from typing import List, Literal, Optional
+from typing import Any, List, Literal, Optional
 
 from fastapi import FastAPI, Depends, HTTPException, Security
 from fastapi.middleware.cors import CORSMiddleware
@@ -25,7 +25,7 @@ from pydantic import BaseModel, Field
 from dotenv import load_dotenv
 load_dotenv()
 
-from src.engine import ask_assistant, reply_to_small_talk
+from src.engine import ask_assistant, reply_to_small_talk, run_logbook_forensic_audit
 
 # -----------------------------------------------------------------------------
 # 1. Strict Data Models (Pydantic) — prevents malformed data reaching the game
@@ -96,6 +96,44 @@ class GameResponse(BaseModel):
     text_reply: str = Field(..., description="The AI's conversational/procedural answer")
     sources: List[str] = Field(default_factory=list, description="Citations (e.g. 'AMM 24-30-00, Page 5')")
     game_command: Optional[dict] = Field(None, description="Optional command for the Command Router (see spec)")
+
+
+# -----------------------------------------------------------------------------
+# Logbook Forensic Audit (Map/Reduce) — request/response for POST /api/logbook/analyze
+# -----------------------------------------------------------------------------
+
+class LogbookRowRequest(BaseModel):
+    """One logbook component entry (same semantics as Streamlit table columns)."""
+    component: str = Field(..., min_length=1, description="Component name (e.g. Main Rotor Blades, Magneto)")
+    part_number: Optional[str] = Field(default="", description="Part number from IPC; empty if unknown (system will look up)")
+    hours_since_new: Optional[float] = Field(default=None, ge=0, description="Total hours on component since new")
+    installed_date: Optional[str] = Field(default=None, description="Date installed (YYYY-MM-DD)")
+
+
+class LogbookAnalyzeRequest(BaseModel):
+    """Request body: array of logbook rows to run through Map/Reduce forensic audit."""
+    entries: List[LogbookRowRequest] = Field(..., min_length=1, description="Logbook component rows to analyze")
+
+
+class CitationSource(BaseModel):
+    """One citation (file + page) for UI display."""
+    file_name: str = Field(..., description="Document name (e.g. AMM 24-30-00)")
+    page_number: Any = Field(..., description="Page number (int or 'Unknown')")
+
+
+class ComponentAudit(BaseModel):
+    """Per-component audit result from the Map phase."""
+    component: str = Field(..., description="Component name")
+    part_number: str = Field(..., description="P/N as provided or 'Looked up by system'")
+    report: str = Field(..., description="3-bullet compliance/remaining-life summary with AMM citations")
+    sources: List[CitationSource] = Field(default_factory=list, description="Citations for this component")
+
+
+class LogbookAnalyzeResponse(BaseModel):
+    """Response: System-Wide Anomaly Report + per-component audits (see LOGBOOK_API_FOR_GAME_DEV.md)."""
+    system_wide_anomaly_report: str = Field(..., description="Markdown: Critical Anomalies, Maintenance Forecast, Recommendations")
+    anomaly_sources: List[CitationSource] = Field(default_factory=list, description="Sources for the anomaly report")
+    component_audits: List[ComponentAudit] = Field(..., description="One audit per requested component")
 
 
 # -----------------------------------------------------------------------------
@@ -323,6 +361,54 @@ def api_chat(
         text_reply=text_reply,
         sources=sources,
         game_command=game_command,
+    )
+
+
+def _source_node_to_citation(node: dict) -> CitationSource:
+    return CitationSource(
+        file_name=node.get("file_name") or "Unknown",
+        page_number=node.get("page_number") or "Unknown",
+    )
+
+
+@app.post("/api/logbook/analyze", response_model=LogbookAnalyzeResponse)
+def api_logbook_analyze(
+    body: LogbookAnalyzeRequest,
+    _api_key: str = Depends(require_game_api_key),
+) -> LogbookAnalyzeResponse:
+    """
+    Run the Logbook Forensic Audit (Map/Reduce): per-component compliance + system-wide anomaly report.
+
+    Same flow as the Streamlit "Generate Maintenance & Compliance Plan": Map phase (one RAG call per
+    component with 8s cooldown), then Reduce phase (synthesis into Critical Anomalies, Maintenance
+    Forecast, Recommendations). Rate-limit safe (429 fixes preserved). See LOGBOOK_API_FOR_GAME_DEV.md.
+    """
+    rows = [
+        {
+            "Component": e.component,
+            "Part_Number": e.part_number or "",
+            "Hours_Since_New": e.hours_since_new,
+            "Installed_Date": e.installed_date,
+        }
+        for e in body.entries
+    ]
+    try:
+        component_reports, synthesis_response, synthesis_sources = run_logbook_forensic_audit(rows)
+    except Exception as e:
+        raise HTTPException(status_code=502, detail=f"Logbook audit error: {str(e)}") from e
+
+    return LogbookAnalyzeResponse(
+        system_wide_anomaly_report=synthesis_response,
+        anomaly_sources=[_source_node_to_citation(s) for s in (synthesis_sources or [])],
+        component_audits=[
+            ComponentAudit(
+                component=r["component"],
+                part_number=r["part_number"],
+                report=r["report"],
+                sources=[_source_node_to_citation(s) for s in r.get("sources") or []],
+            )
+            for r in component_reports
+        ],
     )
 
 

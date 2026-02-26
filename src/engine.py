@@ -1,5 +1,6 @@
 """Query engine for the Aircraft Maintenance Assistant."""
 import asyncio
+import time
 from typing import List, Dict, Any, Tuple, Optional
 from llama_index.core.query_engine import RetrieverQueryEngine
 from llama_index.core.chat_engine import ContextChatEngine
@@ -727,6 +728,168 @@ def ask_assistant(
         response_text, source_nodes = _run_deep_research(question, similarity_top_k)
 
     return response_text, source_nodes
+
+
+# Logbook Forensic Audit: Map/Reduce constants (match LOGBOOK_FORENSIC_AUDIT_TECHNICAL_FLOW.md)
+MAX_CHARS_PER_REPORT = 2500
+MAX_TOTAL_CONTEXT_CHARS = 18000
+
+
+def _truncate_report(s: str, max_len: int) -> str:
+    s = (s or "").strip()
+    return s[:max_len] + ("..." if len(s) > max_len else "")
+
+
+def run_logbook_forensic_audit(
+    rows: List[Dict[str, Any]],
+) -> Tuple[List[Dict[str, Any]], str, List[Dict[str, Any]]]:
+    """Run the full Logbook Map/Reduce forensic audit (same flow as pages/1_Logbook.py).
+
+    Map: one ask_assistant call per row with a micro-prompt; 8s sleep between rows (429-safe).
+    Reduce: truncate reports, build synthesis prompt, one ask_assistant for system-wide anomaly report.
+
+    Args:
+        rows: List of dicts with keys Component, Part_Number, Hours_Since_New, Installed_Date.
+              Part_Number can be "" or missing; Installed_Date can be None or ISO date string.
+
+    Returns:
+        (component_reports, synthesis_response, synthesis_sources)
+        - component_reports: list of {component, part_number, report, sources}
+        - synthesis_sources: list of {file_name, page_number, ...} for anomaly report
+    """
+    component_reports: List[Dict[str, Any]] = []
+    total_rows = len(rows)
+
+    for idx, row in enumerate(rows):
+        component = str(row.get("Component", "")).strip()
+        part_number_raw = row.get("Part_Number", "")
+        if part_number_raw is None or part_number_raw == "" or (isinstance(part_number_raw, str) and not str(part_number_raw).strip()):
+            part_number = ""
+        else:
+            part_number = str(part_number_raw).strip()
+        hours = row.get("Hours_Since_New")
+        installed_date = row.get("Installed_Date")
+
+        date_str = "Not specified"
+        if installed_date is not None and installed_date != "":
+            if isinstance(installed_date, str):
+                date_str = installed_date
+            elif hasattr(installed_date, "strftime"):
+                date_str = installed_date.strftime("%Y-%m-%d")
+            else:
+                date_str = str(installed_date)
+        hours_str = f"{hours:.1f} hours" if hours is not None and not (isinstance(hours, float) and (hours != hours)) else "Not specified"
+
+        if part_number:
+            pn_context = f"Part Number (P/N): {part_number}"
+            search_instruction = (
+                f"Search the Aircraft Maintenance Manual (AMM) for the exact flight hour limit OR calendar time limit for Part Number {part_number}. "
+                f'If not found, search by component name "{component}".'
+            )
+        else:
+            pn_context = "Part Number (P/N): Not provided - you must look it up"
+            search_instruction = (
+                f'FIRST: Search the Illustrated Parts Catalog (IPC) or AMM to find the Part Number for component "{component}". '
+                "THEN search for the exact flight hour limit OR calendar time limit using the Part Number you found (or component name if P/N still not found)."
+            )
+
+        micro_prompt = f"""You are auditing a single component for compliance. Act as AeroMind, the Senior Lead Engineer.
+
+COMPONENT DETAILS:
+- Component Name: {component}
+- {pn_context}
+- Hours Since New: {hours_str}
+- Date Installed: {date_str}
+
+AUDIT TASKS:
+1. {search_instruction}
+2. Search for the mandated inspection or replacement procedure for this component.
+3. Calculate the component's current status:
+   - If Hours_Since_New is provided: Compare against the hour limit from the manual.
+   - If Installed_Date is provided: Calculate calendar days elapsed and compare against calendar limit.
+   - Determine if COMPLIANT, DUE SOON (within 10% of limit), or OVERDUE.
+4. Calculate remaining life (if applicable).
+
+OUTPUT FORMAT:
+Provide a highly detailed 3-bullet summary:
+• **Part Number Found:** [P/N if looked up, or "P/N: {part_number}" if provided] - **Limit Found:** [Exact limit from manual with citation, e.g., "IAW AMM 20-10-00, p. 5: 2000 hours"]
+• **Current Status:** [COMPLIANT / DUE SOON / OVERDUE] - [Reasoning with calculation]
+• **Remaining Life:** [Hours/days remaining or "OVERDUE by X hours/days"]
+
+Always cite the exact AMM source (document name and page number)."""
+
+        try:
+            response_text, source_nodes = ask_assistant(
+                micro_prompt,
+                use_chat_mode=True,
+                skip_regulation_check=True,
+            )
+            component_reports.append({
+                "component": component,
+                "part_number": part_number or "Looked up by system",
+                "report": response_text,
+                "sources": source_nodes,
+            })
+        except Exception as e:
+            component_reports.append({
+                "component": component,
+                "part_number": part_number or "Looked up by system",
+                "report": f"❌ Error auditing this component: {str(e)}",
+                "sources": [],
+            })
+
+        if idx + 1 < total_rows:
+            time.sleep(8)
+
+    parts = []
+    total_len = 0
+    for r in component_reports:
+        block = f"**{r['component']}** (P/N: {r['part_number']})\n\n{_truncate_report(r['report'], MAX_CHARS_PER_REPORT)}"
+        if total_len + len(block) > MAX_TOTAL_CONTEXT_CHARS:
+            block = _truncate_report(block, max(500, MAX_TOTAL_CONTEXT_CHARS - total_len - 100))
+        parts.append(block)
+        total_len += len(block)
+        if total_len >= MAX_TOTAL_CONTEXT_CHARS:
+            break
+    full_context = "\n\n---\n\n".join(parts)
+    if total_len >= MAX_TOTAL_CONTEXT_CHARS or any(len((r.get("report") or "")) > MAX_CHARS_PER_REPORT for r in component_reports):
+        full_context = "(Reports truncated for token limit.)\n\n" + full_context
+
+    synthesis_prompt = f"""You are a Senior Aerospace Engineer performing a final forensic review of a compiled component audit.
+
+COMPONENT AUDIT REPORTS:
+{full_context}
+
+ANOMALY DETECTION TASKS:
+1. **Cross-Component Logic Check:** Look for logical anomalies between components. For example:
+   - Component A was replaced but Component B (which must be inspected concurrently per AMM) was not mentioned.
+   - Related systems show inconsistent maintenance patterns.
+   - Missing prerequisites or dependencies.
+
+2. **Maintenance Pattern Analysis:** Identify odd maintenance patterns:
+   - Components replaced out of sequence.
+   - Missing required inspections before replacements.
+   - Calendar vs. hour-based limits being ignored.
+
+3. **System-Wide Forecast:** Based on all component statuses, generate a maintenance forecast:
+   - Which components need immediate attention?
+   - What is the next critical maintenance window?
+   - Are there any cascading maintenance requirements?
+
+OUTPUT FORMAT:
+Generate a "System-Wide Anomaly Report" with:
+- **Critical Anomalies:** [Any safety-critical issues found]
+- **Maintenance Forecast:** [Next maintenance windows and priorities]
+- **Recommendations:** [Specific actions to ensure compliance]
+
+Be specific and cite AMM references when identifying anomalies."""
+
+    synthesis_response, synthesis_sources = ask_assistant(
+        synthesis_prompt,
+        use_chat_mode=True,
+        skip_regulation_check=True,
+    )
+    return component_reports, synthesis_response, synthesis_sources
 
 
 def generate_formal_log_entry(part_ref: str, raw_action: str) -> Tuple[str, str]:
