@@ -25,7 +25,11 @@ from pydantic import BaseModel, Field
 from dotenv import load_dotenv
 load_dotenv()
 
+from llama_index.core.callbacks import CallbackManager
+from llama_index.core.settings import Settings
+
 from src.engine import ask_assistant, reply_to_small_talk, run_logbook_forensic_audit
+from src.usage_tracker import OpenAITokenCountingHandler, get_usage
 
 # -----------------------------------------------------------------------------
 # 1. Strict Data Models (Pydantic) — prevents malformed data reaching the game
@@ -98,6 +102,15 @@ class GameResponse(BaseModel):
     game_command: Optional[dict] = Field(None, description="Optional command for the Command Router (see spec)")
 
 
+class OpenAIUsageResponse(BaseModel):
+    """Cumulative OpenAI token usage and estimated cost (GPT-4o)."""
+    prompt_tokens: int = Field(..., description="Total input/prompt tokens")
+    completion_tokens: int = Field(..., description="Total output/completion tokens")
+    total_tokens: int = Field(..., description="prompt_tokens + completion_tokens")
+    request_count: int = Field(..., description="Number of LLM requests")
+    estimated_cost_usd: float = Field(..., description="Estimated cost in USD (GPT-4o pricing)")
+
+
 # -----------------------------------------------------------------------------
 # Logbook Forensic Audit (Map/Reduce) — request/response for POST /api/logbook/analyze
 # -----------------------------------------------------------------------------
@@ -162,6 +175,9 @@ app = FastAPI(
     version="1.0.0",
 )
 
+# Wire OpenAI token/cost tracking so /api/chat and /api/logbook/analyze usage is counted
+Settings.callback_manager = CallbackManager(handlers=[OpenAITokenCountingHandler()])
+
 # CORS: required when the game (WebGL) runs in a browser on another origin (see togamedalil.md Tip 4).
 # Set GAME_CORS_ORIGINS to comma-separated origins, e.g. "https://mygame.com,https://airmanual.onrender.com"
 _origins = [o.strip() for o in os.getenv("GAME_CORS_ORIGINS", "").split(",") if o.strip()]
@@ -174,6 +190,29 @@ app.add_middleware(
     allow_methods=["POST", "GET", "OPTIONS"],
     allow_headers=["Content-Type", "X-API-Key"],
 )
+
+# -----------------------------------------------------------------------------
+# 2b. Endpoint: GET /api/usage — OpenAI token usage and estimated cost
+# -----------------------------------------------------------------------------
+
+
+@app.get("/api/usage", response_model=OpenAIUsageResponse)
+def api_usage(_api_key: str = Depends(require_game_api_key)) -> OpenAIUsageResponse:
+    """
+    Return cumulative OpenAI usage for this deployment: token counts and estimated cost (USD).
+
+    Uses GPT-4o pricing. Persists across restarts via USAGE_FILE (e.g. data/usage.json).
+    Same totals as the Streamlit sidebar when both use the same USAGE_FILE.
+    """
+    data = get_usage()
+    return OpenAIUsageResponse(
+        prompt_tokens=data["prompt_tokens"],
+        completion_tokens=data["completion_tokens"],
+        total_tokens=data["total_tokens"],
+        request_count=data["request_count"],
+        estimated_cost_usd=data["estimated_cost_usd"],
+    )
+
 
 # -----------------------------------------------------------------------------
 # 3. Endpoint: POST /api/chat — rulebook injected so LLM knows allowed commands
