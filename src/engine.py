@@ -1,5 +1,6 @@
 """Query engine for the Aircraft Maintenance Assistant."""
 import asyncio
+import threading
 import time
 from typing import List, Dict, Any, Tuple, Optional
 from llama_index.core.query_engine import RetrieverQueryEngine
@@ -267,15 +268,23 @@ class _FixedNodesRetriever(BaseRetriever):
 def create_agent(
     similarity_top_k: int = 20,
     temperature: float = 0.3,
+    extra_system_prompt: Optional[str] = None,
+    memory: Optional[ChatMemoryBuffer] = None,
 ):
     """Create an OpenAIAgent (FunctionAgent) with QueryEngineTool for decomposition and context.
-    
+
     The agent can:
     - Remember conversation context (ChatMemoryBuffer)
     - Decompose complex questions into multiple searches
     - Ask for clarification when vague
     - Call the search tool multiple times in a loop
-    
+
+    Args:
+        similarity_top_k: Number of chunks to retrieve.
+        temperature: LLM temperature.
+        extra_system_prompt: Optional text (e.g. game rulebook) appended to the agent system prompt.
+        memory: Optional ChatMemoryBuffer for session-scoped history; if None, uses a new default buffer.
+
     Returns:
         FunctionAgent instance
     """
@@ -325,11 +334,18 @@ def create_agent(
         ),
     )
     
+    system_prompt = AGENT_SYSTEM_PROMPT
+    if extra_system_prompt and extra_system_prompt.strip():
+        system_prompt = f"{system_prompt}\n\n{extra_system_prompt.strip()}"
+
+    if memory is None:
+        memory = ChatMemoryBuffer.from_defaults(token_limit=8000)
+
     agent = FunctionAgent(
         tools=[aviation_tool],
         llm=llm,
-        system_prompt=AGENT_SYSTEM_PROMPT,
-        memory=ChatMemoryBuffer.from_defaults(token_limit=8000),
+        system_prompt=system_prompt,
+        memory=memory,
     )
     return agent
 
@@ -425,8 +441,13 @@ def create_query_engine(
     return query_engine
 
 
-# Global agent instance (for agentic mode: decomposition, context, clarification)
-_agent = None
+# Agent cache: key (session_id, extra_system_prompt) -> agent. Enables session-scoped memory and game-API system prompt.
+_agent_cache: Dict[Tuple[Optional[str], Optional[str]], Any] = {}
+_agent_cache_lock = threading.Lock()
+
+# Session-scoped memories for API (session_id -> ChatMemoryBuffer). Streamlit uses default agent with no session_id.
+_session_memories: Dict[str, ChatMemoryBuffer] = {}
+_session_memories_lock = threading.Lock()
 
 # Global chat engine instance (legacy context mode)
 _chat_engine: Optional[ContextChatEngine] = None
@@ -435,12 +456,34 @@ _chat_engine: Optional[ContextChatEngine] = None
 _query_engine: Optional[RetrieverQueryEngine] = None
 
 
-def get_agent(similarity_top_k: int = 20, force_reload: bool = False):
-    """Get or create the global FunctionAgent (agentic technician)."""
-    global _agent
-    if _agent is None or force_reload:
-        _agent = create_agent(similarity_top_k=similarity_top_k)
-    return _agent
+def get_agent(
+    similarity_top_k: int = 20,
+    force_reload: bool = False,
+    extra_system_prompt: Optional[str] = None,
+    session_id: Optional[str] = None,
+):
+    """Get or create a FunctionAgent (agentic technician), optionally with extra system prompt and session-scoped memory."""
+    cache_key = (session_id or "default", (extra_system_prompt or "").strip() or "default")
+    with _agent_cache_lock:
+        if force_reload and cache_key in _agent_cache:
+            del _agent_cache[cache_key]
+        if cache_key in _agent_cache:
+            return _agent_cache[cache_key]
+
+        memory: Optional[ChatMemoryBuffer] = None
+        if session_id and session_id.strip():
+            with _session_memories_lock:
+                if session_id not in _session_memories:
+                    _session_memories[session_id] = ChatMemoryBuffer.from_defaults(token_limit=8000)
+                memory = _session_memories[session_id]
+
+        agent = create_agent(
+            similarity_top_k=similarity_top_k,
+            extra_system_prompt=extra_system_prompt or None,
+            memory=memory,
+        )
+        _agent_cache[cache_key] = agent
+    return agent
 
 
 def get_chat_engine(
@@ -602,30 +645,38 @@ def ask_assistant(
     similarity_top_k: int = 20,
     use_chat_mode: bool = True,  # Use chat mode for agentic cross-reference following
     skip_regulation_check: bool = False,  # Skip regulation path for logbook/maintenance queries
+    extra_system_prompt: Optional[str] = None,  # e.g. game rulebook; injected into agent system prompt
+    raw_question: Optional[str] = None,  # Unpadded user text for regulation/factual classification
+    session_id: Optional[str] = None,  # For API: session-scoped chat memory
 ) -> Tuple[str, List[Dict[str, Any]]]:
     """Ask a question to the aircraft maintenance assistant.
-    
+
     Uses ContextChatEngine with chat_mode="context" to enable agentic behavior:
     - LLM can use retrieval tools to follow cross-references
     - Maintains conversation context
     - Can search for specific sections when mentioned
-    
+
     Args:
-        question: The question to ask
-        similarity_top_k: Number of top results to retrieve (increased for part number queries)
-        use_chat_mode: If True, use ContextChatEngine for agentic behavior
-        
+        question: The question to ask (keep concise; use extra_system_prompt for instructions).
+        similarity_top_k: Number of top results to retrieve (increased for part number queries).
+        use_chat_mode: If True, use ContextChatEngine for agentic behavior.
+        skip_regulation_check: If True, skip regulation-specific retrieval path.
+        extra_system_prompt: Appended to agent system prompt (e.g. game API rulebook).
+        raw_question: If set, used for regulation detection and factual fallback (avoids prompt dilution).
+        session_id: If set, use session-scoped chat memory (API multi-user).
+
     Returns:
-        Tuple of (response_text, source_nodes) where:
-        - response_text: The assistant's answer
-        - source_nodes: List of dictionaries with source information (file_name, page_number, etc.)
+        Tuple of (response_text, source_nodes).
     """
+    # For classification use raw user question so padding (e.g. rulebook in question) doesn't break triggers
+    classification_question = (raw_question or question).strip() if (raw_question or question) else ""
+
     # Regulation questions: enforce 70% similarity threshold; fallback if no high-scoring chunks
     # Skip this check for logbook/maintenance queries (they use "compliance" but aren't about regulations)
-    if not skip_regulation_check and detect_regulation_question(question):
+    if not skip_regulation_check and classification_question and detect_regulation_question(classification_question):
         index = get_index()
         base_retriever = index.as_retriever(similarity_top_k=15)
-        nodes = base_retriever.retrieve(question)
+        nodes = base_retriever.retrieve(classification_question)
         high_nodes = [
             n for n in nodes
             if getattr(n, "score", None) is not None and n.score >= REGULATION_SIMILARITY_THRESHOLD
@@ -654,7 +705,7 @@ def ask_assistant(
         source_nodes = [extract_source_info(n) for n in (response.source_nodes or [])]
         return str(response), source_nodes
 
-    # Detect if this is a part number query
+    # Detect if this is a part number query (use full question for retrieval context)
     part_number = detect_part_number(question)
     if part_number:
         # Increase retrieval for part number queries to ensure we find exact matches
@@ -664,7 +715,11 @@ def ask_assistant(
 
     # Use agent for agentic behavior (decomposition, context, clarification)
     if use_chat_mode:
-        agent = get_agent(similarity_top_k=similarity_top_k)
+        agent = get_agent(
+            similarity_top_k=similarity_top_k,
+            extra_system_prompt=extra_system_prompt,
+            session_id=session_id,
+        )
         
         async def _run_agent():
             from llama_index.core.agent.workflow import ToolCallResult
@@ -702,7 +757,8 @@ def ask_assistant(
         # reasoning to decide when to use tools; we cannot tolerate false negatives
         # (missing a manual lookup). If the Agent did not invoke the RAG tool for a
         # factual query, trigger high-priority retrieval and override with cited data.
-        if not source_nodes and _is_factual_lookup_question(question):
+        # Use raw_question for classification so padded API prompts don't break triggers.
+        if not source_nodes and _is_factual_lookup_question(classification_question):
             query_engine = get_query_engine(similarity_top_k=similarity_top_k)
             response: Response = query_engine.query(question)
             response_text = str(response)

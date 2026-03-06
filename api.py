@@ -289,10 +289,21 @@ def _is_small_talk(question: str) -> bool:
     return False
 
 
-def _inject_selected_part(question: str, selected_part: Optional[str]) -> str:
+def _build_game_extra_system_prompt() -> str:
+    """Build the extra system prompt for game API (rulebook, persona, etc.). Injected into agent system prompt, not the user message. Static so we can cache one agent per session."""
+    return "\n\n".join([
+        _GAME_API_PERSONA_AND_SMALL_TALK.strip(),
+        _ZERO_FILLER_ON_MISS.strip(),
+        _GAME_COMMAND_RULEBOOK.strip(),
+        _CONTEXTUAL_AWARENESS.strip(),
+    ])
+
+
+def _user_message_with_selected_part(question: str, selected_part: Optional[str]) -> str:
+    """Clean user-facing message: optional short selected-part prefix + question. Kept concise for RAG/tool selection."""
     if not selected_part or not selected_part.strip():
-        return question
-    return f"The user is asking about part {selected_part.strip()}: {question}"
+        return question.strip()
+    return f"The user has selected part {selected_part.strip()}. {question.strip()}"
 
 
 def _strip_sources_block(text: str) -> str:
@@ -356,29 +367,24 @@ def api_chat(
     - **selected_part**: If set, the question is contextualized (Click & Ask); LLM uses it as targetName when relevant.
     - **game_command**: When the answer involves locating a part, showing an assembly, or opening a manual, the LLM may return a spec-compliant command (camera.focus, model.highlight, model.explode, scene.switch, manual.open).
     """
-    question = _inject_selected_part(body.question, body.selected_part)
     # Small-talk bypass: no RAG, no game command, persona-only reply.
     if _is_small_talk(body.question):
         text_reply = reply_to_small_talk(body.question)
         return GameResponse(text_reply=text_reply, sources=[], game_command=None)
 
-    prompt_parts = [
-        _GAME_API_PERSONA_AND_SMALL_TALK.strip(),
-        _ZERO_FILLER_ON_MISS.strip(),
-        _GAME_COMMAND_RULEBOOK.strip(),
-        _CONTEXTUAL_AWARENESS.strip(),
-    ]
-    if body.selected_part:
-        prompt_parts.append(f"USER SELECTED PART (use as targetName when relevant): {body.selected_part.strip()}")
-    prompt_parts.append(f"USER QUESTION: {question}")
-    question_for_engine = "\n\n".join(prompt_parts)
+    # Clean question for engine: short selected-part prefix only; no rulebook in user message (avoids prompt dilution).
+    question_for_engine = _user_message_with_selected_part(body.question, body.selected_part)
+    extra_system_prompt = _build_game_extra_system_prompt()
 
-    # Call existing RAG/agent (skip regulation path for game/maintenance use)
+    # Aligned with app.py: regulation check enabled so game clients can ask regulation questions.
     try:
         response_text, source_nodes = ask_assistant(
             question_for_engine,
             use_chat_mode=True,
-            skip_regulation_check=True,
+            skip_regulation_check=False,
+            extra_system_prompt=extra_system_prompt,
+            raw_question=body.question,
+            session_id=body.session_id or None,
         )
     except Exception as e:
         raise HTTPException(status_code=502, detail=f"Engine error: {str(e)}") from e
