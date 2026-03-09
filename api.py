@@ -363,7 +363,9 @@ def api_chat(
     """
     Send a question (and optional selected part) and get an AI reply plus optional game command.
 
-    - **session_id**: For future session memory (Mechanic A vs B); accepted and echoed.
+    Agentic mode is always on for the API (context memory, tool use, decomposition); no client flag needed.
+
+    - **session_id**: For chat memory per game session (Mechanic A vs B); accepted and echoed.
     - **selected_part**: If set, the question is contextualized (Click & Ask); LLM uses it as targetName when relevant.
     - **game_command**: When the answer involves locating a part, showing an assembly, or opening a manual, the LLM may return a spec-compliant command (camera.focus, model.highlight, model.explode, scene.switch, manual.open).
     """

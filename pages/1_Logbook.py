@@ -1,10 +1,7 @@
 """Logbook - Bulletproof maintenance logbook with CSV upload and AI analysis."""
 import streamlit as st
 import pandas as pd
-import asyncio
-import time
-from datetime import datetime
-from src.engine import ask_assistant
+from src.engine import run_logbook_forensic_audit
 from src.config import Config
 
 st.set_page_config(
@@ -122,176 +119,36 @@ if st.button("🔍 Generate Maintenance & Compliance Plan", type="primary"):
     if edited_df.empty:
         st.warning("Please add at least one component to analyze.")
     else:
-        # Initialize progress tracking
-        total_rows = len(edited_df)
+        # Build rows in the same format as the API (single implementation: run_logbook_forensic_audit)
+        rows = []
+        for _, row in edited_df.iterrows():
+            comp = str(row.get("Component", "")).strip()
+            pn = row.get("Part_Number", "")
+            if pd.isna(pn) or pn == "" or (isinstance(pn, str) and not pn.strip()):
+                pn = ""
+            else:
+                pn = str(pn).strip()
+            hours = row.get("Hours_Since_New")
+            inst = row.get("Installed_Date")
+            if pd.notna(inst) and inst is not None and hasattr(inst, "strftime"):
+                inst = inst.strftime("%Y-%m-%d")
+            else:
+                inst = None
+            rows.append({"Component": comp, "Part_Number": pn, "Hours_Since_New": hours, "Installed_Date": inst})
+
         progress_bar = st.progress(0)
         status_text = st.empty()
-        
-        component_reports = []
-        component_sources = []
-        
+        status_text.text("🔍 Running Forensic Audit (Map + Reduce)... This may take 30–60 seconds.")
+        progress_bar.progress(0.3)
+
         try:
-            # ===== PHASE 1: MAP PHASE (Row-by-Row Deep Audit) =====
-            status_text.text("🔍 Starting Forensic Audit: Analyzing each component individually...")
-            
-            for idx, (row_idx, row) in enumerate(edited_df.iterrows()):
-                component = str(row.get("Component", "")).strip()
-                part_number_raw = row.get("Part_Number", "")
-                # Handle empty string, None, or NaN as "no part number"
-                if pd.isna(part_number_raw) or part_number_raw == "" or (isinstance(part_number_raw, str) and not part_number_raw.strip()):
-                    part_number = ""
-                else:
-                    part_number = str(part_number_raw).strip()
-                hours = row.get("Hours_Since_New", None)
-                installed_date = row.get("Installed_Date", None)
-                
-                # Format date if present
-                date_str = "Not specified"
-                if pd.notna(installed_date) and installed_date:
-                    if isinstance(installed_date, str):
-                        date_str = installed_date
-                    elif hasattr(installed_date, "strftime"):
-                        date_str = installed_date.strftime("%Y-%m-%d")
-                    else:
-                        date_str = str(installed_date)
-                
-                # Format hours
-                hours_str = f"{hours:.1f} hours" if pd.notna(hours) and hours is not None else "Not specified"
-                
-                # Update progress (show part number only if available)
-                progress = (idx + 1) / (total_rows + 1)  # +1 for reduce phase
-                progress_bar.progress(progress)
-                if part_number:
-                    status_text.text(f"🔍 Auditing {component} (P/N: {part_number})... [{idx + 1}/{total_rows}]")
-                else:
-                    status_text.text(f"🔍 Auditing {component} (looking up part number)... [{idx + 1}/{total_rows}]")
-                
-                # Micro-Prompt for this specific component
-                if part_number:
-                    pn_context = f"Part Number (P/N): {part_number}"
-                    search_instruction = f"Search the Aircraft Maintenance Manual (AMM) for the exact flight hour limit OR calendar time limit for Part Number {part_number}. If not found, search by component name \"{component}\"."
-                else:
-                    pn_context = "Part Number (P/N): Not provided - you must look it up"
-                    search_instruction = f"FIRST: Search the Illustrated Parts Catalog (IPC) or AMM to find the Part Number for component \"{component}\". THEN search for the exact flight hour limit OR calendar time limit using the Part Number you found (or component name if P/N still not found)."
-                
-                micro_prompt = f"""You are auditing a single component for compliance. Act as AeroMind, the Senior Lead Engineer.
+            # Same function as the API: identical prompts, agentic mode, skip_regulation_check=True
+            component_reports, synthesis_response, synthesis_sources = run_logbook_forensic_audit(rows)
 
-COMPONENT DETAILS:
-- Component Name: {component}
-- {pn_context}
-- Hours Since New: {hours_str}
-- Date Installed: {date_str}
-
-AUDIT TASKS:
-1. {search_instruction}
-2. Search for the mandated inspection or replacement procedure for this component.
-3. Calculate the component's current status:
-   - If Hours_Since_New is provided: Compare against the hour limit from the manual.
-   - If Installed_Date is provided: Calculate calendar days elapsed and compare against calendar limit.
-   - Determine if COMPLIANT, DUE SOON (within 10% of limit), or OVERDUE.
-4. Calculate remaining life (if applicable).
-
-OUTPUT FORMAT:
-Provide a highly detailed 3-bullet summary:
-• **Part Number Found:** [P/N if looked up, or "P/N: {part_number}" if provided] - **Limit Found:** [Exact limit from manual with citation, e.g., "IAW AMM 20-10-00, p. 5: 2000 hours"]
-• **Current Status:** [COMPLIANT / DUE SOON / OVERDUE] - [Reasoning with calculation]
-• **Remaining Life:** [Hours/days remaining or "OVERDUE by X hours/days"]
-
-Always cite the exact AMM source (document name and page number)."""
-                
-                # Call agent for this row (skip regulation check - this is maintenance compliance, not regulatory)
-                try:
-                    response_text, source_nodes = ask_assistant(
-                        micro_prompt,
-                        use_chat_mode=True,  # Agentic mode for deep search
-                        skip_regulation_check=True,  # Bypass regulation path - this is maintenance audit, not regulatory
-                    )
-                    component_reports.append({
-                        "component": component,
-                        "part_number": part_number or "Looked up by system",
-                        "report": response_text,
-                        "sources": source_nodes,
-                    })
-                    component_sources.extend(source_nodes)
-                except Exception as e:
-                    component_reports.append({
-                        "component": component,
-                        "part_number": part_number or "Looked up by system",
-                        "report": f"❌ Error auditing this component: {str(e)}",
-                        "sources": [],
-                    })
-                
-                # Anti-burst delay: space out requests to stay under 30k TPM
-                if idx + 1 < total_rows:
-                    progress_bar.progress(progress, text="Rate limit cooldown... moving to next component")
-                    time.sleep(8)
-            
-            # ===== PHASE 2: REDUCE PHASE (Cross-System Anomaly Detection) =====
-            progress_bar.progress(0.95)
-            status_text.text("🔍 Running Cross-System Anomaly Detection...")
-            
-            # Truncate each report to stay under OpenAI token limit (~30k TPM); ~4 chars/token
-            MAX_CHARS_PER_REPORT = 2500   # ~600 tokens per component
-            MAX_TOTAL_CONTEXT_CHARS = 18000  # ~4.5k tokens for context
-            def truncate(s: str, max_len: int) -> str:
-                s = (s or "").strip()
-                return s[:max_len] + ("..." if len(s) > max_len else "")
-            
-            parts = []
-            total_len = 0
-            for r in component_reports:
-                block = f"**{r['component']}** (P/N: {r['part_number']})\n\n{truncate(r['report'], MAX_CHARS_PER_REPORT)}"
-                if total_len + len(block) > MAX_TOTAL_CONTEXT_CHARS:
-                    block = truncate(block, max(500, MAX_TOTAL_CONTEXT_CHARS - total_len - 100))
-                parts.append(block)
-                total_len += len(block)
-                if total_len >= MAX_TOTAL_CONTEXT_CHARS:
-                    break
-            full_context = "\n\n---\n\n".join(parts)
-            if total_len >= MAX_TOTAL_CONTEXT_CHARS or any(len((r["report"] or "")) > MAX_CHARS_PER_REPORT for r in component_reports):
-                full_context = "(Reports truncated for token limit.)\n\n" + full_context
-            
-            # Synthesis prompt for anomaly detection (kept short to avoid 429)
-            synthesis_prompt = f"""You are a Senior Aerospace Engineer performing a final forensic review of a compiled component audit.
-
-COMPONENT AUDIT REPORTS:
-{full_context}
-
-ANOMALY DETECTION TASKS:
-1. **Cross-Component Logic Check:** Look for logical anomalies between components. For example:
-   - Component A was replaced but Component B (which must be inspected concurrently per AMM) was not mentioned.
-   - Related systems show inconsistent maintenance patterns.
-   - Missing prerequisites or dependencies.
-
-2. **Maintenance Pattern Analysis:** Identify odd maintenance patterns:
-   - Components replaced out of sequence.
-   - Missing required inspections before replacements.
-   - Calendar vs. hour-based limits being ignored.
-
-3. **System-Wide Forecast:** Based on all component statuses, generate a maintenance forecast:
-   - Which components need immediate attention?
-   - What is the next critical maintenance window?
-   - Are there any cascading maintenance requirements?
-
-OUTPUT FORMAT:
-Generate a "System-Wide Anomaly Report" with:
-- **Critical Anomalies:** [Any safety-critical issues found]
-- **Maintenance Forecast:** [Next maintenance windows and priorities]
-- **Recommendations:** [Specific actions to ensure compliance]
-
-Be specific and cite AMM references when identifying anomalies."""
-            
-            # Run synthesis (skip regulation check - anomaly detection is maintenance-focused)
-            synthesis_response, synthesis_sources = ask_assistant(
-                synthesis_prompt,
-                use_chat_mode=True,
-                skip_regulation_check=True,  # Bypass regulation path
-            )
-            
             progress_bar.progress(1.0)
             status_text.text("✅ Forensic Audit Complete")
-            
-            # ===== PHASE 3: PEDAGOGICAL OUTPUT =====
+
+            # ===== PEDAGOGICAL OUTPUT (same as before) =====
             st.markdown("---")
             
             # System-Wide Anomaly Report (prominent at top)

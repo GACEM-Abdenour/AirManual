@@ -799,10 +799,12 @@ def _truncate_report(s: str, max_len: int) -> str:
 def run_logbook_forensic_audit(
     rows: List[Dict[str, Any]],
 ) -> Tuple[List[Dict[str, Any]], str, List[Dict[str, Any]]]:
-    """Run the full Logbook Map/Reduce forensic audit (same flow as pages/1_Logbook.py).
+    """Run the full Logbook Map/Reduce forensic audit.
 
+    Single implementation used by both Streamlit (pages/1_Logbook.py) and the API (POST /api/logbook/analyze).
     Map: one ask_assistant call per row with a micro-prompt; 8s sleep between rows (429-safe).
     Reduce: truncate reports, build synthesis prompt, one ask_assistant for system-wide anomaly report.
+    Uses agentic mode and skip_regulation_check=True (maintenance compliance, not regulatory).
 
     Args:
         rows: List of dicts with keys Component, Part_Number, Hours_Since_New, Installed_Date.
